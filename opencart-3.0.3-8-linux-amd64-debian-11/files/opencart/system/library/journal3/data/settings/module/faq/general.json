@@ -1,0 +1,65 @@
+{
+  "name": {
+    "type": "Input",
+    "value": "New FAQ Module"
+  },
+  "status": {
+    "type": "Status"
+  },
+  "schedule": {
+    "type": "Range",
+    "php": true
+  },
+  "title": {
+    "type": "InputLang",
+    "php": true
+  },
+  "default": {
+    "type": "Select",
+    "value": "",
+    "php": true
+  },
+  "fontQ": {
+    "type": "Font",
+    "selector": ".module-faq-%s .panel-group .panel .panel-heading a"
+  },
+  "fontQHover": {
+    "type": "Font",
+    "selector": ".module-faq-%s .panel-group .panel:hover .panel-heading a"
+  },
+  "fontQActive": {
+    "type": "Font",
+    "selector": ".module-faq-%s .panel-group .panel.panel-active .panel-heading a",
+    "important": "true"
+  },
+  "fontA": {
+    "type": "Font",
+    "selector": ".module-faq-%s .block-content",
+    "important": "true"
+  },
+  "accordionStyle": {
+    "type": "Variable",
+    "variable": "accordion",
+    "selector_prefix": ".module-faq-%s"
+  },
+  "moduleTitle": {
+    "type": "Variable",
+    "variable": "title",
+    "selector_prefix": ".module-faq-%s .module-title"
+  },
+  "moduleMaxWidth": {
+    "type": "InputNumber",
+    "value": "",
+    "rules":{
+      "@":{
+        ".module.module-faq-%s": "width: 100%; max-width:%spx"
+      }
+    }
+  },
+  "customClass": {
+    "type": "Input"
+  },
+  "customCss": {
+    "type": "Input"
+  }
+}
