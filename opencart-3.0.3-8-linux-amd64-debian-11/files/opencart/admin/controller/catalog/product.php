@@ -361,7 +361,7 @@ class ControllerCatalogProduct extends Controller {
 			$trade_price = 'N/A';
 			$product_discounts = $this->model_catalog_product->getProductDiscounts($result['product_id']);
 
-			foreach ($product_discount  as $product_discounts) {
+			foreach ($product_discounts  as $product_discount) {
 				if ($product_discount['customer_group_id'] == 2 && $product_discount['priority'] == 0) {
 					// Check for trade group ID 2 and priority 0
 					$trade_price = $product_discount['price'];
