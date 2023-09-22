@@ -358,12 +358,24 @@ class ControllerCatalogProduct extends Controller {
 				}
 			}
 
+			$trade_price = 'N/A'
+			$product_discounts = $this->model_catalog_product->getProductDiscounts($result['product_id']);
+
+			foreach ($product_discount  as $product_discounts) {
+				if ($product_discount['customer_group_id'] == 2 && $product_discount['priority'] == 0) {
+					// Check for trade group ID 2 and priority 0
+					$trade_price = $product_discount['price'];
+					break; // exit the loop once found
+				}
+			}
+
 			$data['products'][] = array(
 				'product_id' => $result['product_id'],
 				'image'      => $image,
 				'name'       => $result['name'],
 				'model'      => $result['model'],
 				'price'      => $this->currency->format($result['price'], $this->config->get('config_currency')),
+				'trade_price' => $this->currency->format($trade_price, $this->config->get('config_currency')),
 				'special'    => $special,
 				'quantity'   => $result['quantity'],
 				'status'     => $result['status'] ? $this->language->get('text_enabled') : $this->language->get('text_disabled'),

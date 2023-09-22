@@ -53,77 +53,73 @@
               <label class="control-label" for="input-status">{{ entry_status }}</label>
               <select name="filter_status" id="input-status" class="form-control">
                 <option value=""></option>
-                
-                
-                
-                  
-                
+
 
                   {% if filter_status == '1' %}
 
-                
-                
-                  
-                
-                
+
+
+
+
+
                 <option value="1" selected="selected">{{ text_enabled }}</option>
-                
-                
-                
-                  
-                
+
+
+
+
+
 
                   {% else %}
 
-                
-                
-                  
-                
-                
+
+
+
+
+
                 <option value="1">{{ text_enabled }}</option>
-                
-                
-                
-                  
-                
+
+
+
+
+
 
                   {% endif %}
                   {% if filter_status == '0' %}
 
-                
-                
-                  
-                
-                
+
+
+
+
+
                 <option value="0" selected="selected">{{ text_disabled }}</option>
-                
-                
-                
-                  
-                
+
+
+
+
+
 
                   {% else %}
 
-                
-                
-                  
-                
-                
+
+
+
+
+
                 <option value="0">{{ text_disabled }}</option>
-                
-                
-                
-                  
-                
+
+
+
+
+
 
                   {% endif %}
 
 
-              
-              
-                
-              
-              
+
+
+
+
+
               </select>
             </div>
             <div class="form-group text-right">
@@ -148,13 +144,14 @@
                       <td class="text-left">{% if sort == 'pd.name' %} <a href="{{ sort_name }}" class="{{ order|lower }}">{{ column_name }}</a> {% else %} <a href="{{ sort_name }}">{{ column_name }}</a> {% endif %}</td>
                       <td class="text-left">{% if sort == 'p.model' %} <a href="{{ sort_model }}" class="{{ order|lower }}">{{ column_model }}</a> {% else %} <a href="{{ sort_model }}">{{ column_model }}</a> {% endif %}</td>
                       <td class="text-right">{% if sort == 'p.price' %} <a href="{{ sort_price }}" class="{{ order|lower }}">{{ column_price }}</a> {% else %} <a href="{{ sort_price }}">{{ column_price }}</a> {% endif %}</td>
+                      <td class="text-right">Trade Price</td>
                       <td class="text-right">{% if sort == 'p.quantity' %} <a href="{{ sort_quantity }}" class="{{ order|lower }}">{{ column_quantity }}</a> {% else %} <a href="{{ sort_quantity }}">{{ column_quantity }}</a> {% endif %}</td>
                       <td class="text-left">{% if sort == 'p.status' %} <a href="{{ sort_status }}" class="{{ order|lower }}">{{ column_status }}</a> {% else %} <a href="{{ sort_status }}">{{ column_status }}</a> {% endif %}</td>
                       <td class="text-right">{{ column_action }}</td>
                     </tr>
                   </thead>
                   <tbody>
-                  
+
                   {% if products %}
                   {% for product in products %}
                   <tr>
@@ -171,6 +168,7 @@
                       {% else %}
                       {{ product.price }}
                       {% endif %}</td>
+                    <td class="text-left">{{ product.trade_price }}</td>
                     <td class="text-right">{% if product.quantity <= 0 %} <span class="label label-warning">{{ product.quantity }}</span> {% elseif product.quantity <= 5 %} <span class="label label-danger">{{ product.quantity }}</span> {% else %} <span class="label label-success">{{ product.quantity }}</span> {% endif %}</td>
                     <td class="text-left">{{ product.status }}</td>
                     <td class="text-right"><a href="{{ product.edit }}" data-toggle="tooltip" title="{{ button_edit }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a></td>
@@ -182,7 +180,7 @@
                   </tr>
                   {% endif %}
                     </tbody>
-                  
+
                 </table>
               </div>
             </form>
@@ -231,13 +229,13 @@ $('#button-filter').on('click', function() {
 
 	location = 'index.php?route=catalog/product&user_token={{ user_token }}' + url;
 });
-//--></script> 
+//--></script>
   <script type="text/javascript"><!--
 // IE and Edge fix!
 $('button[form=\'form-product\']').on('click', function(e) {
 	$('#form-product').attr('action', $(this).attr('formaction'));
 });
-  
+
 $('input[name=\'filter_name\']').autocomplete({
 	'source': function(request, response) {
 		$.ajax({
@@ -278,4 +276,4 @@ $('input[name=\'filter_model\']').autocomplete({
 	}
 });
 //--></script></div>
-{{ footer }} 
+{{ footer }}
