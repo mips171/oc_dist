@@ -358,7 +358,7 @@ class ControllerCatalogProduct extends Controller {
 				}
 			}
 
-			$trade_price = 'N/A'
+			$trade_price = 'N/A';
 			$product_discounts = $this->model_catalog_product->getProductDiscounts($result['product_id']);
 
 			foreach ($product_discount  as $product_discounts) {
