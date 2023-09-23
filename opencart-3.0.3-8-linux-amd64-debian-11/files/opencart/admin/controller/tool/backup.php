@@ -1,4 +1,6 @@
 <?php
+// Give the script 1GB of memory to work with
+ini_set('memory_limit', '1024M');
 class ControllerToolBackup extends Controller {
 	public function index() {
 		$this->load->language('tool/backup');
@@ -28,7 +30,7 @@ class ControllerToolBackup extends Controller {
 		$data['user_token'] = $this->session->data['user_token'];
 
 		$data['export'] = $this->url->link('tool/backup/export', 'user_token=' . $this->session->data['user_token'], true);
-		
+
 		$this->load->model('tool/backup');
 
 		$data['tables'] = $this->model_tool_backup->getTables();
@@ -39,53 +41,53 @@ class ControllerToolBackup extends Controller {
 
 		$this->response->setOutput($this->load->view('tool/backup', $data));
 	}
-	
+
 	public function import() {
 		$this->load->language('tool/backup');
-		
+
 		$json = array();
-		
+
 		if (!$this->user->hasPermission('modify', 'tool/backup')) {
 			$json['error'] = $this->language->get('error_permission');
 		}
-		
+
 		if (isset($this->request->files['import']['tmp_name']) && is_uploaded_file($this->request->files['import']['tmp_name'])) {
 			$filename = tempnam(DIR_UPLOAD, 'bac');
-			
+
 			move_uploaded_file($this->request->files['import']['tmp_name'], $filename);
 		} elseif (isset($this->request->get['import'])) {
 			$filename = DIR_UPLOAD . basename(html_entity_decode($this->request->get['import'], ENT_QUOTES, 'UTF-8'));
 		} else {
 			$filename = '';
 		}
-		
+
 		if (!is_file($filename)) {
 			$json['error'] = $this->language->get('error_file');
-		}	
-		
+		}
+
 		if (isset($this->request->get['position'])) {
 			$position = $this->request->get['position'];
 		} else {
-			$position = 0; 	
+			$position = 0;
 		}
-				
+
 		if (!$json) {
 			// We set $i so we can batch execute the queries rather than do them all at once.
 			$i = 0;
 			$start = false;
-			
+
 			$handle = fopen($filename, 'r');
 
 			fseek($handle, $position, SEEK_SET);
-			
+
 			while (!feof($handle) && ($i < 100)) {
 				$position = ftell($handle);
 
 				$line = fgets($handle, 1000000);
-				
+
 				if (substr($line, 0, 14) == 'TRUNCATE TABLE' || substr($line, 0, 11) == 'INSERT INTO') {
 					$sql = '';
-					
+
 					$start = true;
 				}
 
@@ -98,13 +100,13 @@ class ControllerToolBackup extends Controller {
 				if ($start) {
 					$sql .= $line;
 				}
-				
+
 				if ($start && substr($line, -2) == ";\n") {
 					$this->db->query(substr($sql, 0, strlen($sql) -2));
-					
+
 					$start = false;
 				}
-					
+
 				$i++;
 			}
 
@@ -116,11 +118,11 @@ class ControllerToolBackup extends Controller {
 
 			if ($position && !feof($handle)) {
 				$json['next'] = str_replace('&amp;', '&', $this->url->link('tool/backup/import', 'user_token=' . $this->session->data['user_token'] . '&import=' . $filename . '&position=' . $position, true));
-			
+
 				fclose($handle);
 			} else {
 				fclose($handle);
-				
+
 				unlink($filename);
 
 				$json['success'] = $this->language->get('text_success');
@@ -154,7 +156,7 @@ class ControllerToolBackup extends Controller {
 
 			$this->load->model('tool/backup');
 
-			$this->response->setOutput($this->model_tool_backup->backup($this->request->post['backup']));		
+			$this->response->setOutput($this->model_tool_backup->backup($this->request->post['backup']));
 		}
-	}	
+	}
 }
