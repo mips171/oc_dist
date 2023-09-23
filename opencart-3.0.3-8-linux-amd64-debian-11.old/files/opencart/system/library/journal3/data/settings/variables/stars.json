@@ -1,9 +1,0 @@
-{
-  "name": {
-    "type": "Input",
-    "value": "NEW_RATING_STARS"
-  },
-  "value": {
-    "include": "stars"
-  }
-}

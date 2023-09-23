@@ -1,1 +1,4 @@
-# This configuration has been moved to the /opt/bitnami/apache/conf/vhosts/htaccess/opencart-htaccess.conf config file for performance and security reasons
+<IfModule mod_rewrite.c>
+RewriteEngine on
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization},L]
+</IfModule>

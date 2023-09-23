@@ -1,9 +1,0 @@
-{
-  "name": {
-    "type": "Input",
-    "value": "NEW_PAGE_STYLE"
-  },
-  "value": {
-    "include": "page"
-  }
-}

@@ -1,1 +1,8 @@
-# This configuration has been moved to the /opt/bitnami/apache/conf/vhosts/htaccess/opencart-htaccess.conf config file for performance and security reasons
+<Files *.*>
+Order Deny,Allow
+Deny from all
+</Files>
+<Files ~ "\.(js|css)$">
+Order Allow,Deny
+Allow from all
+</Files>

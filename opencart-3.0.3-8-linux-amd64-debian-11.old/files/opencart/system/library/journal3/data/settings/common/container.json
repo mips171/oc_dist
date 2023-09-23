@@ -1,9 +1,0 @@
-{
-  "Container": {
-    "include": "common_hover"
-  },
-  "ContainerS": {
-    "include": "common_hover",
-    "selector_prefix": "s"
-  }
-}

@@ -1,9 +1,0 @@
-{
-  "name": {
-    "type": "Input",
-    "value": "NEW_DATE_TIME"
-  },
-  "value": {
-    "include": "date_time"
-  }
-}

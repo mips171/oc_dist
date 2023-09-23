@@ -1,1 +1,13 @@
-# This configuration has been moved to the /opt/bitnami/apache/conf/vhosts/htaccess/opencart-htaccess.conf config file for performance and security reasons
+<IfModule mod_rewrite.c>
+RewriteEngine on
+
+# You may need RewriteBase on some servers
+#RewriteBase /min
+
+# rewrite URLs like "/min/f=..." to "/min/?f=..."
+RewriteRule ^([bfg]=.*)  index.php?$1 [L,NE]
+</IfModule>
+<IfModule mod_env.c>
+# In case AddOutputFilterByType has been added
+SetEnv no-gzip
+</IfModule>
