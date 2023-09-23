@@ -1,0 +1,24 @@
+<style>
+  {% if journal3.get('headerMiniSearchDisplay') == 'page' %}
+  .mini-search .tt-menu {
+    padding-left: {{journal3.get('headerMiniSearchDropdownPadding')}}px;
+    padding-right: {{journal3.get('headerMiniSearchDropdownPadding')}}px;
+  }
+  {% endif %}
+
+  {% if not journal3.get('headerMainMenu2') %}
+  .header-desktop-compact{
+    --desktop-main-menu: 0px;
+  }
+  {% endif %}
+
+
+  {# Shipping payment visibility #}
+  {% if journal3.get('sectionShippingVisibility') != 'true' and journal3.get('sectionPaymentVisibility') != 'true' %}
+  .quick-checkout-wrapper .shipping-payment {
+    display: none;
+  }
+  {% endif %}
+
+</style>
+

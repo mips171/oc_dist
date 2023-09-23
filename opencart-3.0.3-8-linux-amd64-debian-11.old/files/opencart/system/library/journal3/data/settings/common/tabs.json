@@ -1,0 +1,559 @@
+{
+  "Font": {
+    "type": "Font",
+    "selector": ".nav-tabs > li > a, .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus"
+  },
+  "FontHover": {
+    "type": "Font",
+    "selector": ".nav-tabs > li:hover > a, .nav-tabs > li.active > a"
+  },
+  "FontActive": {
+    "type": "Font",
+    "selector": ".nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus"
+  },
+  "Background": {
+    "type": "Background",
+    "selector": ".nav-tabs > li > a, .nav-tabs > li:hover > a, .nav-tabs > li.active > a, .nav-tabs > li.active > a, .nav-tabs > li.active > a:hover, .nav-tabs > li.active > a:focus",
+    "important": true
+  },
+  "BackgroundHover": {
+    "type": "Background",
+    "selector": ".nav-tabs > li:hover > a",
+    "important": true
+  },
+  "BackgroundActive": {
+    "type": "Background",
+    "selector": "ul.nav-tabs > li.active > a, ul.nav-tabs > li.active > a:hover, ul.nav-tabs > li.active > a:focus",
+    "important": true
+  },
+  "TabsBorder": {
+    "type": "Border",
+    "selector": ".nav-tabs"
+  },
+  "TabsBackground": {
+    "type": "Background",
+    "selector": ".nav-tabs"
+  },
+  "Border": {
+    "type": "Border",
+    "selector": ".nav-tabs > li"
+  },
+  "BorderHover": {
+    "type": "Color",
+    "selector": ".nav-tabs > li:hover",
+    "property": "border-color"
+  },
+  "BorderActive": {
+    "type": "Color",
+    "selector": ".nav-tabs > li.active, .nav-tabs > li:hover.active",
+    "property": "border-color"
+  },
+  "TabBorderRadius": {
+    "type": "BorderRadius",
+    "selector": "ul.nav-tabs > li"
+  },
+  "FirstTabBorderRadius": {
+    "type": "BorderRadius",
+    "selector": "ul.nav-tabs > li:first-child"
+  },
+  "LastTabBorderRadius": {
+    "type": "BorderRadius",
+    "selector": "ul.nav-tabs > li:last-child"
+  },
+  "FirstBorder": {
+    "type": "Border",
+    "selector": "ul.nav-tabs > li:first-child"
+  },
+  "FirstBorderHover": {
+    "type": "Color",
+    "selector": "ul.nav-tabs > li:first-child:hover",
+    "property": "color"
+  },
+  "FirstBorderActive": {
+    "type": "Color",
+    "selector": "ul.nav-tabs > li.active:first-child",
+    "property": "border-color"
+  },
+  "LastBorder": {
+    "type": "Border",
+    "selector": "ul.nav-tabs > li:last-child"
+  },
+  "LastBorderHover": {
+    "type": "Color",
+    "selector": "ul.nav-tabs > li:last-child:hover",
+    "property": "color"
+  },
+  "LastBorderActive": {
+    "type": "Color",
+    "selector": "ul.nav-tabs > li.active:last-child",
+    "property": "border-color"
+  },
+  "ContentBorder": {
+    "type": "Divider",
+    "selector": ".tab-content"
+  },
+  "ActiveTabBottomColor": {
+    "type": "Color",
+    "selector": ".nav-tabs > li.active",
+    "property": "border-bottom-color"
+  },
+  "ActiveTabIndicator": {
+    "type": "Toggle",
+    "value": "",
+    "rules": {
+      "true": {
+        ".nav-tabs > li.active::after": "content:''; display:block; position: absolute; border: 10px solid transparent; left: 50%; top: 100%; transform: translate(-50%, 0)"
+      },
+      "false": {
+        ".nav-tabs > li.active::after": "display: none"
+      }
+    }
+  },
+  "ActiveTabIndicatorColor": {
+    "type": "Color",
+    "selector": ".nav-tabs > li.active::after",
+    "property": "border-top-color"
+  },
+  "ActiveTabIndicatorSize": {
+    "type": "InputNumber",
+    "rules":{
+      "@":{
+        ".nav-tabs > li.active::after": "border-top-width:%spx"
+      }
+    }
+  },
+  "ActiveTabIndicatorOffset": {
+    "type": "InputPair",
+    "selector": ".nav-tabs > li.active::after",
+    "properties": {
+      "first": "margin-left:%spx",
+      "second": "margin-top:%spx"
+    }
+  },
+  "TabAlign": {
+    "type": "Radio",
+    "value": "",
+    "rules": {
+      "left": {
+        ".nav-tabs > li > a": "justify-content:flex-start"
+      },
+      "center": {
+        ".nav-tabs > li > a": "justify-content:center"
+      },
+      "right": {
+        ".nav-tabs > li > a": "justify-content:flex-end"
+      }
+    }
+  },
+  "TabWhiteSpace": {
+    "type": "Radio",
+    "value": "",
+    "rules": {
+      "normal": {
+        ".nav-tabs > li > a": "white-space:normal"
+      },
+      "nowrap": {
+        ".nav-tabs > li > a": "white-space:nowrap"
+      }
+    }
+  },
+
+  "ImageVisibility": {
+    "type": "Toggle",
+    "value": "",
+    "rules": {
+      "true": {
+        ".nav-tabs > li > a > .menu-image": "display: inline-flex"
+      },
+      "false": {
+        ".nav-tabs > li > a > .menu-image": "display: none"
+      }
+    }
+  },
+  "MenuImage": {
+    "type": "Variable",
+    "variable": "menu_image",
+    "selector_prefix": ".nav-tabs li"
+  },
+
+  "IconColor": {
+    "type": "Color",
+    "selector": ".nav-tabs > li > a::before",
+    "property": "color"
+  },
+  "IconColorHover": {
+    "type": "Color",
+    "selector": ".nav-tabs > li:hover > a::before, .nav-tabs > li.active > a::before, .nav-tabs > li.active > a:hover::before, .nav-tabs > li.active > a:focus::before",
+    "property": "color"
+  },
+  "IconColorActive": {
+    "type": "Color",
+    "selector": ".nav-tabs > li.active > a::before, .nav-tabs > li.active > a:hover::before, .nav-tabs > li.active > a:focus::before",
+    "property": "color"
+  },
+  "IconSize": {
+    "type": "InputNumber",
+    "rules":{
+      "@":{
+        ".nav-tabs > li > a::before": "font-size:%spx"
+      }
+    }
+  },
+  "TabsShadow": {
+    "type": "Shadow",
+    "selector": ".nav-tabs"
+  },
+  "Shadow": {
+    "type": "Shadow",
+    "selector": ".nav-tabs > li:not(.active) > a"
+  },
+  "ShadowHover": {
+    "type": "Shadow",
+    "selector": ".nav-tabs > li:not(.active) > a:hover"
+  },
+  "ShadowActive": {
+    "type": "Shadow",
+    "selector": ".nav-tabs > li.active > a"
+  },
+  "BorderRadius": {
+    "type": "BorderRadius",
+    "selector": ".nav-tabs"
+  },
+  "ContentBorderRadius": {
+    "type": "BorderRadius",
+    "selector": ".tab-content"
+  },
+  "TabsMargin": {
+    "type": "Margin",
+    "selector": ".nav-tabs"
+  },
+  "BorderBottom-": {
+    "type": "InputNumber",
+    "selector": ".nav-tabs",
+    "property": "margin-top:%spx",
+    "value": ""
+  },
+  "TopSpacing": {
+    "type": "Gap",
+    "variableType": "gap",
+    "selector": ".nav-tabs + .tab-content",
+    "property": "--spacing:%s",
+    "value": ""
+  },
+  "Divider": {
+    "type": "Divider",
+    "selector": ".tab-container, .tab-content, .nav-tabs > li"
+  },
+  "ActiveBorderColor": {
+    "type": "Color",
+    "selector": ".nav-tabs > li.active",
+    "property": "border-bottom-color"
+  },
+  "Padding": {
+    "type": "Padding",
+    "selector": ".nav-tabs > li > a"
+  },
+  "PaddingImage": {
+    "type": "Padding",
+    "selector": ".nav-tabs > li > a.has-image"
+  },
+  "TabsPadding": {
+    "type": "Padding",
+    "selector": ".nav-tabs",
+    "important": "true"
+  },
+  "Display": {
+    "type": "Radio",
+    "value": "",
+    "rules": {
+      "default": {
+        ".nav-tabs > li": "flex-grow:0",
+        ".nav-tabs > li:first-child": "margin-inline-start: 0",
+        ".nav-tabs > li:last-child": "margin-inline-end: 0"
+      },
+      "stretch": {
+        ".nav-tabs > li": "flex-grow:1",
+        ".nav-tabs > li:first-child": "margin-inline-start:0",
+        ".nav-tabs > li:last-child": "margin-inline-end:0"
+      },
+      "center": {
+        ".nav-tabs > li": "flex-grow:0",
+        ".nav-tabs > li:first-child": "margin-inline-start: auto",
+        ".nav-tabs > li:last-child": "margin-inline-end: auto"
+      },
+      "right": {
+        ".nav-tabs > li": "flex-grow:0",
+        ".nav-tabs > li:first-child": "margin-inline-start: auto",
+        ".nav-tabs > li:last-child": "margin-inline-end:0"
+      }
+    }
+  },
+  "GroupWidthNew": {
+    "type": "Radio",
+    "value": "",
+    "rules": {
+      "tabs": {
+        "ul.nav-tabs": "max-width: max-content"
+      },
+      "module": {
+        "ul.nav-tabs": "max-width: 100%"
+      },
+      "site": {
+        "ul.nav-tabs": "max-width: calc(var(--content-max-width, 100%) - var(--content-gutter, 0px) * 2)"
+      }
+    }
+  },
+  "LastTabAlign": {
+    "type": "Radio",
+    "value": "",
+    "rules": {
+      "group": {
+        ".nav-tabs > li:last-child": "margin-left:0;"
+      },
+      "end": {
+        ".nav-tabs > li:last-child": "margin-left:auto;"
+      }
+    },
+    "rtlRules": {
+      "group": {
+        ".nav-tabs > li:last-child": "margin-right:0;"
+      },
+      "end": {
+        ".nav-tabs > li:last-child": "margin-right: auto"
+      }
+    }
+  },
+  "LastTabFont": {
+    "type": "Font",
+    "selector": ".nav-tabs > li:last-child > a"
+  },
+  "LastTabFontHover": {
+    "type": "Font",
+    "selector": ".nav-tabs > li:last-child:hover > a"
+  },
+  "LastTabBackground": {
+    "type": "Background",
+    "selector": ".nav-tabs > li:last-child > a"
+  },
+  "LastTabBackgroundHover": {
+    "type": "Background",
+    "selector": ".nav-tabs > li:last-child:hover > a"
+  },
+  "TabWidth": {
+    "type": "InputNumber",
+    "property": "--tabs-row:%s",
+    "rules": {
+      "@": {
+        ".nav-tabs > li": "min-width:calc((100% - (%s - 1) * var(--tabs-gap, 0px)) / %s);"
+      }
+    }
+  },
+  "TabHeight": {
+    "type": "InputNumber",
+    "rules": {
+      "@": {
+        ".nav-tabs > li": "height:%spx",
+        ".tab-container::before": "height:%spx",
+        "&.tab-container::before": "height:%spx"
+      }
+    }
+  },
+
+  "TabSpace": {
+    "type": "Gap",
+    "variableType": "gap",
+    "property": "--tabs-gap: %s",
+    "selector": "ul.nav-tabs"
+  },
+  "FullBGHeight": {
+    "type": "InputNumber",
+    "value": "",
+    "rules": {
+      "@": {
+        ".tab-container::before": "height: %spx",
+        "&.tab-container::before": "height: %spx",
+        ".nav-tabs": "min-height: %spx"
+      }
+    }
+  },
+  "FullBG": {
+    "type": "Toggle",
+    "value": "",
+    "rules": {
+      "true": {
+        ".tab-container::before": "display: var(--full-bg-display)",
+        "&.tab-container::before": "display: var(--full-bg-display)"
+      },
+      "false": {
+        ".tab-container::before": "display: none",
+        "&.tab-container::before": "display: none"
+      }
+    }
+  },
+  "FullBGBackground": {
+    "type": "Background",
+    "selector": ".tab-container::before, &.tab-container::before"
+  },
+
+  "FullBGShadow": {
+    "type": "Shadow",
+    "selector": ".tab-container::before, &.tab-container::before"
+  },
+
+  "FullBGBorder": {
+    "type": "Border",
+    "selector": ".tab-container::before, &.tab-container::before"
+  },
+  "ContentFullBG": {
+    "type": "Toggle",
+    "value": "",
+    "rules": {
+      "true": {
+        ".tab-content::before": "display: var(--full-bg-display)"
+      },
+      "false": {
+        ".tab-content::before": "display: none"
+      }
+    }
+  },
+  "ContentFullBGBackground": {
+    "type": "Background",
+    "selector": ".tab-content::before"
+  },
+
+  "ContentFullBGShadow": {
+    "type": "Shadow",
+    "selector": ".tab-content::before"
+  },
+
+  "ContentFullBGBorder": {
+    "type": "Border",
+    "selector": ".tab-content::before"
+  },
+  "ContentBackground": {
+    "type": "Background",
+    "selector": ".tab-content"
+  },
+
+  "ContentPadding": {
+    "type": "Padding",
+    "selector": ".tab-content"
+  },
+
+  "ContentTypography": {
+    "type": "Variable",
+    "variable": "typography",
+    "selector_prefix": ".tab-content"
+  },
+
+  "TabsWidth": {
+    "type": "InputNumber",
+    "value": "100",
+    "property": "--tabs-v-width: %spx",
+    "selector": ".tab-container, &.tab-container"
+  },
+  "TabsVerticalHeight": {
+    "type": "InputNumber",
+    "value": "",
+    "rules": {
+      "@": {
+        ".tab-container, &.tab-container": "--tabs-v-height:%spx;"
+      }
+    }
+  },
+  "TabsDirection": {
+    "type": "Radio",
+    "value": "horizontal",
+    "rules": {
+      "horizontal": {
+        ".tab-container":"display: block; --full-bg-display: var(--full-bg-display-x);",
+        "&.tab-container":"display: block; --full-bg-display: var(--full-bg-display-x)",
+        ".nav-tabs": "flex-direction:row; align-items:center; min-width:auto; padding-bottom: var(--pb); overflow-x: var(--overflow-scroll); max-height: none;",
+        ".tab-content": "width: 100%; max-height: none; overflow-y: initial; overflow-x: initial; --full-bg-display: block",
+        ".nav-tabs + .tab-content": "margin-top: var(--spacing, 0); margin-left:0;"
+      },
+      "vertical": {
+        ".tab-container":"display: flex; --full-bg-display: none",
+        "&.tab-container":"display: flex; --full-bg-display: none",
+        ".nav-tabs":"flex-direction:column; align-items:initial; min-width:var(--tabs-v-width, 175px); max-height: var(--tabs-v-height, 100%); padding-bottom:0; overflow-x: hidden; overflow-y: auto;",
+        ".tab-content":"flex-grow:1; width: calc(100% - var(--tabs-v-width, 100px) - var(--spacing, 0px)); max-height: var(--tabs-v-height, 100%); overflow-y: auto; overflow-x:hidden; --full-bg-display: none",
+        ".nav-tabs + .tab-content": "margin-left: var(--spacing, 0); margin-top:0;"
+      }
+    },
+    "rtlRules": {
+      "horizontal": {
+        ".tab-container":"display: block; --full-bg-display:  var(--full-bg-display-x)",
+        "&.tab-container":"display: block; --full-bg-display:  var(--full-bg-display-x)",
+        ".nav-tabs": "flex-direction:row; align-items:center; min-width:auto; padding-bottom: var(--pb); overflow-x: var(--overflow-scroll); overflow-y: hidden; max-height: none; --llbll-bg-display: block",
+        ".tab-content": "width: 100%; max-height: none; overflow-y: initial; overflow-x: initial",
+        ".nav-tabs + .tab-content": "margin-top: var(--spacing, 0); margin-right:0;"
+      },
+      "vertical": {
+        ".tab-container":"display: flex; --full-bg-display: none",
+        "&.tab-container":"display: flex; --full-bg-display: none",
+        ".nav-tabs":"flex-direction:column; align-items:initial; min-width:var(--tabs-v-width, 175px); max-height: var(--tabs-v-height, 100%); padding-bottom:0; overflow-x: hidden; overflow-y: auto;",
+        ".tab-content":"flex-grow:1; width: calc(100% - var(--tabs-v-width, 100px) - var(--spacing, 0px)); max-height: var(--tabs-v-height, 100%); overflow-y: auto; overflow-x:hidden; --full-bg-display: none",
+        ".nav-tabs + .tab-content": "margin-right: var(--spacing, 0); margin-top:0;"
+      }
+    }
+  },
+  "Scroll": {
+    "type": "Toggle",
+    "value": "",
+    "rules": {
+      "true": {
+        "ul.nav-tabs": "flex-wrap: nowrap; --pb: 1px; --overflow-scroll: auto; overflow-y: hidden",
+        ".tab-container": "--full-bg-display-x: block",
+        "&.tab-container": "--full-bg-display-x: block"
+      },
+      "false": {
+        "ul.nav-tabs": "flex-wrap: wrap; --pb: 0; --overflow-scroll: initial; overflow-y: initial",
+        ".tab-container": "--full-bg-display-x: none",
+        "&.tab-container": "--full-bg-display-x: none"
+      }
+    }
+  },
+  "DefaultScrollbarStyle": {
+    "type": "Variable",
+    "variable": "default_scrollbar",
+    "selector_prefix": "ul.nav-tabs"
+  },
+  "TrackHeight": {
+    "type": "InputNumber",
+    "value": "",
+    "rules":{
+      "@":{
+        "ul.nav-tabs::-webkit-scrollbar": "height:%spx; width: %spx",
+        ".tab-content::-webkit-scrollbar": "height:%spx; width: %spx"
+      }
+    }
+  },
+  "TrackColor": {
+    "type": "Color",
+    "selector": "ul.nav-tabs::-webkit-scrollbar, .tab-content::-webkit-scrollbar",
+    "property": "--scrollbar-track-color: %s"
+  },
+  "ScrollColor": {
+    "type": "Color",
+    "selector": "ul.nav-tabs::-webkit-scrollbar-thumb, .tab-content::-webkit-scrollbar-thumb",
+    "property": "--scrollbar-thumb-color: %s"
+  },
+  "ScrollColorHover": {
+    "type": "Color",
+    "selector": "ul.nav-tabs::-webkit-scrollbar-thumb, .tab-content::-webkit-scrollbar-thumb",
+    "property": "--scrollbar-thumb-color-hover: %s"
+  },
+  "ScrollColorActive": {
+    "type": "Color",
+    "selector": "ul.nav-tabs::-webkit-scrollbar-thumb, .tab-content::-webkit-scrollbar-thumb",
+    "property": "--scrollbar-thumb-color-active: %s"
+  },
+  "TrackBorder": {
+    "type": "Border",
+    "selector": "ul.nav-tabs::-webkit-scrollbar-thumb, .tab-content::-webkit-scrollbar-thumb"
+  },
+  "TrackBorderRadius": {
+    "type": "BorderRadius",
+    "selector": "ul.nav-tabs::-webkit-scrollbar-thumb, .tab-content::-webkit-scrollbar-thumb"
+  }
+}
