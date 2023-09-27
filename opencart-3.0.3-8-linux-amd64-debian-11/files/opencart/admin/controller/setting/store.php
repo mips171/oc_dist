@@ -352,6 +352,23 @@ class ControllerSettingStore extends Controller {
 			$data['config_owner'] = '';
 		}
 
+		if (isset($this->request->post['config_abn'])) {
+			$data['config_abn'] = $this->request->post['config_abn'];
+		} elseif (isset($store_info['config_abn'])) {
+			$data['config_abn'] = $store_info['config_abn'];
+		} else {
+			$data['config_abn'] = '';
+		}
+
+
+		if (isset($this->request->post['config_acn'])) {
+			$data['config_acn'] = $this->request->post['config_acn'];
+		} elseif (isset($store_info['config_acn'])) {
+			$data['config_acn'] = $store_info['config_acn'];
+		} else {
+			$data['config_acn'] = '';
+		}
+
 		if (isset($this->request->post['config_address'])) {
 			$data['config_address'] = $this->request->post['config_address'];
 		} elseif (isset($store_info['config_address'])) {
@@ -382,14 +399,6 @@ class ControllerSettingStore extends Controller {
 			$data['config_telephone'] = $store_info['config_telephone'];
 		} else {
 			$data['config_telephone'] = '';
-		}
-
-		if (isset($this->request->post['config_fax'])) {
-			$data['config_fax'] = $this->request->post['config_fax'];
-		} elseif (isset($store_info['config_fax'])) {
-			$data['config_fax'] = $store_info['config_fax'];
-		} else {
-			$data['config_fax'] = '';
 		}
 
 		if (isset($this->request->post['config_image'])) {

@@ -35,6 +35,10 @@
               <address>
               {{ address }}
               </address>
+              {% if abn %}
+              <strong>{{ text_abn }}</strong><br>
+              {{ abn }}
+              {% endif %}
               {% if geocode %}
               <a href="https://maps.google.com/maps?q={{ geocode|url_encode }}&hl={{ geocode_hl }}&t=m&z=15" target="_blank" class="btn btn-info"><i class="fa fa-map-marker"></i> {{ button_map }}</a>
               {% endif %}
@@ -42,12 +46,6 @@
             <div class="col-sm-3 store-tel"><strong>{{ text_telephone }}</strong><br>
               {{ telephone }}<br >
               <br >
-              {% if fax %}
-              <div class="store-fax">
-              <strong>{{ text_fax }}</strong><br>
-              {{ fax }}
-              </div>
-              {% endif %}
             </div>
             <div class="col-sm-3 store-info">
               {% if open %}
@@ -85,6 +83,10 @@
                   <address>
                   {{ location.address }}
                   </address>
+                  {% if abn %}
+                  <strong>{{ text_abn }}</strong><br>
+                  {{ abn }}
+                  {% endif %}
                   {% if location.geocode %}
                   <a href="https://maps.google.com/maps?q={{ location.geocode|url_encode }}&hl={{ geocode_hl }}&t=m&z=15" target="_blank" class="btn btn-info"><i class="fa fa-map-marker"></i> {{ button_map }}</a>
                   {% endif %}

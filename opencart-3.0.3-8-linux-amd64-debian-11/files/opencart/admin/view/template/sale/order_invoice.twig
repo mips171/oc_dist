@@ -25,11 +25,12 @@
         <tr>
           <td style="width: 50%;"><address>
             <strong>{{ order.store_name }}</strong><br/>
+            {% if order.store_abn %}
+            <b>{{ text_abn }}</b> {{ order.store_abn }}<br/>
+            {% endif %}
             {{ order.store_address }}
             </address>
             <b>{{ text_telephone }}</b> {{ order.store_telephone }}<br/>
-            {% if order.store_fax %}
-            <b>{{ text_fax }}</b> {{ order.store_fax }}<br/>
             {% endif %}
             <b>{{ text_email }}</b> {{ order.store_email }}<br/>
             <b>{{ text_website }}</b> <a href="{{ order.store_url }}">{{ order.store_url }}</a></td>
