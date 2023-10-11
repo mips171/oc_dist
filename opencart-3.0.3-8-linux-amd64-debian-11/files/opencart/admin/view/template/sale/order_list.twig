@@ -37,6 +37,10 @@
             <input type="text" name="filter_order_id" value="{{ filter_order_id }}" placeholder="{{ entry_order_id }}" id="input-order-id" class="form-control" />
           </div>
           <div class="form-group">
+            <label class="control-label" for="input-order-invoice-number">{{ entry_invoice_no }}</label>
+            <input type="text" name="filter_invoice_no" value="{{ filter_invoice_no }}" placeholder="{{ entry_invoice_no }}" id="input-order-invoice-number" class="form-control" />
+          </div>
+          <div class="form-group">
             <label class="control-label" for="input-customer">{{ entry_customer }}</label>
             <input type="text" name="filter_customer" value="{{ filter_customer }}" placeholder="{{ entry_customer }}" id="input-customer" class="form-control" />
           </div>
@@ -55,7 +59,7 @@
               {% else %}
               <option value="{{ order_status.order_status_id }}">{{ order_status.name }}</option>
               {% endif %}
-              {% endfor %}            
+              {% endfor %}
             </select>
           </div>
           <div class="form-group">
@@ -97,6 +101,7 @@
                   <tr>
                     <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
                     <td class="text-right">{% if sort == 'o.order_id' %} <a href="{{ sort_order }}" class="{{ order|lower }}">{{ column_order_id }}</a> {% else %} <a href="{{ sort_order }}">{{ column_order_id }}</a> {% endif %}</td>
+                    <td class="text-right">{% if sort == 'o.invoice_no' %} <a href="{{ sort_order }}" class="{{ order|lower }}">{{ column_invoice_no }}</a> {% else %} <a href="{{ sort_order }}">{{ column_invoice_no }}</a> {% endif %}</td>
                     <td class="text-left">{% if sort == 'customer' %} <a href="{{ sort_customer }}" class="{{ order|lower }}">{{ column_customer }}</a> {% else %} <a href="{{ sort_customer }}">{{ column_customer }}</a> {% endif %}</td>
                     <td class="text-left">{% if sort == 'order_status' %} <a href="{{ sort_status }}" class="{{ order|lower }}">{{ column_status }}</a> {% else %} <a href="{{ sort_status }}">{{ column_status }}</a> {% endif %}</td>
                     <td class="text-right">{% if sort == 'o.total' %} <a href="{{ sort_total }}" class="{{ order|lower }}">{{ column_total }}</a> {% else %} <a href="{{ sort_total }}">{{ column_total }}</a> {% endif %}</td>
@@ -106,7 +111,7 @@
                   </tr>
                 </thead>
                 <tbody>
-                
+
                 {% if orders %}
                 {% for order in orders %}
                 <tr>
@@ -117,6 +122,7 @@
                     {% endif %}
                     <input type="hidden" name="shipping_code[]" value="{{ order.shipping_code }}" /></td>
                   <td class="text-right">{{ order.order_id }}</td>
+                  <td class="text-right">{{ order.invoice_no }}</td>
                   <td class="text-left">{{ order.customer }}</td>
                   <td class="text-left">{{ order.order_status }}</td>
                   <td class="text-right">{{ order.total }}</td>
@@ -139,7 +145,7 @@
                 </tr>
                 {% endif %}
                   </tbody>
-                
+
               </table>
             </div>
           </form>
@@ -159,6 +165,12 @@ $('#button-filter').on('click', function() {
 
 	if (filter_order_id) {
 		url += '&filter_order_id=' + encodeURIComponent(filter_order_id);
+	}
+
+  var filter_invoice_no = $('input[name=\'filter_invoice_no\']').val();
+
+	if (filter_invoice_no) {
+		url += '&filter_invoice_no=' + encodeURIComponent(filter_invoice_no);
 	}
 
 	var filter_customer = $('input[name=\'filter_customer\']').val();
@@ -193,7 +205,7 @@ $('#button-filter').on('click', function() {
 
 	location = 'index.php?route=sale/order&user_token={{ user_token }}' + url;
 });
-//--></script> 
+//--></script>
   <script type="text/javascript"><!--
 $('input[name=\'filter_customer\']').autocomplete({
 	'source': function(request, response) {
@@ -214,7 +226,7 @@ $('input[name=\'filter_customer\']').autocomplete({
 		$('input[name=\'filter_customer\']').val(item['label']);
 	}
 });
-//--></script> 
+//--></script>
   <script type="text/javascript"><!--
 $('input[name^=\'selected\']').on('change', function() {
 	$('#button-shipping, #button-invoice').prop('disabled', true);
@@ -245,9 +257,9 @@ $('#button-shipping, #button-invoice').on('click', function(e) {
 
 $('#form-order li:last-child a').on('click', function(e) {
 	e.preventDefault();
-	
+
 	var element = this;
-	
+
 	if (confirm('{{ text_confirm }}')) {
 		$.ajax({
 			url: '{{ catalog }}index.php?route=api/order/delete&api_token={{ api_token }}&store_id={{ store_id }}&order_id=' + $(element).attr('href'),
@@ -260,11 +272,11 @@ $('#form-order li:last-child a').on('click', function(e) {
 			},
 			success: function(json) {
 				$('.alert-dismissible').remove();
-	
+
 				if (json['error']) {
 					$('#content > .container-fluid').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
 				}
-	
+
 				if (json['success']) {
 					location = '{{ delete }}';
 				}
@@ -275,7 +287,7 @@ $('#form-order li:last-child a').on('click', function(e) {
 		});
 	}
 });
-//--></script> 
+//--></script>
   <script src="view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
   <link href="view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet" media="screen" />
   <script type="text/javascript"><!--
@@ -284,4 +296,4 @@ $('.date').datetimepicker({
 	pickTime: false
 });
 //--></script></div>
-{{ footer }} 
+{{ footer }}
