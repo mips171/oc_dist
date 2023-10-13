@@ -1,6 +1,7 @@
 <h3>{{ text_payment_info }}</h3>
 <div class="alert alert-success" style="display: none;"><i class="fa fa-check-circle"></i></div>
 <div id="table-action"></div>
+<button id="create-transaction-button">Add Payment</button>
 
 <script type="text/javascript"><!--
 function getTransaction() {
@@ -23,6 +24,37 @@ function getTransaction() {
 		}
 	});
 }
+
+function createTransaction() {
+    $.ajax({
+        url: 'index.php?route=extension/payment/pp_braintree/createTransaction&user_token={{ user_token }}',
+        dataType: 'json',
+        method: 'POST',
+        data: {
+            order_id: '{{ order_id }}'
+        },
+        beforeSend: function() {
+            $('#create-transaction-button').button('loading');
+        },
+        complete: function() {
+            $('#create-transaction-button').button('reset');
+        },
+        success: function(data) {
+            if (data.success) {
+                $('.alert-success').show().text("Transaction created successfully");
+                // Optionally, call the getTransaction function to refresh the transaction list
+                getTransaction();
+            } else {
+                alert("Failed to create transaction: " + data.error);
+            }
+        }
+    });
+}
+
+$("#create-transaction-button").click(function() {
+    createTransaction();
+});
+
 
 getTransaction();
 //--></script>
