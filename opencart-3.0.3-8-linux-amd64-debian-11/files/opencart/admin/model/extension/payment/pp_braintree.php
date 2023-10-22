@@ -165,4 +165,39 @@ class ModelExtensionPaymentPPBraintree extends Model {
 			$log->write('(' . $backtrace[1]['class'] . '::' . $backtrace[1]['function'] . ') - ' . print_r($data, true));
 		}
 	}
+
+	public function createTransaction($gateway, $amount, $order_id) {
+		try {
+			$sale = array(
+				'amount' => $amount,
+				'orderId' => $order_id,
+				'options' => array(
+					'submitForSettlement' => true
+				),
+				'customFields' => array(
+					'order_id_note' => $order_id
+				)
+			);
+
+			if ($gateway != null) {
+				$result = $gateway->transaction()->sale($sale);
+			} else {
+				$result = Braintree_Transaction::sale($sale);
+			}
+
+			if ($result->success) {
+				return $result->transaction;
+			} else {
+				if ($result->transaction) {
+					$this->log("Error processing transaction: " . $result->message . "  Code: " . $result->transaction->processorResponseCode);
+				} else {
+					$this->log("Error: " . $result->message);
+				}
+				return false;
+			}
+		} catch (Exception $e) {
+			$this->log($e->getMessage());
+			return false;
+		}
+	}
 }

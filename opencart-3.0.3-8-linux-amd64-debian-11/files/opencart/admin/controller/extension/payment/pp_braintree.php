@@ -550,7 +550,7 @@ class ControllerExtensionPaymentPPBraintree extends Controller {
 		$this->load->language('extension/payment/pp_braintree');
 
 		$data['user_token'] = $this->session->data['user_token'];
-		
+
 		$data['order_id'] = (int)$this->request->get['order_id'];
 
 		return $this->load->view('extension/payment/pp_braintree_order', $data);
@@ -595,7 +595,7 @@ class ControllerExtensionPaymentPPBraintree extends Controller {
 
 		if ($transaction) {
 			$data['transaction_id'] = $transaction->id;
-			
+
 			$data['user_token'] = $this->session->data['user_token'];
 
 			$data['void_action'] = $data['settle_action'] = $data['refund_action'] = false;
@@ -742,6 +742,8 @@ class ControllerExtensionPaymentPPBraintree extends Controller {
 			$action = $this->model_extension_payment_pp_braintree->settleTransaction($this->gateway, $this->request->post['transaction_id'], $this->request->post['amount']);
 		} elseif ($this->request->post['type'] == 'refund' && $this->request->post['amount']) {
 			$action = $this->model_extension_payment_pp_braintree->refundTransaction($this->gateway, $this->request->post['transaction_id'], $this->request->post['amount']);
+		} elseif ($this->request->post['type'] == 'create' && $this->request->post['amount'] && $this->request->post['order_id']) {
+			$action = $this->model_extension_payment_pp_braintree->createTransaction($this->gateway, $this->request->post['amount'], $this->request->post['order_id']);
 		} else {
 			$error = true;
 		}
