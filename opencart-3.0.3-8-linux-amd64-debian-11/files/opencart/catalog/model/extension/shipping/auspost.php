@@ -71,10 +71,10 @@ class ModelExtensionShippingAusPost extends Model {
 							),
 							'items' => array(
 								array(
-									'length' => (string)$length,
-									'height' => (string)$height,
-									'width' => (string)$width,
-									'weight' => (string)$weight,
+									'length' => number_format($length, 1, '.', ''),
+									'height' => number_format($height, 1, '.', ''),
+									'width' => number_format($width, 1, '.', ''),
+									'weight' => number_format($weight, 1, '.', ''),
 									'packaging_type' => $this->config->get('shipping_auspost_packaging_type')
 								)
 							)
