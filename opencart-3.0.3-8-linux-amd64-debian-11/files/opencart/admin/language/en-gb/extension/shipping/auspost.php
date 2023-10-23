@@ -11,7 +11,8 @@ $_['text_edit']          = 'Edit Australia Post Shipping';
 $_['entry_api']          = 'API Key';
 $_['entry_password']          = 'API Password';
 $_['entry_account_number']          = 'API Account Number';
-$_['entry_shipping_type']          = 'API Shipping Type (https://developers.auspost.com.au/apis/shipping-and-tracking/info/product-business-rules/startrack-specifics)';
+$_['entry_shipping_type']          = 'API Shipping Type';
+$_['entry_testmode']          = 'Use Test Bed API';
 
 $_['entry_postcode']     = 'Post Code';
 $_['entry_weight_class'] = 'Weight Class';
@@ -26,3 +27,4 @@ $_['help_weight_class']  = 'Set to kilograms.';
 // Error
 $_['error_permission']   = 'Warning: You do not have permission to modify Australia Post shipping!';
 $_['error_postcode']     = 'Post Code must be 4 digits!';
+$_['error_packaging_type'] = 'Check allowed types here: https://developers.auspost.com.au/apis/shipping-and-tracking/info/product-business-rules/startrack-specifics';
