@@ -119,12 +119,12 @@ class ModelExtensionShippingAusPost extends Model {
 
 						foreach ($shipments as $shipment) {
 							$service_name = $shipment['items'][0]['product_id'];
-							$shipping_cost = $shipment['shipment_summary']['shipping_cost'];
+							$shipping_cost = $shipment['shipment_summary']['total_cost'];
 
 							$quote_data[$service_name] = array(
 								'code'         => 'auspost.' .  $service_name,
 								'title'        => $service_name,
-								'cost'         => $this->currency->convert($shipping_cost, 'AUD', $this->config->get('config_currency')),
+								'cost'         => $shipping_cost,
 								'tax_class_id' => $this->config->get('shipping_auspost_tax_class_id'),
 								'text'         => $this->currency->format($this->tax->calculate($this->currency->convert($shipping_cost, 'AUD', $this->session->data['currency']), $this->config->get('shipping_auspost_tax_class_id'), $this->config->get('config_tax')), $this->session->data['currency'], 1.0000000)
 							);
