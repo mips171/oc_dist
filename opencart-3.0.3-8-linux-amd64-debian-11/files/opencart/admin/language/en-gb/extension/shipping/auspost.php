@@ -11,7 +11,7 @@ $_['text_edit']          = 'Edit Australia Post Shipping';
 $_['entry_api']          = 'API Key';
 $_['entry_password']          = 'API Password';
 $_['entry_account_number']          = 'API Account Number';
-$_['entry_shipping_type']          = 'API Shipping Type';
+$_['entry_packaging_type']          = 'API Packaging Type';
 $_['entry_testmode']          = 'Use Test Bed API';
 
 $_['entry_postcode']     = 'Post Code';
