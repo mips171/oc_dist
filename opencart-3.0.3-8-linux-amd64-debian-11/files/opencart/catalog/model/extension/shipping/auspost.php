@@ -98,8 +98,6 @@ class ModelExtensionShippingAusPost extends Model {
 
 				curl_setopt($curl, CURLOPT_URL, $full_url);
 				curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-				curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
-				curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
 				curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
 				curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($shipment_data));
 
