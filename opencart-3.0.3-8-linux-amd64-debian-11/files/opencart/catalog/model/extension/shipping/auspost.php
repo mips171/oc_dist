@@ -42,9 +42,12 @@ class ModelExtensionShippingAusPost extends Model {
 				$max_length = 0;
 
 				foreach ($this->cart->getProducts() as $product) {
-					$converted_length = $this->convertLength($product['length'], $product['length_class_id'], $this->config->get('shipping_auspost_length_class_id'));
-					$converted_width = $this->convertLength($product['width'], $product['length_class_id'], $this->config->get('shipping_auspost_length_class_id'));
-					$converted_height = $this->convertLength($product['height'], $product['length_class_id'], $this->config->get('shipping_auspost_length_class_id'));
+					$fromUnit = $this->getLengthUnitByID($product['length_class_id']);
+					$toUnit = 'cm'; // Since the AusPost API always wants centimeters
+
+					$converted_length = $this->convertLength($product['length'], $fromUnit, $toUnit);
+					$converted_width = $this->convertLength($product['width'], $fromUnit, $toUnit);
+					$converted_height = $this->convertLength($product['height'], $fromUnit, $toUnit);
 
 					if ($converted_length > $max_length) {
 						$max_length = $converted_length;
@@ -65,6 +68,7 @@ class ModelExtensionShippingAusPost extends Model {
 
 				$formatted_weight = (float)number_format($weight, 1, '.', '');
 				if ($formatted_weight == 0.0) {
+					// fallback weight
 					$formatted_weight = 0.5;
 				}
 
@@ -83,9 +87,9 @@ class ModelExtensionShippingAusPost extends Model {
 							),
 							'items' => array(
 								array(
-									'length' => number_format($length, 1, '.', ''),
-									'height' => number_format($height, 1, '.', ''),
-									'width' => number_format($width, 1, '.', ''),
+									'length' => $length,
+									'height' => $height,
+									'width' => $width,
 									'weight' => (string)$formatted_weight, // using the formatted weight
 									'packaging_type' => $this->config->get('shipping_auspost_packaging_type')
 								)
@@ -182,33 +186,32 @@ class ModelExtensionShippingAusPost extends Model {
 		return $state;
 	}
 
-	private function convertLength($value, $fromUnitId, $toUnitId) {
-		// If converting from and to the same unit, return the original value
-		if ($fromUnitId == $toUnitId) {
-			return $value;
+	private function convertLength($value, $fromUnit, $toUnit) {
+		// Convert to base unit (meters)
+		if ($fromUnit == 'cm') {
+			$value /= 100;
+		} elseif ($fromUnit != 'm') {
+			throw new Exception("Unsupported length unit: " . $fromUnit);
 		}
 
-		// Convert from the source unit to meters
-		switch ($fromUnitId) {
-			case 1: // centimeters to meters
-				$valueInMeters = $value / 100;
-				break;
-			case 4: // meters to meters (no conversion needed)
-				$valueInMeters = $value;
-				break;
-			default:
-				throw new Exception("Unsupported source unit ID: " . $fromUnitId);
+		// Convert to target unit
+		if ($toUnit == 'cm') {
+			$value *= 100;
+		} elseif ($toUnit != 'm') {
+			throw new Exception("Unsupported length unit: " . $toUnit);
 		}
 
-		// Convert from meters to the desired unit
-		switch ($toUnitId) {
-			case 1: // meters to centimeters
-				return $valueInMeters * 100;
-			case 4: // meters to meters (no conversion needed)
-				return $valueInMeters;
-			default:
-				throw new Exception("Unsupported destination unit ID: " . $toUnitId);
-		}
+		// Return the value formatted to one decimal place
+		return number_format($value, 1, '.', '');
 	}
 
+	private function getLengthUnitByID($lengthClassID) {
+		$query = $this->db->query("SELECT `unit` FROM `" . DB_PREFIX . "length_class_description` WHERE `length_class_id` = '" . (int)$lengthClassID . "' LIMIT 1");
+
+		if ($query->num_rows) {
+			return $query->row['unit'];
+		}
+
+		throw new Exception("Length class ID not found: " . $lengthClassID);
+	}
 }
