@@ -104,7 +104,13 @@ class ModelExtensionShippingAusPost extends Model {
 				if ($this->config->get('shipping_auspost_testmode')) {
 					$full_url = $AUSPOST_API_BASE . $AUSPOST_API_TEST . $AUSPOST_API_SHIPPING_ENDPOINT;
 				}
-				echo $full_url;
+
+				// Capture and log the request details
+				$logMessage = "Endpoint URL: " . $full_url . "\n";
+				$logMessage .= "Payload: " . json_encode($shipment_data) . "\n";
+				echo $logMessage;
+				// file_put_contents(DIR_LOGS . 'auspost_request.log', $logMessage, FILE_APPEND);
+
 
 				curl_setopt($curl, CURLOPT_URL, $full_url);
 				curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
