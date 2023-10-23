@@ -29,6 +29,18 @@ class ControllerExtensionShippingAusPost extends Controller {
 			$data['error_api'] = '';
 		}
 
+		if (isset($this->error['password'])) {
+			$data['error_password'] = $this->error['password'];
+		} else {
+			$data['error_password'] = '';
+		}
+
+		if (isset($this->error['account_number'])) {
+			$data['error_account_number'] = $this->error['account_number'];
+		} else {
+			$data['error_account_number'] = '';
+		}
+
 		if (isset($this->error['postcode'])) {
 			$data['error_postcode'] = $this->error['postcode'];
 		} else {

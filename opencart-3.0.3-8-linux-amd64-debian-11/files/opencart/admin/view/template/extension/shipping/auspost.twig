@@ -28,12 +28,40 @@
         <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-postcode">{{ entry_api }}</label>
             <div class="col-sm-10">
-              <input type="text" name="shipping_auspost_api" value="{{ shipping_auspost_api }}" placeholder="{{ entry_api }}" id="input-api"class="form-control" maxlength="40" />
+              <input type="text" name="shipping_auspost_api" value="{{ shipping_auspost_api }}" placeholder="{{ entry_api }}" id="input-api"class="form-control" maxlength="90" />
               {% if error_api %}
               <div class="text-danger">{{ error_api }}</div>
               {% endif %}
             </div>
           </div>
+
+            <label class="col-sm-2 control-label" for="input-postcode">{{ entry_password }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="shipping_auspost_password" value="{{ shipping_auspost_password }}" placeholder="{{ entry_password }}" id="input-password"class="form-control" maxlength="90" />
+              {% if error_password %}
+              <div class="text-danger">{{ error_password }}</div>
+              {% endif %}
+            </div>
+          </div>
+
+            <label class="col-sm-2 control-label" for="input-postcode">{{ entry_account_number }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="shipping_auspost_account_number" value="{{ shipping_auspost_account_number }}" placeholder="{{ entry_account_number }}" id="input-account-number"class="form-control" maxlength="40" />
+              {% if error_account_number %}
+              <div class="text-danger">{{ error_account_number }}</div>
+              {% endif %}
+            </div>
+          </div>
+
+            <label class="col-sm-2 control-label" for="input-postcode">{{ entry_packaging_type }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="shipping_auspost_packaging_type" value="{{ shipping_auspost_packaging_type}}" placeholder="{{ entry_packaging_type }}" id="input-packaging-type"class="form-control" maxlength="3" />
+              {% if error_packaging_type %}
+              <div class="text-danger">{{ error_packaging_type }}</div>
+              {% endif %}
+            </div>
+          </div>
+
           <div class="form-group required">
             <label class="col-sm-2 control-label" for="input-postcode">{{ entry_postcode }}</label>
             <div class="col-sm-10">

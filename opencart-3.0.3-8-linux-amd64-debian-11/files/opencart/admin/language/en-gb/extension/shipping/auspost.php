@@ -9,6 +9,10 @@ $_['text_edit']          = 'Edit Australia Post Shipping';
 
 // Entry
 $_['entry_api']          = 'API Key';
+$_['entry_password']          = 'API Password';
+$_['entry_account_number']          = 'API Account Number';
+$_['entry_shipping_type']          = 'API Shipping Type (https://developers.auspost.com.au/apis/shipping-and-tracking/info/product-business-rules/startrack-specifics)';
+
 $_['entry_postcode']     = 'Post Code';
 $_['entry_weight_class'] = 'Weight Class';
 $_['entry_tax_class']    = 'Tax Class';

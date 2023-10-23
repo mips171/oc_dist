@@ -22,6 +22,8 @@ class ModelExtensionShippingAusPost extends Model {
 		$error = '';
 
 		$api_key = $this->config->get('shipping_auspost_api');
+		$api_password = $this->config->get('shipping_auspost_password');
+		$api_account_no = $this->config->get('shipping_auspost_account_number');
 
 		$quote_data = array();
 
@@ -46,13 +48,54 @@ class ModelExtensionShippingAusPost extends Model {
 					$length += ($product['length']*$product['quantity']);
 				}
 
+				$AUSPOST_API_BASE="https://digitalapi.auspost.com.au/";
+				$AUSPOST_API_TEST="test/";
+				$AUSPOST_API_SHIPPING_ENDPOINT="shipping/v1/prices/shipments";
+
+				$shipment_data = array(
+					'shipments' => array(
+						array(
+							'from' => array(
+								'suburb' => $this->config->get('shipping_auspost_suburb'),
+								'state'  => $this->config->get('shipping_auspost_state'),
+								'postcode' => $this->config->get('shipping_auspost_postcode')
+							),
+							'to' => array(
+								'suburb' => $address['city'],
+								'state'  => $address['zone'],
+								'postcode' => $address['postcode']
+							),
+							'items' => array(
+								array(
+									'length' => (string)$length,
+									'height' => (string)$height,
+									'width' => (string)$width,
+									'weight' => (string)$weight,
+									'packaging_type' => $this->config->get('shipping_auspost_packaging_type')
+								)
+							)
+						)
+					)
+				);
+
 				$curl = curl_init();
 
-				curl_setopt($curl, CURLOPT_HTTPHEADER, array('AUTH-KEY: ' . $api_key));
-				curl_setopt($curl, CURLOPT_URL, 'https://digitalapi.auspost.com.au/postage/parcel/domestic/service.json?from_postcode=' . urlencode($this->config->get('shipping_auspost_postcode')) . '&to_postcode=' . urlencode($address['postcode']) . '&height=' . $height . '&width=' . $width . '&length=' . $height . '&weight=' . urlencode($weight));
+				$credentials = $api_key . ':' . $api_password;
+				$base64Credentials = base64_encode($credentials);
+
+				curl_setopt($curl, CURLOPT_HTTPHEADER, array(
+					'Content-Type: application/json',
+					'Authorization: Basic ' . $base64Credentials,
+					'account-number: ' . $api_account_no
+					// Add other headers if required
+				));
+
+				curl_setopt($curl, CURLOPT_URL, $FULL_URL);
 				curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 				curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
 				curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+				curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
+				curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($shipment_data));
 
 				$response = curl_exec($curl);
 
@@ -66,49 +109,18 @@ class ModelExtensionShippingAusPost extends Model {
 					if (isset($response_parts['error'])) {
 						$error = $response_parts['error']['errorMessage'];
 					} else {
-						$response_services = $response_parts['services']['service'];
+						$shipments = $response_parts['shipments'];
 
-						foreach ($response_services as $response_service) {
-							$quote_data[$response_service['name']] = array(
-								'code'         => 'auspost.' .  $response_service['name'],
-								'title'        => $response_service['name'],
-								'cost'         => $this->currency->convert($response_service['price'], 'AUD', $this->config->get('config_currency')),
+						foreach ($shipments as $shipment) {
+							$service_name = $shipment['items'][0]['product_id'];
+							$shipping_cost = $shipment['shipment_summary']['shipping_cost'];
+
+							$quote_data[$service_name] = array(
+								'code'         => 'auspost.' .  $service_name,
+								'title'        => $service_name,
+								'cost'         => $this->currency->convert($shipping_cost, 'AUD', $this->config->get('config_currency')),
 								'tax_class_id' => $this->config->get('shipping_auspost_tax_class_id'),
-								'text'         => $this->currency->format($this->tax->calculate($this->currency->convert($response_service['price'], 'AUD', $this->session->data['currency']), $this->config->get('shipping_auspost_tax_class_id'), $this->config->get('config_tax')), $this->session->data['currency'], 1.0000000)
-							);
-						}
-					}
-				}
-			} else {
-				$curl = curl_init();
-
-				curl_setopt($curl, CURLOPT_HTTPHEADER, array('AUTH-KEY: ' .  $api_key));
-				curl_setopt($curl, CURLOPT_URL, 'https://digitalapi.auspost.com.au/postage/parcel/international/service.json?country_code=' . urlencode($address['iso_code_2']) . '&weight=' . urlencode($weight));
-				curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
-				curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
-				curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
-
-				$response = curl_exec($curl);
-
-				curl_close($curl);
-
-				if ($response) {
-					$response_info = array();
-
-					$response_parts = json_decode($response, true);
-
-					if (isset($response_parts['error'])) {
-						$error = $response_parts['error']['errorMessage'];
-					} else {
-						$response_services = $response_parts['services']['service'];
-
-						foreach ($response_services as $response_service) {
-							$quote_data[$response_service['name']] = array(
-								'code'         => 'auspost.' .  $response_service['name'],
-								'title'        => $response_service['name'],
-								'cost'         => $this->currency->convert($response_service['price'], 'AUD', $this->config->get('config_currency')),
-								'tax_class_id' => $this->config->get('shipping_auspost_tax_class_id'),
-								'text'         => $this->currency->format($this->tax->calculate($this->currency->convert($response_service['price'], 'AUD', $this->session->data['currency']), $this->config->get('shipping_auspost_tax_class_id'), $this->config->get('config_tax')), $this->session->data['currency'], 1.0000000)
+								'text'         => $this->currency->format($this->tax->calculate($this->currency->convert($shipping_cost, 'AUD', $this->session->data['currency']), $this->config->get('shipping_auspost_tax_class_id'), $this->config->get('config_tax')), $this->session->data['currency'], 1.0000000)
 							);
 						}
 					}
