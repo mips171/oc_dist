@@ -117,8 +117,8 @@ class ModelExtensionShippingAusPost extends Model {
 
 					$response_parts = json_decode($response, true);
 
-					if (isset($response_parts['error'])) {
-						$error = $response_parts['error']['errorMessage'];
+					if (isset($response_parts['errors'])) {
+						$error = $response_parts['errors'][0]['message'];
 					} else {
 						$shipments = $response_parts['shipments'];
 
