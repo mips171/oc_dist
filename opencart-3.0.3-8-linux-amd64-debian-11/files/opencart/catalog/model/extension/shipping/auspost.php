@@ -97,20 +97,15 @@ class ModelExtensionShippingAusPost extends Model {
 				}
 
 				curl_setopt($curl, CURLOPT_URL, $full_url);
-				curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-				curl_setopt($curl, CURLOPT_ENCODING, '');
-				curl_setopt($curl, CURLOPT_MAXREDIRS, 10);
-				curl_setopt($curl, CURLOPT_TIMEOUT, 0);
-				curl_setopt($curl, CURLOPT_FOLLOWLOCATION, true);
+				curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
+				curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+				curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
 				curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'POST');
 				curl_setopt($curl, CURLOPT_POSTFIELDS, json_encode($shipment_data));
 
 				$response = curl_exec($curl);
-				$curl_error = curl_error($curl);
+
 				curl_close($curl);
-				if ($curl_error) {
-					die('Curl error: ' . $curl_error);
-				}
 
 				if ($response) {
 					$response_info = array();
@@ -119,6 +114,8 @@ class ModelExtensionShippingAusPost extends Model {
 
 					if (isset($response_parts['errors'])) {
 						$error = $response_parts['errors'][0]['message'];
+						// log the error
+						echo $error;
 					} else {
 						$shipments = $response_parts['shipments'];
 
