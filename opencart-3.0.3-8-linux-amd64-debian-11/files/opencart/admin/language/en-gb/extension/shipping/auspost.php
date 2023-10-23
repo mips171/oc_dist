@@ -17,7 +17,8 @@ $_['entry_testmode']          = 'Use Test Bed API';
 $_['entry_suburb']          = 'Suburb';
 $_['entry_state']          = 'State';
 $_['entry_postcode']     = 'Post Code';
-$_['entry_weight_class'] = 'Weight Class';
+$_['entry_weight_class'] = 'Weight Class (kg)';
+$_['entry_length_class'] = 'Weight Class (cm)';
 $_['entry_tax_class']    = 'Tax Class';
 $_['entry_geo_zone']     = 'Geo Zone';
 $_['entry_status']       = 'Status';
@@ -25,6 +26,7 @@ $_['entry_sort_order']   = 'Sort Order';
 
 // Help
 $_['help_weight_class']  = 'Set to kilograms.';
+$_['help_length_class']  = 'Set to centimeters.';
 
 // Error
 $_['error_permission']   = 'Error: You do not have permission to modify Australia Post shipping';

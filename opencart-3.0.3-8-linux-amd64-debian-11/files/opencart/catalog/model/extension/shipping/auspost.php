@@ -41,15 +41,19 @@ class ModelExtensionShippingAusPost extends Model {
 			if ($address['iso_code_2'] == 'AU') {
 
 				foreach ($this->cart->getProducts() as $product) {
-					if ($product['height'] > $height) {
-						$height = $product['height'];
+					$converted_length = $this->length->convert($product['length'], $product['length_class_id'], $this->config->get('shipping_auspost_length_class_id'));
+					$converted_width = $this->length->convert($product['width'], $product['length_class_id'], $this->config->get('shipping_auspost_length_class_id'));
+					$converted_height = $this->length->convert($product['height'], $product['length_class_id'], $this->config->get('shipping_auspost_length_class_id'));
+
+					if ($converted_height > $height) {
+						$height = $converted_height;
 					}
 
-					if ($product['width'] > $width) {
-						$width = $product['width'];
+					if ($converted_width > $width) {
+						$width = $converted_width;
 					}
 
-					$length += ($product['length']*$product['quantity']);
+					$length += ($converted_length * $product['quantity']);
 				}
 
 				$AUSPOST_API_BASE="https://digitalapi.auspost.com.au/";
@@ -71,7 +75,7 @@ class ModelExtensionShippingAusPost extends Model {
 							),
 							'to' => array(
 								'suburb' => $address['city'],
-								'state'  => $address['zone'],
+								'state'  => $this->getAbbreviatedState($address['zone']),
 								'postcode' => $address['postcode']
 							),
 							'items' => array(
@@ -163,5 +167,15 @@ class ModelExtensionShippingAusPost extends Model {
 		}
 
 		return $method_data;
+	}
+
+	private function getAbbreviatedState($state) {
+		$query = $this->db->query("SELECT `code` FROM `oc_zone` WHERE `name` = '" . $this->db->escape($state) . "' AND `status` = 1 LIMIT 1");
+
+		if ($query->num_rows) {
+			return $query->row['code'];
+		}
+
+		return $state;
 	}
 }

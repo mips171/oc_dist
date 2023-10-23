@@ -126,6 +126,17 @@ class ControllerExtensionShippingAusPost extends Controller {
 
 		$data['weight_classes'] = $this->model_localisation_weight_class->getWeightClasses();
 
+		if (isset($this->request->post['shipping_auspost_length_class_id'])) {
+			$data['shipping_auspost_length_class_id'] = $this->request->post['shipping_auspost_length_class_id'];
+		} else {
+			$data['shipping_auspost_length_class_id'] = $this->config->get('shipping_auspost_length_class_id');
+		}
+
+		$this->load->model('localisation/length_class');
+
+		$data['length_classes'] = $this->model_localisation_length_class->getLengthClasses();
+
+
 		if (isset($this->request->post['shipping_auspost_tax_class_id'])) {
 			$data['shipping_auspost_tax_class_id'] = $this->request->post['shipping_auspost_tax_class_id'];
 		} else {
