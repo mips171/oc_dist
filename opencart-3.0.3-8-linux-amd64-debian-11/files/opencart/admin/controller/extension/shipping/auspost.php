@@ -80,6 +80,30 @@ class ControllerExtensionShippingAusPost extends Controller {
 			$data['shipping_auspost_api'] = $this->config->get('shipping_auspost_api');
 		}
 
+		if (isset($this->request->post['shipping_auspost_password'])) {
+			$data['shipping_auspost_password'] = $this->request->post['shipping_auspost_password'];
+		} else {
+			$data['shipping_auspost_password'] = $this->config->get('shipping_auspost_password');
+		}
+
+		if (isset($this->request->post['shipping_auspost_account_number'])) {
+			$data['shipping_auspost_account_number'] = $this->request->post['shipping_auspost_account_number'];
+		} else {
+			$data['shipping_auspost_account_number'] = $this->config->get('shipping_auspost_account_number');
+		}
+
+		if (isset($this->request->post['shipping_auspost_packaging_type'])) {
+			$data['shipping_auspost_packaging_type'] = $this->request->post['shipping_auspost_packaging_type'];
+		} else {
+			$data['shipping_auspost_packaging_type'] = $this->config->get('shipping_auspost_packaging_type');
+		}
+
+		if (isset($this->request->post['shipping_auspost_testmode'])) {
+			$data['shipping_auspost_testmode'] = $this->request->post['shipping_auspost_testmode'];
+		} else {
+			$data['shipping_auspost_testmode'] = $this->config->get('shipping_auspost_testmode');
+		}
+
 		if (isset($this->request->post['shipping_auspost_weight_class_id'])) {
 			$data['shipping_auspost_weight_class_id'] = $this->request->post['shipping_auspost_weight_class_id'];
 		} else {
