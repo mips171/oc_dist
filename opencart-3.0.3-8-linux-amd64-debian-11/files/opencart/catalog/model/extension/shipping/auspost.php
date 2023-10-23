@@ -85,8 +85,8 @@ class ModelExtensionShippingAusPost extends Model {
 
 				curl_setopt($curl, CURLOPT_HTTPHEADER, array(
 					'Content-Type: application/json',
-					'Authorization: Basic ' . $base64Credentials,
-					'account-number: ' . $api_account_no
+					'account-number: ' . $api_account_no,
+					'Authorization: Basic ' . $base64Credentials
 					// Add other headers if required
 				));
 

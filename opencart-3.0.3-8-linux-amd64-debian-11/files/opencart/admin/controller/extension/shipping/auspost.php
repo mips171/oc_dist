@@ -74,6 +74,18 @@ class ControllerExtensionShippingAusPost extends Controller {
 			$data['shipping_auspost_postcode'] = $this->config->get('shipping_auspost_postcode');
 		}
 
+		if (isset($this->request->post['shipping_auspost_suburb'])) {
+			$data['shipping_auspost_suburb'] = $this->request->post['shipping_auspost_suburb'];
+		} else {
+			$data['shipping_auspost_suburb'] = $this->config->get('shipping_auspost_suburb');
+		}
+
+		if (isset($this->request->post['shipping_auspost_state'])) {
+			$data['shipping_auspost_state'] = $this->request->post['shipping_auspost_state'];
+		} else {
+			$data['shipping_auspost_state'] = $this->config->get('shipping_auspost_state');
+		}
+
 		if (isset($this->request->post['shipping_auspost_api'])) {
 			$data['shipping_auspost_api'] = $this->request->post['shipping_auspost_api'];
 		} else {
