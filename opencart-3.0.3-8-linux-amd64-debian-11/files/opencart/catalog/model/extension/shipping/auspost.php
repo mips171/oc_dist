@@ -109,7 +109,7 @@ class ModelExtensionShippingAusPost extends Model {
 				$logMessage = "Endpoint URL: " . $full_url . "\n";
 				$logMessage .= "Payload: " . json_encode($shipment_data) . "\n";
 				echo $logMessage;
-				// file_put_contents(DIR_LOGS . 'auspost_request.log', $logMessage, FILE_APPEND);
+				file_put_contents(DIR_LOGS . 'auspost_request.log', $logMessage, FILE_APPEND);
 
 
 				curl_setopt($curl, CURLOPT_URL, $full_url);
