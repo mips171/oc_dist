@@ -26,11 +26,33 @@
       <div class="panel-body">
         <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-shipping-starshipit" class="form-horizontal">
         <div class="form-group required">
-            <label class="col-sm-2 control-label" for="input-api-starshipit">{{ entry_api_starshipit }}</label>
+            <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
             <div class="col-sm-10">
-              <input type="text" name="shipping_starshipit_api" value="{{ shipping_starshipit_api }}" placeholder="{{ entry_api_starshipit }}" id="input-api-starshipit" class="form-control" maxlength="40" />
-              {% if error_api_starshipit %}
-              <div class="text-danger">{{ error_api_starshipit }}</div>
+              <select name="shipping_starshipit_status" id="input-status" class="form-control">
+                {% if shipping_starshipit_status %}
+                <option value="1" selected="selected">{{ text_enabled }}</option>
+                <option value="0">{{ text_disabled }}</option>
+                {% else %}
+                <option value="1">{{ text_enabled }}</option>
+                <option value="0" selected="selected">{{ text_disabled }}</option>
+                {% endif %}
+              </select>
+            </div>
+
+            <label class="col-sm-2 control-label" for="input-api-starshipit">{{ entry_api }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="shipping_starshipit_api" value="{{ shipping_starshipit_api }}" placeholder="{{ entry_api }}" id="input-api-starshipit" class="form-control" maxlength="40" />
+              {% if error_api %}
+              <div class="text-danger">{{ error_api }}</div>
+              {% endif %}
+            </div>
+          </div>
+
+            <label class="col-sm-2 control-label" for="input-subscription-starshipit">{{ entry_subscription }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="shipping_starshipit_subscription" value="{{ shipping_starshipit_subscription }}" placeholder="{{ entry_subscription }}" id="input-subscription-starshipit" class="form-control" maxlength="40" />
+              {% if error_subscription %}
+              <div class="text-danger">{{ error_subscription }}</div>
               {% endif %}
             </div>
           </div>
