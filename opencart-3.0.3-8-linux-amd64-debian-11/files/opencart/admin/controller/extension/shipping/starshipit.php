@@ -35,6 +35,7 @@ class ControllerExtensionShippingStarshipit extends Controller {
 		$configFields = [
 			'shipping_starshipit_postcode',
 			'shipping_starshipit_api',
+			'shipping_starshipit_subscription',
 			'shipping_starshipit_weight_class_id',
 			'shipping_starshipit_tax_class_id',
 			'shipping_starshipit_geo_zone_id',
@@ -63,6 +64,11 @@ class ControllerExtensionShippingStarshipit extends Controller {
 		// Validation logic for API key
 		if (empty($this->request->post['shipping_starshipit_api'])) {
 			$this->error['api'] = $this->language->get('error_api');
+		}
+
+		// Validation logic for Subscription key
+		if (empty($this->request->post['shipping_starshipit_subscription'])) {
+			$this->error['subscription'] = $this->language->get('error_subscription');
 		}
 
 		// Validation logic for postcode
