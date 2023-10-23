@@ -25,10 +25,6 @@ class ModelExtensionShippingAusPost extends Model {
 		$api_password = $this->config->get('shipping_auspost_password');
 		$api_account_no = $this->config->get('shipping_auspost_account_number');
 
-		echo $api_key;
-		echo $api_password;
-		echo $api_account_no;
-
 		$quote_data = array();
 
 		if ($status) {
@@ -121,7 +117,6 @@ class ModelExtensionShippingAusPost extends Model {
 				// Capture and log the request details
 				$logMessage = "Endpoint URL: " . $full_url . "\n";
 				$logMessage .= "Payload: " . json_encode($shipment_data) . "\n";
-				echo $logMessage;
 				file_put_contents(DIR_LOGS . 'auspost_request.log', $logMessage, FILE_APPEND);
 
 
@@ -141,8 +136,7 @@ class ModelExtensionShippingAusPost extends Model {
 
 					if (isset($response_parts['errors'])) {
 						$error = $response_parts['errors'][0]['message'];
-						// log the error
-						echo $error;
+						file_put_contents(DIR_LOGS . 'auspost_request.log', $error, FILE_APPEND);
 					} else {
 						$shipments = $response_parts['shipments'];
 
