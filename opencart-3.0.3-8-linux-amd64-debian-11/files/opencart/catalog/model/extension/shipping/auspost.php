@@ -62,6 +62,8 @@ class ModelExtensionShippingAusPost extends Model {
 					}
 				}
 
+				$length = $max_length; // Assign the maximum length after iterating through all products
+
 				$AUSPOST_API_BASE="https://digitalapi.auspost.com.au/";
 				$AUSPOST_API_TEST="test/";
 				$AUSPOST_API_SHIPPING_ENDPOINT="shipping/v1/prices/shipments";
@@ -189,14 +191,14 @@ class ModelExtensionShippingAusPost extends Model {
 	private function convertLength($value, $fromUnit, $toUnit) {
 		// Convert to base unit (meters)
 		if ($fromUnit == 'cm') {
-			$value /= 100;
+			$value /= 100.0;
 		} elseif ($fromUnit != 'm') {
 			throw new Exception("Unsupported length unit: " . $fromUnit);
 		}
 
 		// Convert to target unit
 		if ($toUnit == 'cm') {
-			$value *= 100;
+			$value *= 100.0;
 		} elseif ($toUnit != 'm') {
 			throw new Exception("Unsupported length unit: " . $toUnit);
 		}
