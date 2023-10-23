@@ -64,6 +64,11 @@ class ModelExtensionShippingStarshipit extends Model {
             if ($response) {
                 $response_parts = json_decode($response, true);
 
+                if (!isset($response_parts['success'])) {
+                    $error = 'Failed to get rates from Starshipit: "success" key not present in response.';
+                    return array();
+                }
+
                 if (!$response_parts['success']) {
                     $error = 'Failed to get rates from Starshipit';
                 } else {
