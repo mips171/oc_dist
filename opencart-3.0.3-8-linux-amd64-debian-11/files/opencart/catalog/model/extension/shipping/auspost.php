@@ -90,13 +90,13 @@ class ModelExtensionShippingAusPost extends Model {
 					// Add other headers if required
 				));
 
-				$FULL_URL = $AUSPOST_API_BASE . $AUSPOST_API_SHIPPING_ENDPOINT;
+				$full_url = $AUSPOST_API_BASE . $AUSPOST_API_SHIPPING_ENDPOINT;
 
 				if ($this->config->get('shipping_auspost_testmode')) {
-					$FULL_URL = $AUSPOST_API_BASE . $AUSPOST_API_TEST . $AUSPOST_API_SHIPPING_ENDPOINT;
+					$full_url = $AUSPOST_API_BASE . $AUSPOST_API_TEST . $AUSPOST_API_SHIPPING_ENDPOINT;
 				}
 
-				curl_setopt($curl, CURLOPT_URL, $FULL_URL);
+				curl_setopt($curl, CURLOPT_URL, $full_url);
 				curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
 				curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
 				curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
