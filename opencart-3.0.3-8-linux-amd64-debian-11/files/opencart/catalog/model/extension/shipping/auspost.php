@@ -56,6 +56,11 @@ class ModelExtensionShippingAusPost extends Model {
 				$AUSPOST_API_TEST="test/";
 				$AUSPOST_API_SHIPPING_ENDPOINT="shipping/v1/prices/shipments";
 
+				$formatted_weight = (float)number_format($weight, 1, '.', '');
+				if ($formatted_weight == 0.0) {
+					$formatted_weight = 0.5;
+				}
+
 				$shipment_data = array(
 					'shipments' => array(
 						array(
@@ -74,7 +79,7 @@ class ModelExtensionShippingAusPost extends Model {
 									'length' => number_format($length, 1, '.', ''),
 									'height' => number_format($height, 1, '.', ''),
 									'width' => number_format($width, 1, '.', ''),
-									'weight' => number_format($weight, 1, '.', ''),
+									'weight' => (string)$formatted_weight, // using the formatted weight
 									'packaging_type' => $this->config->get('shipping_auspost_packaging_type')
 								)
 							)
