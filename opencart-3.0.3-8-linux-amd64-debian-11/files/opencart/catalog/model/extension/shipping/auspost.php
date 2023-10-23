@@ -137,7 +137,8 @@ class ModelExtensionShippingAusPost extends Model {
 						$response_parts = json_decode($response, true);
 					} else {
 						// Handle invalid JSON error
-						echo "Invalid JSON received: " . $response;
+						$error = "Invalid JSON received" . $response;
+						file_put_contents(DIR_LOGS . 'auspost_request.log', $response, FILE_APPEND);
 					}
 
 					if (isset($response_parts['errors'])) {
