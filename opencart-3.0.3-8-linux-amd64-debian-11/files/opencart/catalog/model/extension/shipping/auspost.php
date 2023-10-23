@@ -25,6 +25,10 @@ class ModelExtensionShippingAusPost extends Model {
 		$api_password = $this->config->get('shipping_auspost_password');
 		$api_account_no = $this->config->get('shipping_auspost_account_number');
 
+		echo $api_key;
+		echo $api_password;
+		echo $api_account_no;
+
 		$quote_data = array();
 
 		if ($status) {
@@ -95,6 +99,7 @@ class ModelExtensionShippingAusPost extends Model {
 				if ($this->config->get('shipping_auspost_testmode')) {
 					$full_url = $AUSPOST_API_BASE . $AUSPOST_API_TEST . $AUSPOST_API_SHIPPING_ENDPOINT;
 				}
+				echo $full_url;
 
 				curl_setopt($curl, CURLOPT_URL, $full_url);
 				curl_setopt($curl, CURLOPT_RETURNTRANSFER, 1);
