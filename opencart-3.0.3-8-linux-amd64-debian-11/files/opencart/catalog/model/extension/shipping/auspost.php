@@ -18,17 +18,17 @@ class ModelExtensionShippingAusPost extends Model
 		"ARL"  => "StarTrack Airlock",
 		"XID1" => "Auspost Express E-parcel ID&V 1",
 		"XID2" => "Auspost Express E-parcel ID&V 2",
-		"RPI8" => "Auspost INTL Economy W SOD/ REGD POST",
+		"RPI8" => "Auspost INTL Economy + Signature / Registered Post",
 		"PTI8" => "Auspost INTL Standard/Pack & Track",
 		"ID1"  => "Auspost E-parcel ID&V 1",
 		"ID2"  => "Auspost E-parcel ID&V 2",
 		"AIR8" => "Auspost INTL ECONOMY/AIRMAIL PARCELS",
 		"EL1"  => "Auspost Parcel Post XL 1",
 		"7E55" => "Auspost Parcel Post + Signature",
-		"3W35" => "Auspost Metro with Signature",
+		"3W35" => "Auspost Metro + Signature",
 		"3W33" => "Auspost Metro",
 		"3K55" => "Auspost Express Post + Signature",
-		"3W05" => "Auspost Metro Cubing with Signature",
+		"3W05" => "Auspost Metro Cubing + Signature",
 		"3W03" => "Auspost Metro Cubing"
 	];
 
