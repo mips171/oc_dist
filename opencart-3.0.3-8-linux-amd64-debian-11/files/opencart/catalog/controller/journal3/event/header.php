@@ -105,7 +105,10 @@ class ControllerJournal3EventHeader extends Controller {
 			$scripts = $this->document->getScripts('lib-' . $lib);
 			$scripts = $this->journal3_assets->scripts($scripts);
 
-			if (version_compare(VERSION, '3.0.3.8', '>')) {
+			$parts = explode('-', VERSION);
+			$strippedVersion = $parts[0];
+
+			if (version_compare($strippedVersion, '3.0.3.8', '>')) {
 				$scripts = array_map(function ($script) {
 					return $script['href'] ?? '';
 				}, $scripts);
