@@ -282,6 +282,7 @@ class ModelExtensionShippingAusPost extends Model
 		"3W03" => "Auspost Metro Cubing"
 	];
 
+	// Later we will work out how to restrict the admin-only options from the front-end
 	private static $adminOnlyProductIds = [
 		"RET", "RE2", "FPP", "FPA", "ARL", "XID1", "XID2", "RPI8", "PTI8", "ID1", "ID2", "AIR8", "EL1", "3W35", "3W33", "3W05", "3W03"
 	];
