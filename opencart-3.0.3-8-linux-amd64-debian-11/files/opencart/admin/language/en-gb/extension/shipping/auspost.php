@@ -10,7 +10,9 @@ $_['text_edit']          = 'Edit Australia Post Shipping';
 // Entry
 $_['entry_api']          = 'API Key';
 $_['entry_password']          = 'API Password';
-$_['entry_account_number']          = 'API Account Numbers. One per service in order of preference, comma separated: 12345,678910';
+$_['entry_account_number']          = 'API Account Numbers. One per service in order of preferencehttps://digitalapi.auspost.com.au/shipping/v1/accounts/{account_number}
+
+, comma separated: 12345,678910';
 $_['entry_packaging_type']          = 'API Packaging Type';
 $_['entry_testmode']          = 'Use Test Bed API';
 

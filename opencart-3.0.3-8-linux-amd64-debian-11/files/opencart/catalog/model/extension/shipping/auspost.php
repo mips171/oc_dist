@@ -1,15 +1,40 @@
 <?php
+
 /**
  * @version    N/A, base on AUSPOST API update on 18 April 2016
  * @link       https://developers.auspost.com.au/docs/reference
  * @since      2.3.0.2   Update on 21 March 2017
  */
 
-class ModelExtensionShippingAusPost extends Model {
-	public function getQuote($address) {
+class ModelExtensionShippingAusPost extends Model
+{
+	private static $productIdToTypeMap = [
+		"RET"  => "StarTrack Express Tail-lift",
+		"RE2"  => "StarTrack Express Tail-lift 2 Person",
+		"PRM"  => "StarTrack Premium",
+		"FPP"  => "StarTrack 1,3 & 5kg Fixed Price Premium",
+		"FPA"  => "StarTrack 1, 3, & 5kg Fixed Price Airlock",
+		"EXP"  => "Startrack Road Express",
+		"ARL"  => "StarTrack Airlock",
+		"XID1" => "Auspost Express E-parcel ID&V 1",
+		"XID2" => "Auspost Express E-parcel ID&V 2",
+		"RPI8" => "Auspost INTL Economy W SOD/ REGD POST",
+		"PTI8" => "Auspost INTL Standard/Pack & Track",
+		"ID1"  => "Auspost E-parcel ID&V 1",
+		"ID2"  => "Auspost E-parcel ID&V 2",
+		"AIR8" => "Auspost INTL ECONOMY/AIRMAIL PARCELS",
+		"EL1"  => "Auspost Parcel Post XL 1",
+		"7E55" => "Auspost Parcel Post + Signature",
+		"3W35" => "Auspost Metro with Signature",
+		"3W33" => "Auspost Metro",
+		"3K55" => "Auspost Express Post + Signature"
+	];
+
+	public function getQuote($address)
+	{
 		$this->load->language('extension/shipping/auspost');
 
-		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int)$this->config->get('shipping_auspost_geo_zone_id') . "' AND country_id = '" . (int)$address['country_id'] . "' AND (zone_id = '" . (int)$address['zone_id'] . "' OR zone_id = '0')");
+		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int) $this->config->get('shipping_auspost_geo_zone_id') . "' AND country_id = '" . (int) $address['country_id'] . "' AND (zone_id = '" . (int) $address['zone_id'] . "' OR zone_id = '0')");
 
 		if (!$this->config->get('shipping_auspost_geo_zone_id')) {
 			$status = true;
@@ -63,11 +88,11 @@ class ModelExtensionShippingAusPost extends Model {
 
 					$length = $max_length; // Assign the maximum length after iterating through all products
 
-					$AUSPOST_API_BASE="https://digitalapi.auspost.com.au/";
-					$AUSPOST_API_TEST="test/";
-					$AUSPOST_API_SHIPPING_ENDPOINT="shipping/v1/prices/shipments";
+					$AUSPOST_API_BASE = "https://digitalapi.auspost.com.au/";
+					$AUSPOST_API_TEST = "test/";
+					$AUSPOST_API_SHIPPING_ENDPOINT = "shipping/v1/prices/shipments";
 
-					$formatted_weight = (float)number_format($weight, 1, '.', '');
+					$formatted_weight = (float) number_format($weight, 1, '.', '');
 					if ($formatted_weight == 0.0) {
 						// fallback weight
 						$formatted_weight = 0.5;
@@ -78,12 +103,12 @@ class ModelExtensionShippingAusPost extends Model {
 							array(
 								'from' => array(
 									'suburb' => $this->config->get('shipping_auspost_suburb'),
-									'state'  => $this->config->get('shipping_auspost_state'),
+									'state' => $this->config->get('shipping_auspost_state'),
 									'postcode' => $this->config->get('shipping_auspost_postcode')
 								),
 								'to' => array(
 									'suburb' => $address['city'],
-									'state'  => $this->getAbbreviatedState($address['zone']),
+									'state' => $this->getAbbreviatedState($address['zone']),
 									'postcode' => $address['postcode']
 								),
 								'items' => array(
@@ -91,7 +116,8 @@ class ModelExtensionShippingAusPost extends Model {
 										'length' => $length,
 										'height' => $height,
 										'width' => $width,
-										'weight' => (string)$formatted_weight, // using the formatted weight
+										'weight' => (string) $formatted_weight,
+										// using the formatted weight
 										'packaging_type' => $this->config->get('shipping_auspost_packaging_type')
 									)
 								)
@@ -104,12 +130,16 @@ class ModelExtensionShippingAusPost extends Model {
 					$credentials = $api_key . ':' . $api_password;
 					$base64Credentials = base64_encode($credentials);
 
-					curl_setopt($curl, CURLOPT_HTTPHEADER, array(
-						'Content-Type: application/json',
-						'account-number: ' . $api_account_no,
-						'Authorization: Basic ' . $base64Credentials
-						// Add other headers if required
-					));
+					curl_setopt(
+						$curl,
+						CURLOPT_HTTPHEADER,
+						array(
+							'Content-Type: application/json',
+							'account-number: ' . $api_account_no,
+							'Authorization: Basic ' . $base64Credentials
+							// Add other headers if required
+						)
+					);
 
 					$full_url = $AUSPOST_API_BASE . $AUSPOST_API_SHIPPING_ENDPOINT;
 
@@ -151,15 +181,20 @@ class ModelExtensionShippingAusPost extends Model {
 							$shipments = $response_parts['shipments'];
 
 							foreach ($shipments as $shipment) {
-								$service_name = $shipment['items'][0]['product_id'] . '_' . $api_account_no; // Append account number to make it unique
+								$product_id = $shipment['items'][0]['product_id'];
+								$friendly_name = $this->getTypeByProductId($product_id);
+
+								// Use the friendly name, or the product ID if the friendly name isn't found
+								$service_name = ($friendly_name ? $friendly_name : $product_id) . '_' . $api_account_no;
+
 								$shipping_cost = $shipment['shipment_summary']['total_cost'];
 
 								$quote_data[$service_name] = array(
-									'code'         => 'auspost.' .  $service_name,
-									'title'        => $service_name,
-									'cost'         => $shipping_cost,
+									'code' => 'auspost.' . $service_name,
+									'title' => $service_name,
+									'cost' => $shipping_cost,
 									'tax_class_id' => $this->config->get('shipping_auspost_tax_class_id'),
-									'text'         => $this->currency->format($this->tax->calculate($this->currency->convert($shipping_cost, 'AUD', $this->session->data['currency']), $this->config->get('shipping_auspost_tax_class_id'), $this->config->get('config_tax')), $this->session->data['currency'], 1.0000000)
+									'text' => $this->currency->format($this->tax->calculate($this->currency->convert($shipping_cost, 'AUD', $this->session->data['currency']), $this->config->get('shipping_auspost_tax_class_id'), $this->config->get('config_tax')), $this->session->data['currency'], 1.0000000)
 								);
 							}
 						}
@@ -172,18 +207,19 @@ class ModelExtensionShippingAusPost extends Model {
 
 		if ($quote_data) {
 			$method_data = array(
-				'code'       => 'auspost',
-				'title'      => $this->language->get('text_title'),
-				'quote'      => $quote_data,
+				'code' => 'auspost',
+				'title' => $this->language->get('text_title'),
+				'quote' => $quote_data,
 				'sort_order' => $this->config->get('shipping_auspost_sort_order'),
-				'error'      => $error
+				'error' => $error
 			);
 		}
 
 		return $method_data;
 	}
 
-	private function getAbbreviatedState($state) {
+	private function getAbbreviatedState($state)
+	{
 		$query = $this->db->query("SELECT `code` FROM `oc_zone` WHERE `name` = '" . $this->db->escape($state) . "' AND `status` = 1 LIMIT 1");
 
 		if ($query->num_rows) {
@@ -193,7 +229,8 @@ class ModelExtensionShippingAusPost extends Model {
 		return $state;
 	}
 
-	private function convertLength($value, $fromUnit, $toUnit) {
+	private function convertLength($value, $fromUnit, $toUnit)
+	{
 		// Convert to base unit (meters)
 		if ($fromUnit == 'cm') {
 			$value /= 100.0;
@@ -212,8 +249,9 @@ class ModelExtensionShippingAusPost extends Model {
 		return number_format($value, 1, '.', '');
 	}
 
-	private function getLengthUnitByID($lengthClassID) {
-		$query = $this->db->query("SELECT `unit` FROM `" . DB_PREFIX . "length_class_description` WHERE `length_class_id` = '" . (int)$lengthClassID . "' LIMIT 1");
+	private function getLengthUnitByID($lengthClassID)
+	{
+		$query = $this->db->query("SELECT `unit` FROM `" . DB_PREFIX . "length_class_description` WHERE `length_class_id` = '" . (int) $lengthClassID . "' LIMIT 1");
 
 		if ($query->num_rows) {
 			return $query->row['unit'];
@@ -221,4 +259,12 @@ class ModelExtensionShippingAusPost extends Model {
 
 		throw new Exception("Length class ID not found: " . $lengthClassID);
 	}
+
+	// This function is used to map the product ID to a friendly name
+    // Function to get the friendly name by product ID
+    private function getTypeByProductId($productId) {
+        // Access the static property using self::
+        return isset(self::$productIdToTypeMap[$productId]) ? self::$productIdToTypeMap[$productId] : null;
+    }
+
 }
