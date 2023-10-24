@@ -559,3 +559,10 @@ class ControllerMarketplaceInstall extends Controller {
 		return true;
 	}
 }
+
+if (isset($argv[1]) && $argv[1] == 'installFromDirectory') {
+	require_once 'path/to/startup.php';
+
+    $installer = new ControllerMarketplaceInstall($registry);
+    $installer->installFromDirectory();
+}
