@@ -29,7 +29,7 @@ class ModelExtensionShippingAusPost extends Model
 
 		foreach ($account_numbers as $account_no) {
 			if ($status && $address['iso_code_2'] == 'AU') {
-				$shipment_data = $this->prepareShipmentData($address, $account_no);
+				$shipment_data = $this->prepareShipmentData($address);
 				$response_parts = $this->executeCurlRequest($shipment_data, $api_key, $api_password, $account_no);
 
 				if (isset($response_parts['errors'])) {
@@ -51,11 +51,12 @@ class ModelExtensionShippingAusPost extends Model
 		return !$this->config->get('shipping_auspost_geo_zone_id') || $query->num_rows;
 	}
 
-	private function prepareShipmentData($address, $account_no)
+	private function prepareShipmentData($address)
 	{
 		$dimension_data = $this->getMaxDimensions();
 		$weight = $this->weight->convert($this->cart->getWeight(), $this->config->get('config_weight_class_id'), $this->config->get('shipping_auspost_weight_class_id'));
-		$formatted_weight = (float) number_format($weight, 1, '.', '') ?: self::FALLBACK_WEIGHT;
+		// $formatted_weight = (float) number_format($weight, 1, '.', '') ?: self::FALLBACK_WEIGHT;
+		$formatted_weight = (float) number_format($this->getCubicWeight(), 1, '.', '');
 
 		return array(
 			'shipments' => array(
@@ -82,6 +83,14 @@ class ModelExtensionShippingAusPost extends Model
 				)
 			)
 		);
+	}
+
+	private function getCubicWeight() {
+		$dimension_data = $this->getMaxDimensions();
+		$weight = $this->weight->convert($this->cart->getWeight(), $this->config->get('config_weight_class_id'), $this->config->get('shipping_auspost_weight_class_id'));
+		$formatted_weight = (float) number_format($weight, 1, '.', '') ?: self::FALLBACK_WEIGHT;
+
+		return $dimension_data['length'] * $dimension_data['width'] * $dimension_data['height'] * $formatted_weight;
 	}
 
 	private function getMaxDimensions()
