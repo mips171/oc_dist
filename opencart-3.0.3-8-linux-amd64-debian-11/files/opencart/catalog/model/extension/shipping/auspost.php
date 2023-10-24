@@ -27,7 +27,9 @@ class ModelExtensionShippingAusPost extends Model
 		"7E55" => "Auspost Parcel Post + Signature",
 		"3W35" => "Auspost Metro with Signature",
 		"3W33" => "Auspost Metro",
-		"3K55" => "Auspost Express Post + Signature"
+		"3K55" => "Auspost Express Post + Signature",
+		"3W05" => "Auspost Metro Cubing with Signature",
+		"3W03" => "Auspost Metro Cubing"
 	];
 
 	public function getQuote($address)
