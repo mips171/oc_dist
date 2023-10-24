@@ -9,12 +9,14 @@
 class ModelExtensionShippingAusPost extends Model
 {
 	private static $productIdToTypeMap = [
+		"PRM"  => "StarTrack Premium",
+		"EXP"  => "StarTrack Road Express",
+		"7E55" => "Auspost Parcel Post + Signature",
+		"3K55" => "Auspost Express Post + Signature",
 		"RET"  => "StarTrack Express Tail-lift",
 		"RE2"  => "StarTrack Express Tail-lift 2 Person",
-		"PRM"  => "StarTrack Premium",
 		"FPP"  => "StarTrack 1, 3 & 5kg Fixed Price Premium",
 		"FPA"  => "StarTrack 1, 3 & 5kg Fixed Price Airlock",
-		"EXP"  => "StarTrack Road Express",
 		"ARL"  => "StarTrack Airlock",
 		"XID1" => "Auspost Express E-parcel ID&V 1",
 		"XID2" => "Auspost Express E-parcel ID&V 2",
@@ -24,13 +26,25 @@ class ModelExtensionShippingAusPost extends Model
 		"ID2"  => "Auspost E-parcel ID&V 2",
 		"AIR8" => "Auspost INTL ECONOMY/AIRMAIL PARCELS",
 		"EL1"  => "Auspost Parcel Post XL 1",
-		"7E55" => "Auspost Parcel Post + Signature",
 		"3W35" => "Auspost Metro + Signature",
 		"3W33" => "Auspost Metro",
-		"3K55" => "Auspost Express Post + Signature",
 		"3W05" => "Auspost Metro Cubing + Signature",
 		"3W03" => "Auspost Metro Cubing"
 	];
+
+	private static $adminOnlyProductIds = [
+		"RET", "RE2", "FPP", "FPA", "ARL", "XID1", "XID2", "RPI8", "PTI8", "ID1", "ID2", "AIR8", "EL1", "3W35", "3W33", "3W05", "3W03"
+	];
+
+	public static function getAdminOnlyProducts() {
+		$result = [];
+		foreach (self::$adminOnlyProductIds as $productId) {
+			if (isset(self::$productIdToTypeMap[$productId])) {
+				$result[$productId] = self::$productIdToTypeMap[$productId];
+			}
+		}
+		return $result;
+	}
 
 	public function getQuote($address)
 	{
@@ -206,6 +220,16 @@ class ModelExtensionShippingAusPost extends Model
 		}
 
 		$method_data = array();
+
+		// Check if the user is not an admin
+		if (!$this->user->isLogged() || !$this->user->hasPermission('access', 'common/dashboard')) {
+			// If the user is NOT an admin, filter out admin-only shipping options
+			foreach ($quote_data as $service_name => $data) {
+				if (isset(self::$adminOnlyProductIdToTypeMap[$service_name])) {
+					unset($quote_data[$service_name]);
+				}
+			}
+		}
 
 		if ($quote_data) {
 			$method_data = array(
