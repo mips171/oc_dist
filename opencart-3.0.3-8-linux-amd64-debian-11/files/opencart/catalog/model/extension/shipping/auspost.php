@@ -8,33 +8,6 @@
 
 class ModelExtensionShippingAusPost extends Model
 {
-	private static $productIdToTypeMap = [
-		"PRM"  => "StarTrack Premium",
-		"EXP"  => "StarTrack Road Express",
-		"7E55" => "Auspost Parcel Post + Signature",
-		"3K55" => "Auspost Express Post + Signature",
-		"RET"  => "StarTrack Express Tail-lift",
-		"RE2"  => "StarTrack Express Tail-lift 2 Person",
-		"FPP"  => "StarTrack 1, 3 & 5kg Fixed Price Premium",
-		"FPA"  => "StarTrack 1, 3 & 5kg Fixed Price Airlock",
-		"ARL"  => "StarTrack Airlock",
-		"XID1" => "Auspost Express E-parcel ID&V 1",
-		"XID2" => "Auspost Express E-parcel ID&V 2",
-		"RPI8" => "Auspost INTL Economy + Signature / Registered Post",
-		"PTI8" => "Auspost INTL Standard/Pack & Track",
-		"ID1"  => "Auspost E-parcel ID&V 1",
-		"ID2"  => "Auspost E-parcel ID&V 2",
-		"AIR8" => "Auspost INTL ECONOMY/AIRMAIL PARCELS",
-		"EL1"  => "Auspost Parcel Post XL 1",
-		"3W35" => "Auspost Metro + Signature",
-		"3W33" => "Auspost Metro",
-		"3W05" => "Auspost Metro Cubing + Signature",
-		"3W03" => "Auspost Metro Cubing"
-	];
-
-	private static $adminOnlyProductIds = [
-		"RET", "RE2", "FPP", "FPA", "ARL", "XID1", "XID2", "RPI8", "PTI8", "ID1", "ID2", "AIR8", "EL1", "3W35", "3W33", "3W05", "3W03"
-	];
 
 	public static function getAdminOnlyProducts() {
 		$result = [];
@@ -221,17 +194,19 @@ class ModelExtensionShippingAusPost extends Model
 
 		$method_data = array();
 
-		// Check if the user is not an admin
-		if (!$this->user->isLogged() || !$this->user->hasPermission('access', 'sale/order')) {
-			// If the user is NOT an admin, filter out admin-only shipping options
-			foreach ($quote_data as $service_name => $data) {
-				if (isset(self::$adminOnlyProductIdToTypeMap[$service_name])) {
-					unset($quote_data[$service_name]);
+		if ($quote_data) {
+			// Check if the user is not an admin
+			$this->load->model('user/user');
+
+			if (!$this->user->isLogged()) {
+				// If the user is NOT an admin, filter out admin-only shipping options
+				$adminOnlyProducts = array_keys(self::getAdminOnlyProducts());
+				foreach ($adminOnlyProducts as $adminOnlyProduct) {
+					if (isset($quote_data[$adminOnlyProduct])) {
+						unset($quote_data[$adminOnlyProduct]);
+					}
 				}
 			}
-		}
-
-		if ($quote_data) {
 			$method_data = array(
 				'code' => 'auspost',
 				'title' => $this->language->get('text_title'),
@@ -292,5 +267,33 @@ class ModelExtensionShippingAusPost extends Model
         // Access the static property using self::
         return isset(self::$productIdToTypeMap[$productId]) ? self::$productIdToTypeMap[$productId] : null;
     }
+
+	private static $productIdToTypeMap = [
+		"PRM"  => "StarTrack Premium",
+		"EXP"  => "StarTrack Road Express",
+		"7E55" => "Auspost Parcel Post + Signature",
+		"3K55" => "Auspost Express Post + Signature",
+		"RET"  => "StarTrack Express Tail-lift",
+		"RE2"  => "StarTrack Express Tail-lift 2 Person",
+		"FPP"  => "StarTrack 1, 3 & 5kg Fixed Price Premium",
+		"FPA"  => "StarTrack 1, 3 & 5kg Fixed Price Airlock",
+		"ARL"  => "StarTrack Airlock",
+		"XID1" => "Auspost Express E-parcel ID&V 1",
+		"XID2" => "Auspost Express E-parcel ID&V 2",
+		"RPI8" => "Auspost INTL Economy + Signature / Registered Post",
+		"PTI8" => "Auspost INTL Standard/Pack & Track",
+		"ID1"  => "Auspost E-parcel ID&V 1",
+		"ID2"  => "Auspost E-parcel ID&V 2",
+		"AIR8" => "Auspost INTL ECONOMY/AIRMAIL PARCELS",
+		"EL1"  => "Auspost Parcel Post XL 1",
+		"3W35" => "Auspost Metro + Signature",
+		"3W33" => "Auspost Metro",
+		"3W05" => "Auspost Metro Cubing + Signature",
+		"3W03" => "Auspost Metro Cubing"
+	];
+
+	private static $adminOnlyProductIds = [
+		"RET", "RE2", "FPP", "FPA", "ARL", "XID1", "XID2", "RPI8", "PTI8", "ID1", "ID2", "AIR8", "EL1", "3W35", "3W33", "3W05", "3W03"
+	];
 
 }
