@@ -222,7 +222,7 @@ class ModelExtensionShippingAusPost extends Model
 		$method_data = array();
 
 		// Check if the user is not an admin
-		if (!$this->user->isLogged() || !$this->user->hasPermission('access', 'common/dashboard')) {
+		if (!$this->user->isLogged() || !$this->user->hasPermission('access', 'sale/order')) {
 			// If the user is NOT an admin, filter out admin-only shipping options
 			foreach ($quote_data as $service_name => $data) {
 				if (isset(self::$adminOnlyProductIdToTypeMap[$service_name])) {
