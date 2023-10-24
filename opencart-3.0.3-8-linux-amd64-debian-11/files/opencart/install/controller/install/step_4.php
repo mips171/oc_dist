@@ -36,8 +36,6 @@ class ControllerInstallStep4 extends Controller {
 		$data['footer'] = $this->load->controller('common/footer');
 		$data['header'] = $this->load->controller('common/header');
 
-		$this->load->controller('marketplace/install/installFromDirectory');
-
 		$this->response->setOutput($this->load->view('install/step_4', $data));
 	}
 }
