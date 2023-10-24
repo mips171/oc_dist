@@ -168,8 +168,8 @@ class ModelExtensionShippingAusPost extends Model
 							foreach ($shipments as $shipment) {
 								$product_id = $shipment['items'][0]['product_id'];
 
-								// If the user is not an admin, and the product ID is in the admin-only list, skip this iteration
-								if (!$this->isAdmin() && in_array($product_id, self::$adminOnlyProductIds)) {
+								// If the product ID is in the admin-only list, skip this iteration
+								if (in_array($product_id, self::$adminOnlyProductIds)) {
 									continue;
 								}
 
@@ -285,10 +285,5 @@ class ModelExtensionShippingAusPost extends Model
 	private static $adminOnlyProductIds = [
 		"RET", "RE2", "FPP", "FPA", "ARL", "XID1", "XID2", "RPI8", "PTI8", "ID1", "ID2", "AIR8", "EL1", "3W35", "3W33", "3W05", "3W03"
 	];
-
-	private function isAdmin() {
-		// Check if the user is logged in
-		return $this->user->isLogged();
-	}
 
 }
