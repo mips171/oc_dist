@@ -14,7 +14,7 @@ class ModelExtensionShippingAusPost extends Model
 		"PRM"  => "StarTrack Premium",
 		"FPP"  => "StarTrack 1, 3 & 5kg Fixed Price Premium",
 		"FPA"  => "StarTrack 1, 3 & 5kg Fixed Price Airlock",
-		"EXP"  => "Startrack Road Express",
+		"EXP"  => "StarTrack Road Express",
 		"ARL"  => "StarTrack Airlock",
 		"XID1" => "Auspost Express E-parcel ID&V 1",
 		"XID2" => "Auspost Express E-parcel ID&V 2",
