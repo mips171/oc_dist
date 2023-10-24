@@ -9,16 +9,6 @@
 class ModelExtensionShippingAusPost extends Model
 {
 
-	public static function getAdminOnlyProducts() {
-		$result = [];
-		foreach (self::$adminOnlyProductIds as $productId) {
-			if (isset(self::$productIdToTypeMap[$productId])) {
-				$result[$productId] = self::$productIdToTypeMap[$productId];
-			}
-		}
-		return $result;
-	}
-
 	public function getQuote($address)
 	{
 		$this->load->language('extension/shipping/auspost');
@@ -195,18 +185,6 @@ class ModelExtensionShippingAusPost extends Model
 		$method_data = array();
 
 		if ($quote_data) {
-			// Check if the user is not an admin
-			$this->load->model('user/user');
-
-			if (!$this->user->isLogged()) {
-				// If the user is NOT an admin, filter out admin-only shipping options
-				$adminOnlyProducts = array_keys(self::getAdminOnlyProducts());
-				foreach ($adminOnlyProducts as $adminOnlyProduct) {
-					if (isset($quote_data[$adminOnlyProduct])) {
-						unset($quote_data[$adminOnlyProduct]);
-					}
-				}
-			}
 			$method_data = array(
 				'code' => 'auspost',
 				'title' => $this->language->get('text_title'),
@@ -290,10 +268,6 @@ class ModelExtensionShippingAusPost extends Model
 		"3W33" => "Auspost Metro",
 		"3W05" => "Auspost Metro Cubing + Signature",
 		"3W03" => "Auspost Metro Cubing"
-	];
-
-	private static $adminOnlyProductIds = [
-		"RET", "RE2", "FPP", "FPA", "ARL", "XID1", "XID2", "RPI8", "PTI8", "ID1", "ID2", "AIR8", "EL1", "3W35", "3W33", "3W05", "3W03"
 	];
 
 }
