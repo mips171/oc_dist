@@ -72,10 +72,12 @@ class ModelExtensionShippingAusPost extends Model
 						'postcode' => $address['postcode']
 					),
 					'items' => array(
-						array_merge($dimension_data, array(
-							'weight' => (string) $formatted_weight,
-							'packaging_type' => $this->config->get('shipping_auspost_packaging_type')
-						)
+						array_merge(
+							$dimension_data,
+							array(
+								'weight' => (string) $formatted_weight,
+								'packaging_type' => $this->config->get('shipping_auspost_packaging_type')
+							)
 						)
 					)
 				)
