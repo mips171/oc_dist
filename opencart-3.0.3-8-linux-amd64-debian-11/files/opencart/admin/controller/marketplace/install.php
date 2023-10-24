@@ -519,33 +519,6 @@ class ControllerMarketplaceInstall extends Controller {
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
 	}
-
-	public function installFromDirectory() {
-		$directory = DIR_UPLOAD; // You can change this to your desired directory path
-
-		// Get a list of all .ocmod.zip files
-		$files = glob($directory . '*.ocmod.zip');
-
-		foreach ($files as $file) {
-			// Set the current file for installation
-			$this->session->data['install'] = basename($file, '.ocmod.zip');
-
-			// Copy the file to the upload directory
-			copy($file, DIR_UPLOAD . $this->session->data['install'] . '.tmp');
-
-			// Install the extension
-			$this->install();
-			$this->unzip();
-			$this->move();
-
-			// Optionally delete the original file from the auto_install directory
-			// unlink($file);
-		}
-
-		// You can redirect or provide a response here, for example:
-		$this->response->redirect($this->url->link('marketplace/install', 'user_token=' . $this->session->data['user_token'], true));
-	}
-
 	private function isDirEmpty ($dir_name) {
 		if (!is_dir($dir_name)) {
 			return false;
@@ -558,11 +531,4 @@ class ControllerMarketplaceInstall extends Controller {
 		}
 		return true;
 	}
-}
-
-if (isset($argv[1]) && $argv[1] == 'installFromDirectory') {
-	require_once 'path/to/startup.php';
-
-    $installer = new ControllerMarketplaceInstall($registry);
-    $installer->installFromDirectory();
 }
