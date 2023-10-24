@@ -13,6 +13,12 @@ class ModelExtensionShippingAusPost extends Model
 	{
 		$this->load->language('extension/shipping/auspost');
 
+		$this->load->model('user/user');
+
+		if ($this->user->isLogged()) {
+			echo "User is logged in";
+		}
+
 		$query = $this->db->query("SELECT * FROM " . DB_PREFIX . "zone_to_geo_zone WHERE geo_zone_id = '" . (int) $this->config->get('shipping_auspost_geo_zone_id') . "' AND country_id = '" . (int) $address['country_id'] . "' AND (zone_id = '" . (int) $address['zone_id'] . "' OR zone_id = '0')");
 
 		if (!$this->config->get('shipping_auspost_geo_zone_id')) {
@@ -161,6 +167,12 @@ class ModelExtensionShippingAusPost extends Model
 
 							foreach ($shipments as $shipment) {
 								$product_id = $shipment['items'][0]['product_id'];
+
+								// If the user is not an admin, and the product ID is in the admin-only list, skip this iteration
+								if (!$this->isAdmin() && in_array($product_id, self::$adminOnlyProductIds)) {
+									continue;
+								}
+
 								$friendly_name = $this->getTypeByProductId($product_id);
 
 								// Use the friendly name, or the product ID if the friendly name isn't found
@@ -269,5 +281,14 @@ class ModelExtensionShippingAusPost extends Model
 		"3W05" => "Auspost Metro Cubing + Signature",
 		"3W03" => "Auspost Metro Cubing"
 	];
+
+	private static $adminOnlyProductIds = [
+		"RET", "RE2", "FPP", "FPA", "ARL", "XID1", "XID2", "RPI8", "PTI8", "ID1", "ID2", "AIR8", "EL1", "3W35", "3W33", "3W05", "3W03"
+	];
+
+	private function isAdmin() {
+		// Check if the user is logged in
+		return $this->user->isLogged();
+	}
 
 }
