@@ -155,19 +155,21 @@ class ModelExtensionShippingAusPost extends Model
 		foreach ($shipments as $shipment) {
 			$product_id = $shipment['items'][0]['product_id'];
 
-			if (!in_array($product_id, self::$adminOnlyProductIds)) {
-				$friendly_name = $this->getTypeByProductId($product_id);
-				$service_name = $friendly_name ?: $product_id;
-				$shipping_cost = $shipment['shipment_summary']['total_cost'];
-
-				$quote_data[$service_name] = array(
-					'code' => 'auspost.' . $service_name,
-					'title' => $service_name,
-					'cost' => $shipping_cost,
-					'tax_class_id' => $this->config->get('shipping_auspost_tax_class_id'),
-					'text' => $this->currency->format($this->tax->calculate($this->currency->convert($shipping_cost, 'AUD', $this->session->data['currency']), $this->config->get('shipping_auspost_tax_class_id'), $this->config->get('config_tax')), $this->session->data['currency'], 1.0000000)
-				);
+			if (in_array($product_id, self::$adminOnlyProductIds)) {
+				continue; // skip it
 			}
+
+			$friendly_name = $this->getTypeByProductId($product_id);
+			$service_name = $friendly_name ?: $product_id;
+			$shipping_cost = $shipment['shipment_summary']['total_cost'];
+
+			$quote_data[$service_name] = array(
+				'code' => 'auspost.' . $service_name,
+				'title' => $service_name,
+				'cost' => $shipping_cost,
+				'tax_class_id' => $this->config->get('shipping_auspost_tax_class_id'),
+				'text' => $this->currency->format($this->tax->calculate($this->currency->convert($shipping_cost, 'AUD', $this->session->data['currency']), $this->config->get('shipping_auspost_tax_class_id'), $this->config->get('config_tax')), $this->session->data['currency'], 1.0000000)
+			);
 		}
 
 		return $quote_data;
