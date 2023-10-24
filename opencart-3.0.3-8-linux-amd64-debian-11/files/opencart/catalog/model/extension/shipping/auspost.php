@@ -8,7 +8,6 @@
 
 class ModelExtensionShippingAusPost extends Model
 {
-
 	const AUSPOST_API_BASE = "https://digitalapi.auspost.com.au/";
 	const AUSPOST_API_TEST = "test/";
 	const AUSPOST_API_SHIPPING_ENDPOINT = "shipping/v1/prices/shipments";
