@@ -25,10 +25,10 @@ class ModelExtensionShippingAusPost extends Model {
 		$api_password = $this->config->get('shipping_auspost_password');
 		$account_numbers = explode(',', $this->config->get('shipping_auspost_account_number'));
 
+		$quote_data = array(); // Initialize quote_data outside of the loop
+
 		foreach ($account_numbers as $account_no) {
 			$api_account_no = trim($account_no);
-
-			$quote_data = array();
 
 			if ($status) {
 				$weight = $this->weight->convert($this->cart->getWeight(), $this->config->get('config_weight_class_id'), $this->config->get('shipping_auspost_weight_class_id'));
@@ -151,7 +151,7 @@ class ModelExtensionShippingAusPost extends Model {
 							$shipments = $response_parts['shipments'];
 
 							foreach ($shipments as $shipment) {
-								$service_name = $shipment['items'][0]['product_id'];
+								$service_name = $shipment['items'][0]['product_id'] . '_' . $api_account_no; // Append account number to make it unique
 								$shipping_cost = $shipment['shipment_summary']['total_cost'];
 
 								$quote_data[$service_name] = array(
