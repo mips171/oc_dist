@@ -185,7 +185,7 @@ class ModelExtensionShippingAusPost extends Model
 								$friendly_name = $this->getTypeByProductId($product_id);
 
 								// Use the friendly name, or the product ID if the friendly name isn't found
-								$service_name = ($friendly_name ? $friendly_name : $product_id) . '_' . $api_account_no;
+								$service_name = ($friendly_name ? $friendly_name : $product_id);
 
 								$shipping_cost = $shipment['shipment_summary']['total_cost'];
 
