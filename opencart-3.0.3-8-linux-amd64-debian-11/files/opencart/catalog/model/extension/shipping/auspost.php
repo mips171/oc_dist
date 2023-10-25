@@ -54,7 +54,7 @@ class ModelExtensionShippingAusPost extends Model
 	private function prepareShipmentData($address)
 	{
 		$dimension_data = $this->getMaxDimensions();
-		$weight = $this->weight->convert($this->cart->getWeight(), $this->config->get('config_weight_class_id'), $this->config->get('shipping_auspost_weight_class_id'));
+		// $weight = $this->weight->convert($this->cart->getWeight(), $this->config->get('config_weight_class_id'), $this->config->get('shipping_auspost_weight_class_id'));
 		// $formatted_weight = (float) number_format($weight, 1, '.', '') ?: self::FALLBACK_WEIGHT;
 		$formatted_weight = (float) number_format($this->getCubicWeight(), 1, '.', '');
 
@@ -91,9 +91,9 @@ class ModelExtensionShippingAusPost extends Model
 		$formatted_weight = (float) number_format($weight, 1, '.', '');
 
 		// Check if the weight is zero
-		if ($formatted_weight == 0) {
+		if ($formatted_weight <= 0.5) {
 			// Calculate cubic weight
-			$cubicWeight = $dimension_data['length'] * $dimension_data['width'] * $dimension_data['height'] * 250; // 250kg per cubic meter
+			$cubicWeight = $dimension_data['length'] * $dimension_data['width'] * $dimension_data['height'] * 250.0; // 250kg per cubic meter
 			return $cubicWeight;
 		}
 
