@@ -55,49 +55,70 @@ class ModelExtensionShippingAusPost extends Model
 		$dimension_data = $this->getMaxDimensions();
 		$length_unit = $this->getLengthUnitByID($this->config->get('shipping_auspost_length_class_id'));
 
-		// Convert dimensions to meters
-		$length_in_meters = $this->convertLength($dimension_data['length'], $length_unit, self::METER_UNIT);
-		$width_in_meters = $this->convertLength($dimension_data['width'], $length_unit, self::METER_UNIT);
-		$height_in_meters = $this->convertLength($dimension_data['height'], $length_unit, self::METER_UNIT);
-
+		// Convert and calculate dimensions
+		list($length_in_meters, $width_in_meters, $height_in_meters) = $this->convertDimensionsToMeters($dimension_data, $length_unit);
 		$cubic_volume = number_format($length_in_meters * $width_in_meters * $height_in_meters, 7, '.', '');
 
+		// Convert and format weight
+		$formatted_weight = $this->getFormattedWeight();
+
+		// Determine which dimension data to use based on the account number
+		$dimension_data = $this->isStarTrackOrNZCommercial($account_no)
+						  ? ['cubic_volume' => $cubic_volume]
+						  : $this->getDimensionDataInCentimeters($dimension_data, $length_unit);
+
+		// Build and return shipment data
+		return [
+			'shipments' => [
+				[
+					'from' => $this->getSenderDetails(),
+					'to' => $this->getRecipientDetails($address),
+					'items' => [
+						array_merge($dimension_data, [
+							'weight' => (string) $formatted_weight,
+							'packaging_type' => $this->config->get('shipping_auspost_packaging_type')
+						])
+					]
+				]
+			]
+		];
+	}
+
+	private function convertDimensionsToMeters($dimension_data, $length_unit) {
+		return [
+			$this->convertLength($dimension_data['length'], $length_unit, self::METER_UNIT),
+			$this->convertLength($dimension_data['width'], $length_unit, self::METER_UNIT),
+			$this->convertLength($dimension_data['height'], $length_unit, self::METER_UNIT)
+		];
+	}
+
+	private function getFormattedWeight() {
 		$weight = $this->weight->convert($this->cart->getWeight(), $this->config->get('config_weight_class_id'), $this->config->get('shipping_auspost_weight_class_id'));
-		$formatted_weight = (float) number_format($weight, 1, '.', '') ?: self::FALLBACK_WEIGHT;
+		return (float) number_format($weight, 1, '.', '') ?: self::FALLBACK_WEIGHT;
+	}
 
-		if ($this->isStarTrackOrNZCommercial($account_no)) {
-			$dimension_data = ['cubic_volume' => $cubic_volume];
-		} else {
-			$dimension_data['length'] = number_format($this->convertLength($dimension_data['length'], $length_unit, self::CENTIMETER_UNIT), 1, '.', '');
-			$dimension_data['width'] = number_format($this->convertLength($dimension_data['width'], $length_unit, self::CENTIMETER_UNIT), 1, '.', '');
-			$dimension_data['height'] = number_format($this->convertLength($dimension_data['height'], $length_unit, self::CENTIMETER_UNIT), 1, '.', '');
-		}
+	private function getDimensionDataInCentimeters($dimension_data, $length_unit) {
+		return [
+			'length' => number_format($this->convertLength($dimension_data['length'], $length_unit, self::CENTIMETER_UNIT), 1, '.', ''),
+			'width' => number_format($this->convertLength($dimension_data['width'], $length_unit, self::CENTIMETER_UNIT), 1, '.', ''),
+			'height' => number_format($this->convertLength($dimension_data['height'], $length_unit, self::CENTIMETER_UNIT), 1, '.', '')
+		];
+	}
 
-		return array(
-			'shipments' => array(
-				array(
-					'from' => array(
-						'suburb' => $this->config->get('shipping_auspost_suburb'),
-						'state' => $this->config->get('shipping_auspost_state'),
-						'postcode' => $this->config->get('shipping_auspost_postcode')
-					),
-					'to' => array(
-						'suburb' => $address['city'],
-						'state' => $this->getAbbreviatedState($address['zone']),
-						'postcode' => $address['postcode']
-					),
-					'items' => array(
-						array_merge(
-							$dimension_data,
-							array(
-								'weight' => (string) $formatted_weight,
-								'packaging_type' => $this->config->get('shipping_auspost_packaging_type')
-							)
-						)
-					)
-				)
-			)
-		);
+	private function getSenderDetails() {
+		return [
+			'suburb' => $this->config->get('shipping_auspost_suburb'),
+			'state' => $this->config->get('shipping_auspost_state'),
+			'postcode' => $this->config->get('shipping_auspost_postcode')
+		];
+	}
+
+	private function getRecipientDetails($address) {
+		return [
+			'suburb' => $address['city'],
+			'state' => $this->getAbbreviatedState($address['zone']),
+			'postcode' => $address['postcode']
+		];
 	}
 
 	private function isStarTrackOrNZCommercial($account_no) {
