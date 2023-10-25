@@ -51,21 +51,15 @@ class ModelExtensionShippingAusPost extends Model
 		return !$this->config->get('shipping_auspost_geo_zone_id') || $query->num_rows;
 	}
 
-	private function prepareShipmentData($address, $account_no) {
+	private function prepareShipmentData($address) {
 		$dimension_data = $this->getMaxDimensions();
 		$length_unit = $this->getLengthUnitByID($this->config->get('shipping_auspost_length_class_id'));
-
-		// Convert and calculate dimensions
-		list($length_in_meters, $width_in_meters, $height_in_meters) = $this->convertDimensionsToMeters($dimension_data, $length_unit);
-		$cubic_volume = number_format($length_in_meters * $width_in_meters * $height_in_meters, 7, '.', '');
 
 		// Convert and format weight
 		$formatted_weight = $this->getFormattedWeight();
 
 		// Determine which dimension data to use based on the account number
-		$dimension_data = $this->isStarTrackOrNZCommercial($account_no)
-						  ? ['cubic_volume' => $cubic_volume]
-						  : $this->getDimensionDataInCentimeters($dimension_data, $length_unit);
+		$dimension_data = $this->getDimensionDataInCentimeters($dimension_data, $length_unit);
 
 		// Build and return shipment data
 		return [
@@ -81,14 +75,6 @@ class ModelExtensionShippingAusPost extends Model
 					]
 				]
 			]
-		];
-	}
-
-	private function convertDimensionsToMeters($dimension_data, $length_unit) {
-		return [
-			$this->convertLength($dimension_data['length'], $length_unit, self::METER_UNIT),
-			$this->convertLength($dimension_data['width'], $length_unit, self::METER_UNIT),
-			$this->convertLength($dimension_data['height'], $length_unit, self::METER_UNIT)
 		];
 	}
 
@@ -119,26 +105,6 @@ class ModelExtensionShippingAusPost extends Model
 			'state' => $this->getAbbreviatedState($address['zone']),
 			'postcode' => $address['postcode']
 		];
-	}
-
-	private function isStarTrackOrNZCommercial($account_no) {
-		// Split the account_no string by comma
-		$accounts = explode(',', $account_no);
-
-		foreach ($accounts as $account) {
-			// Split each account entry by colon
-			list($type, $number) = explode(':', $account);
-
-			// Convert the type to lowercase
-			$type = strtolower($type);
-
-			// If the type is either "startrack" or "nzcommercial", return true
-			if ($type === 'startrack' || $type === 'nzcommercial') {
-				return true;
-			}
-		}
-
-		return false;
 	}
 
 	private function getMaxDimensions()
