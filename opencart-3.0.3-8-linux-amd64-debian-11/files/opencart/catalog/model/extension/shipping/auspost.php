@@ -87,15 +87,19 @@ class ModelExtensionShippingAusPost extends Model
 
 	private function getCubicWeight() {
 		$dimension_data = $this->getMaxDimensions();
+
+		// Convert dimensions to meters
+		$length_in_meters = (float) $this->convertLength($dimension_data['length'], self::CENTIMETER_UNIT, self::METER_UNIT);
+		$width_in_meters = (float) $this->convertLength($dimension_data['width'], self::CENTIMETER_UNIT, self::METER_UNIT);
+		$height_in_meters = (float) $this->convertLength($dimension_data['height'], self::CENTIMETER_UNIT, self::METER_UNIT);
+
 		$weight = $this->weight->convert($this->cart->getWeight(), $this->config->get('config_weight_class_id'), $this->config->get('shipping_auspost_weight_class_id'));
 		$formatted_weight = (float) number_format($weight, 1, '.', '');
 
-		echo "Weight: " . $formatted_weight . "\n";
-
+		// Check if the weight is zero
 		if ($formatted_weight <= 0.5) {
 			// Calculate cubic weight
-			$cubicWeight = $dimension_data['length'] * $dimension_data['width'] * $dimension_data['height'] * 250.0; // 250kg per cubic meter
-			echo "Cubic Weight: " . $cubicWeight . "\n";
+			$cubicWeight = $length_in_meters * $width_in_meters * $height_in_meters * 250; // 250kg per cubic meter
 			return $cubicWeight;
 		}
 
