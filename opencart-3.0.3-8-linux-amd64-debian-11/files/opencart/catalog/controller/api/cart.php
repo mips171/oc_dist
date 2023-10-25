@@ -3,8 +3,6 @@ class ControllerApiCart extends Controller {
 	public function add() {
 		$this->load->language('api/cart');
 
-		$this->load->model('user/user');
-
 		$json = array();
 
 		if (!isset($this->session->data['api_id'])) {
@@ -32,12 +30,7 @@ class ControllerApiCart extends Controller {
 			} elseif (isset($this->request->post['product_id'])) {
 				$this->load->model('catalog/product');
 
-
-				if ($this->user->isLogged() && isset($this->request->get['user_token']) && ($this->request->get['user_token'] == $this->session->data['user_token'])) {
-					$product_info = $this->model_catalog_product->getProductForOrderBackend($this->request->post['product_id']);
-				} else {
-					$product_info = $this->model_catalog_product->getProduct($this->request->post['product_id']);
-				}
+				$product_info = $this->model_catalog_product->getProductForOrderBackend($this->request->post['product_id']);
 
 				if ($product_info) {
 					if (isset($this->request->post['quantity'])) {
