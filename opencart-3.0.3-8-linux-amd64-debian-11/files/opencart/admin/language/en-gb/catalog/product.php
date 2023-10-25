@@ -100,6 +100,8 @@ $_['help_filter']            = '(Autocomplete)';
 $_['help_download']          = '(Autocomplete)';
 $_['help_related']           = '(Autocomplete)';
 $_['help_tag']               = 'Comma separated';
+$_['help_status']            = 'Whether to allow a product to be purchased at all';
+$_['help_shop_status']       = 'Whether to put item on show in the shopfront or keep it only visible to staff';
 
 // Error
 $_['error_warning']          = 'Warning: Please check the form carefully for errors!';
