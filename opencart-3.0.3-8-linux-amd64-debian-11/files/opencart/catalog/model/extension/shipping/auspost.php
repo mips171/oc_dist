@@ -29,7 +29,7 @@ class ModelExtensionShippingAusPost extends Model
 
 		foreach ($account_numbers as $account_no) {
 			if ($status && $address['iso_code_2'] == 'AU') {
-				$shipment_data = $this->prepareShipmentData($address);
+				$shipment_data = $this->prepareShipmentData($address, $account_no);
 				$response_parts = $this->executeCurlRequest($shipment_data, $api_key, $api_password, $account_no);
 
 				if (isset($response_parts['errors'])) {
@@ -51,12 +51,27 @@ class ModelExtensionShippingAusPost extends Model
 		return !$this->config->get('shipping_auspost_geo_zone_id') || $query->num_rows;
 	}
 
-	private function prepareShipmentData($address)
-	{
+	private function prepareShipmentData($address, $account_no) {
 		$dimension_data = $this->getMaxDimensions();
-		// $weight = $this->weight->convert($this->cart->getWeight(), $this->config->get('config_weight_class_id'), $this->config->get('shipping_auspost_weight_class_id'));
-		// $formatted_weight = (float) number_format($weight, 1, '.', '') ?: self::FALLBACK_WEIGHT;
-		$formatted_weight = (float) number_format($this->getCubicWeight(), 1, '.', '');
+		$length_unit = $this->getLengthUnitByID($this->config->get('shipping_auspost_length_class_id'));
+
+		// Convert dimensions to meters
+		$length_in_meters = $this->convertLength($dimension_data['length'], $length_unit, self::METER_UNIT);
+		$width_in_meters = $this->convertLength($dimension_data['width'], $length_unit, self::METER_UNIT);
+		$height_in_meters = $this->convertLength($dimension_data['height'], $length_unit, self::METER_UNIT);
+
+		$cubic_volume = number_format($length_in_meters * $width_in_meters * $height_in_meters, 7, '.', '');
+
+		$weight = $this->weight->convert($this->cart->getWeight(), $this->config->get('config_weight_class_id'), $this->config->get('shipping_auspost_weight_class_id'));
+		$formatted_weight = (float) number_format($weight, 1, '.', '') ?: self::FALLBACK_WEIGHT;
+
+		if ($this->isStarTrackOrNZCommercial($account_no)) {
+			$dimension_data = ['cubic_volume' => $cubic_volume];
+		} else {
+			$dimension_data['length'] = number_format($this->convertLength($dimension_data['length'], $length_unit, self::CENTIMETER_UNIT), 1, '.', '');
+			$dimension_data['width'] = number_format($this->convertLength($dimension_data['width'], $length_unit, self::CENTIMETER_UNIT), 1, '.', '');
+			$dimension_data['height'] = number_format($this->convertLength($dimension_data['height'], $length_unit, self::CENTIMETER_UNIT), 1, '.', '');
+		}
 
 		return array(
 			'shipments' => array(
@@ -85,25 +100,24 @@ class ModelExtensionShippingAusPost extends Model
 		);
 	}
 
-	private function getCubicWeight() {
-		$dimension_data = $this->getMaxDimensions();
+	private function isStarTrackOrNZCommercial($account_no) {
+		// Split the account_no string by comma
+		$accounts = explode(',', $account_no);
 
-		// Convert dimensions to meters
-		$length_in_meters = (float) $this->convertLength($dimension_data['length'], self::CENTIMETER_UNIT, self::METER_UNIT);
-		$width_in_meters = (float) $this->convertLength($dimension_data['width'], self::CENTIMETER_UNIT, self::METER_UNIT);
-		$height_in_meters = (float) $this->convertLength($dimension_data['height'], self::CENTIMETER_UNIT, self::METER_UNIT);
+		foreach ($accounts as $account) {
+			// Split each account entry by colon
+			list($type, $number) = explode(':', $account);
 
-		$weight = $this->weight->convert($this->cart->getWeight(), $this->config->get('config_weight_class_id'), $this->config->get('shipping_auspost_weight_class_id'));
-		$formatted_weight = (float) number_format($weight, 1, '.', '');
+			// Convert the type to lowercase
+			$type = strtolower($type);
 
-		// Check if the weight is zero
-		if ($formatted_weight <= 0.5) {
-			// Calculate cubic weight
-			$cubicWeight = $length_in_meters * $width_in_meters * $height_in_meters * 250; // 250kg per cubic meter
-			return $cubicWeight;
+			// If the type is either "startrack" or "nzcommercial", return true
+			if ($type === 'startrack' || $type === 'nzcommercial') {
+				return true;
+			}
 		}
 
-		return $formatted_weight ?: self::FALLBACK_WEIGHT;
+		return false;
 	}
 
 	private function getMaxDimensions()
