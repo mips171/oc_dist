@@ -2510,6 +2510,7 @@ CREATE TABLE `oc_product` (
   `minimum` int(11) NOT NULL DEFAULT '1',
   `sort_order` int(11) NOT NULL DEFAULT '0',
   `status` tinyint(1) NOT NULL DEFAULT '0',
+  `shop_status` tinyint(1) NOT NULL DEFAULT '1',
   `viewed` int(5) NOT NULL DEFAULT '0',
   `date_added` datetime NOT NULL,
   `date_modified` datetime NOT NULL,
