@@ -90,10 +90,12 @@ class ModelExtensionShippingAusPost extends Model
 		$weight = $this->weight->convert($this->cart->getWeight(), $this->config->get('config_weight_class_id'), $this->config->get('shipping_auspost_weight_class_id'));
 		$formatted_weight = (float) number_format($weight, 1, '.', '');
 
-		// Check if the weight is zero
+		echo "Weight: " . $formatted_weight . "\n";
+
 		if ($formatted_weight <= 0.5) {
 			// Calculate cubic weight
 			$cubicWeight = $dimension_data['length'] * $dimension_data['width'] * $dimension_data['height'] * 250.0; // 250kg per cubic meter
+			echo "Cubic Weight: " . $cubicWeight . "\n";
 			return $cubicWeight;
 		}
 
