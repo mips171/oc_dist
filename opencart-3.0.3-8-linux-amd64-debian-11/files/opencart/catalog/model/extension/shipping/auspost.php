@@ -267,6 +267,8 @@ class ModelExtensionShippingAusPost extends Model
 	private static $productIdToTypeMap = [
 		"PRM" => "StarTrack Premium",
 		"EXP" => "StarTrack Road Express",
+		"7D85" => "Auspost Parcel Post + Signature", // telco contract
+		"3J35" => "Auspost Express Post + Signature", // telco contract
 		"7E55" => "Auspost Parcel Post + Signature",
 		"3K55" => "Auspost Express Post + Signature",
 		"RET" => "StarTrack Express Tail-lift",
