@@ -939,7 +939,6 @@ input[type="checkbox"]:checked::after, .checkbox input[type="checkbox"]:checked:
     position: sticky;
     top: 10px;
     left: 100%;
-    z-index: 1000;
 }
 
 @font-face {
