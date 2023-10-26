@@ -938,6 +938,7 @@ input[type="checkbox"]:checked::after, .checkbox input[type="checkbox"]:checked:
     position: -webkit-sticky;
     position: sticky;
     top: 10px;
+    left: 100%;
     z-index: 1000;
 }
 
