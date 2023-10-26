@@ -304,7 +304,7 @@
               </div>
               <ul class="nav nav-tabs nav-justified">
                 <li class="active"><a href="#tab-product" data-toggle="tab">{{ tab_product }}</a></li>
-                <li><a href="#tab-voucher" data-toggle="tab">{{ tab_voucher }}</a></li>
+                <li class="hidden"><a href="#tab-voucher" data-toggle="tab">{{ tab_voucher }}</a></li>
               </ul>
               <div class="tab-content">
                 <div class="tab-pane active" id="tab-product">
@@ -2319,7 +2319,7 @@ $('#button-refresh').on('click', function() {
 		},
 		complete: function() {
 			$('#button-refresh').button('reset');
-		},		
+		},
 		success: function(json) {
 			$('.alert-dismissible').remove();
 
