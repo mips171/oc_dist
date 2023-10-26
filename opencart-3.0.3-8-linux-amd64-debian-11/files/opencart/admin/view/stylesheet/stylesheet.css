@@ -66,7 +66,7 @@ a:hover, a:focus {
     width: 100%;
     position: relative;
     background: #f6f6f6;
-    overflow: hidden;
+    overflow: visible; /* set to visible for .sticky-scroller */
 }
 
 .container-fluid {
@@ -931,6 +931,15 @@ input[type="checkbox"]:checked::after, .checkbox input[type="checkbox"]:checked:
     background-color: #ffffff;
 }
 
+/* Sticky scroller needs .container overflow set to visible */
+.sticky-scroller {
+    height: 20%;
+    position: sticky;
+    position: -webkit-sticky;
+    position: sticky;
+    top: 10px;
+    z-index: 1000;
+}
 
 @font-face {
     font-family: 'opencart';
@@ -961,13 +970,13 @@ input[type="checkbox"]:checked::after, .checkbox input[type="checkbox"]:checked:
     content: "\e91c";
 }
 
-html[dir="rtl"] .form-group ul.dropdown-menu { 
-    text-align: right; 
+html[dir="rtl"] .form-group ul.dropdown-menu {
+    text-align: right;
     left: 0px !important;
     right: 31px !important;
 }
 
-html[dir="rtl"] #filter-product { 
+html[dir="rtl"] #filter-product {
     overflow: hidden;
 }
 
@@ -991,7 +1000,7 @@ html[dir="rtl"] .text-right {
     html[dir="rtl"] .col-md-push-9 {
         left: 0% !important;
     }
-    
+
     html[dir="rtl"] .col-md-pull-3 {
         right: 0% !important;
     }

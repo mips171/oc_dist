@@ -22,7 +22,7 @@
     </div>
     {% endif %}
     <div class="row">
-      <div id="filter-customer" class="col-md-3 col-md-push-9 col-sm-12 hidden-sm hidden-xs">
+      <div id="filter-customer" class="col-md-3 col-md-push-9 col-sm-12 hidden-sm hidden-xs sticky-scroller">
         <div class="panel panel-default">
           <div class="panel-heading">
             <h3 class="panel-title"><i class="fa fa-filter"></i> {{ text_filter }}</h3>
@@ -57,7 +57,7 @@
                 <option value="customer" selected="selected">{{ text_customer }}</option>
                 {% else %}
                 <option value="customer">{{ text_customer }}</option>
-                {% endif %}              
+                {% endif %}
                 {% if filter_type == 'affiliate' %}
                 <option value="affiliate" selected="selected">{{ text_affiliate }}</option>
                 {% else %}
@@ -97,14 +97,14 @@ $('#customer-approval').delegate('.pagination a', 'click', function(e) {
 
 	$('#customer-approval').load(this.href);
 });
-  
+
 $('#customer-approval').load('index.php?route=customer/customer_approval/customer_approval&user_token={{ user_token }}');
 
 $('#customer-approval').on('click', '.btn-success, .btn-danger', function(e) {
 	e.preventDefault();
-	
+
 	var element = this;
-	
+
 	$.ajax({
 		url: $(element).attr('href'),
 		dataType: 'json',
@@ -135,46 +135,46 @@ $('#customer-approval').on('click', '.btn-success, .btn-danger', function(e) {
 
 $('#button-filter').on('click', function() {
 	url = '';
-	
+
 	var filter_name = $('input[name=\'filter_name\']').val();
-	
+
 	if (filter_name) {
 		url += '&filter_name=' + encodeURIComponent(filter_name);
 	}
-	
+
 	var filter_email = $('input[name=\'filter_email\']').val();
-	
+
 	if (filter_email) {
 		url += '&filter_email=' + encodeURIComponent(filter_email);
-	}	
-		
+	}
+
 	var filter_customer_group_id = $('select[name=\'filter_customer_group_id\']').val();
-	
+
 	if (filter_customer_group_id !== '') {
 		url += '&filter_customer_group_id=' + encodeURIComponent(filter_customer_group_id);
-	}	
-	
+	}
+
 	var filter_type = $('select[name=\'filter_type\']').val();
-	
+
 	if (filter_type !== '') {
 		url += '&filter_type=' + filter_type;
 	}
-			
+
 	var filter_date_added = $('input[name=\'filter_date_added\']').val();
-	
+
 	if (filter_date_added) {
 		url += '&filter_date_added=' + encodeURIComponent(filter_date_added);
 	}
-	
+
 	$('#customer-approval').load('index.php?route=customer/customer_approval/customer_approval&user_token={{ user_token }}' + url);
 });
-//--></script> 
+//--></script>
   <script type="text/javascript"><!--
 $('input[name=\'filter_name\']').autocomplete({
 	'source': function(request, response) {
 		$.ajax({
 			url: 'index.php?route=customer/customer/autocomplete&user_token={{ user_token }}&filter_name=' +  encodeURIComponent(request),
-			dataType: 'json',			
+			dataType: 'json',
 			success: function(json) {
 				response($.map(json, function(item) {
 					return {
@@ -187,14 +187,14 @@ $('input[name=\'filter_name\']').autocomplete({
 	},
 	'select': function(item) {
 		$('input[name=\'filter_name\']').val(item['label']);
-	}	
+	}
 });
 
 $('input[name=\'filter_email\']').autocomplete({
 	'source': function(request, response) {
 		$.ajax({
 			url: 'index.php?route=customer/customer/autocomplete&user_token={{ user_token }}&filter_email=' +  encodeURIComponent(request),
-			dataType: 'json',			
+			dataType: 'json',
 			success: function(json) {
 				response($.map(json, function(item) {
 					return {
@@ -207,9 +207,9 @@ $('input[name=\'filter_email\']').autocomplete({
 	},
 	'select': function(item) {
 		$('input[name=\'filter_email\']').val(item['label']);
-	}	
+	}
 });
-//--></script> 
+//--></script>
   <script type="text/javascript"><!--
 $('.date').datetimepicker({
 	language: '{{ datepicker }}',
