@@ -11,6 +11,7 @@ $_['text_edit']          = 'Edit Credit Account settings';
 $_['entry_order_status'] = 'Order Status';
 $_['entry_status']       = 'Status';
 $_['entry_sort_order']   = 'Sort Order';
+$_['entry_max_total']    = 'Maximum Order Total';
 
 // Error
 $_['error_permission']   = 'Warning: You do not have permission to modify Credit Account settings';
