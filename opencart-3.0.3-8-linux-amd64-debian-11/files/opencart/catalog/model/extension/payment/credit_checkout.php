@@ -19,6 +19,11 @@ class ModelExtensionPaymentCreditCheckout extends Model {
 			return array();
 		}
 
+        // Order is over maximum allowed
+        if ($this->config->get('payment_credit_max_total') > $total) {
+            return array();
+        }
+
         // Get customer credit balance
         $creditBalance = $this->getCustomerCreditBalance();
 
