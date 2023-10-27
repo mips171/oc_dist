@@ -53,6 +53,17 @@ class ModelExtensionPaymentCreditCheckout extends Model {
      * @param float $newCredit
      * @return void
      */
+
+
+     public function install() {
+        $this->db->query("
+            ALTER TABLE oc_customer
+            ADD COLUMN `credit` DECIMAL(15,4) NOT NULL DEFAULT 0.0000,
+            ADD COLUMN `credit_limit` DECIMAL(15,4) NOT NULL DEFAULT 0.0000,
+            ADD COLUMN `credit_hold` TINYINT(1) NOT NULL DEFAULT 0;");
+     }
+
+
     private function logCreditChange($customerId, $amountChanged, $previousCredit, $newCredit) {
         $log = new Log('credit_changes.log');
         $log->write("Customer ID: {$customerId} - Amount Changed: {$amountChanged} - Previous Credit: {$previousCredit} - New Credit: {$newCredit}");
