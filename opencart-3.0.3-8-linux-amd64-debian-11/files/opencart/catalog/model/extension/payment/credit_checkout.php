@@ -1,9 +1,9 @@
 <?php
-class ModelExtensionPaymentFreeCheckout extends Model {
+class ModelExtensionPaymentCreditCheckout extends Model {
 	private $customerData = [];
 
     public function getMethod($address, $total) {
-        $this->load->language('extension/payment/free_checkout');
+        $this->load->language('extension/payment/credit_checkout');
 
 		// Check if logged in customer is on credit hold
 		$onCreditHold = $this->isCustomerOnCreditHold();
@@ -33,10 +33,10 @@ class ModelExtensionPaymentFreeCheckout extends Model {
 
         if ($status) {
             $method_data = array(
-                'code'       => 'free_checkout',
-                'title'      => $this->language->get('text_title'),
+                'code'       => 'credit_checkout',
+                'title'      => $this->language->get('text_title') . " - " . $creditBalance,
                 'terms'      => '',
-                'sort_order' => $this->config->get('payment_free_checkout_sort_order')
+                'sort_order' => $this->config->get('payment_credit_checkout_sort_order')
             );
         }
 
