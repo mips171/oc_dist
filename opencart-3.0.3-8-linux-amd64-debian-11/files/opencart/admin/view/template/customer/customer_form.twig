@@ -26,11 +26,11 @@
         <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-customer" class="form-horizontal">
           <ul class="nav nav-tabs">
             <li class="active"><a href="#tab-general" data-toggle="tab">{{ tab_general }}</a></li>
-            <li><a href="#tab-affiliate" data-toggle="tab">{{ tab_affiliate }}</a></li>
+            <li class="hidden"><a href="#tab-affiliate" data-toggle="tab">{{ tab_affiliate }}</a></li>
             {% if customer_id %}
             <li><a href="#tab-history" data-toggle="tab">{{ tab_history }}</a></li>
             <li><a href="#tab-transaction" data-toggle="tab">{{ tab_transaction }}</a></li>
-            <li><a href="#tab-reward" data-toggle="tab">{{ tab_reward }}</a></li>
+            <li class="hidden"><a href="#tab-reward" data-toggle="tab">{{ tab_reward }}</a></li>
             <li><a href="#tab-ip" data-toggle="tab">{{ tab_ip }}</a></li>
             {% endif %}
           </ul>
@@ -812,8 +812,8 @@
                      </select>
                   </div>
                 </div>
-              </fieldset>           
-            </div>         
+              </fieldset>
+            </div>
             {% if customer_id %}
             <div class="tab-pane" id="tab-history">
               <fieldset>
@@ -899,15 +899,15 @@
 
   <script type="text/javascript"><!--
   $('input[name="affiliate"]').on('change', function() {
-    if ($(this).val() == '1') { 
+    if ($(this).val() == '1') {
       $('#tab-affiliate :input').not('input[name="affiliate"]').prop('disabled', false);
     } else {
       $('#tab-affiliate :input').not('input[name="affiliate"]').prop('disabled', true);
     }
-  }); 
+  });
 
   $('input[name=\'affiliate\']:checked').trigger('change');
-  //--></script> 
+  //--></script>
   <script type="text/javascript"><!--
   $('select[name=\'customer_group_id\']').on('change', function() {
     $.ajax({
@@ -934,7 +934,7 @@
   });
 
   $('select[name=\'customer_group_id\']').trigger('change');
-  //--></script> 
+  //--></script>
   <script type="text/javascript"><!--
   var address_row = {{ address_row }};
 
@@ -1137,11 +1137,11 @@
 		if ($(this).attr('data-sort') >= 0 && $(this).attr('data-sort') <= $('#tab-address' + address_row + ' .form-group').length) {
 			$('#tab-address' + address_row + ' .form-group').eq($(this).attr('data-sort')).before(this);
 		}
-		
+
 		if ($(this).attr('data-sort') > $('#tab-address' + address_row + ' .form-group').length) {
 			$('#tab-address' + address_row + ' .form-group:last').after(this);
 		}
-		
+
 		if ($(this).attr('data-sort') < -$('#tab-address' + address_row + ' .form-group').length) {
 			$('#tab-address' + address_row + ' .form-group:first').before(this);
 		}
@@ -1149,7 +1149,7 @@
 
     address_row++;
   }
-  //--></script> 
+  //--></script>
   <script type="text/javascript"><!--
   function country(element, index, zone_id) {
     $.ajax({
@@ -1193,7 +1193,7 @@
   }
 
   $('select[name$=\'[country_id]\']').trigger('change');
-  //--></script> 
+  //--></script>
   <script type="text/javascript"><!--
   $('#history').delegate('.pagination a', 'click', function(e) {
     e.preventDefault();
@@ -1237,7 +1237,7 @@
       }
     });
   });
-  //--></script> 
+  //--></script>
   <script type="text/javascript"><!--
   $('#transaction').delegate('.pagination a', 'click', function(e) {
     e.preventDefault();
@@ -1282,7 +1282,7 @@
       }
     });
   });
-  //--></script> 
+  //--></script>
   <script type="text/javascript"><!--
   $('#reward').delegate('.pagination a', 'click', function(e) {
     e.preventDefault();
@@ -1452,7 +1452,7 @@
       $('#tab-affiliate .form-group:first').before(this);
     }
   });
-  //--></script> 
+  //--></script>
   <script type="text/javascript"><!--
   $('input[name=\'payment\']').on('change', function() {
     $('.payment').hide();
@@ -1461,6 +1461,6 @@
   });
 
   $('input[name=\'payment\']:checked').trigger('change');
-  //--></script> 
+  //--></script>
 </div>
-{{ footer }} 
+{{ footer }}
