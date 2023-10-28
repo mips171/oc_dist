@@ -13,5 +13,8 @@ $_['entry_status']       = 'Status';
 $_['entry_sort_order']   = 'Sort Order';
 $_['entry_max_total']    = 'Maximum Order Total';
 
+$_['help_max_total']    = 'Maximum order total this option can be used with';
+
+
 // Error
 $_['error_permission']   = 'Warning: You do not have permission to modify Credit Account settings';
