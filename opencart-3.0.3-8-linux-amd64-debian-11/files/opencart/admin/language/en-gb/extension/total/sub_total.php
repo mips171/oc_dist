@@ -1,6 +1,6 @@
 <?php
 // Heading
-$_['heading_title']    = 'Sub-Total';
+$_['heading_title']    = 'Sub-Total (exGST)';
 
 // Text
 $_['text_extension']   = 'Extensions';
