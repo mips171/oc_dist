@@ -798,7 +798,7 @@ class ControllerCustomerCustomer extends Controller {
 						$code = $address['custom_field'][$custom_field['custom_field_id']];
 
 						$upload_result = $this->model_tool_upload->getUploadByCode($code);
-						
+
 						$data['addresses'][$address_id]['custom_field'][$custom_field['custom_field_id']] = array();
 						if($upload_result) {
 							$data['addresses'][$address_id]['custom_field'][$custom_field['custom_field_id']]['name'] = $upload_result['name'];
@@ -846,6 +846,18 @@ class ControllerCustomerCustomer extends Controller {
 			$data['confirm'] = $this->request->post['confirm'];
 		} else {
 			$data['confirm'] = '';
+		}
+
+		if (isset($this->request->post['credit_limit'])) {
+			$data['credit_limit'] = $this->request->post['credit_limit'];
+		} else {
+			$data['credit_limit'] = '';
+		}
+
+		if (isset($this->request->post['credit_hold'])) {
+			$data['credit_hold'] = $this->request->post['credit_hold'];
+		} else {
+			$data['credit_hold'] = '';
 		}
 
 		$this->load->model('localisation/country');
