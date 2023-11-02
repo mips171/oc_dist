@@ -50,21 +50,21 @@
           </div>
           <table class="table">
             <tr>
-              <td style="width: 1%;"><button data-toggle="tooltip" title="{{ text_customer }}" class="btn btn-info btn-xs"><i class="fa fa-user fa-fw"></i></button></td>
+              <td style="width: 1%;">{{ text_customer }}</td>
               <td>{% if customer %} <a href="{{ customer }}" target="_blank">{{ firstname }} {{ lastname }}</a> {% else %}
                   {{ firstname }} {{ lastname }}
                 {% endif %}</td>
             </tr>
             <tr>
-              <td><button data-toggle="tooltip" title="{{ text_customer_group }}" class="btn btn-info btn-xs"><i class="fa fa-group fa-fw"></i></button></td>
+              <td>{{ text_customer_group }}</td>
               <td>{{ customer_group }}</td>
             </tr>
             <tr>
-              <td><button data-toggle="tooltip" title="{{ text_email }}" class="btn btn-info btn-xs"><i class="fa fa-envelope-o fa-fw"></i></button></td>
+              <td>{{ text_email }}</td>
               <td><a href="mailto:{{ email }}">{{ email }}</a></td>
             </tr>
             <tr>
-              <td><button data-toggle="tooltip" title="{{ text_telephone }}" class="btn btn-info btn-xs"><i class="fa fa-phone fa-fw"></i></button></td>
+              <td>{{ text_telephone }}</td>
               <td>{{ telephone }}</td>
             </tr>
           </table>
