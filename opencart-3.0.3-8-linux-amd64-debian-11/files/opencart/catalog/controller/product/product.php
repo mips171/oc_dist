@@ -306,8 +306,7 @@ class ControllerProductProduct extends Controller {
 			}
 
 			if ($this->config->get('config_tax')) {
-				# show the price without tax added
-				$data['tax'] = $this->currency->format($product_info['price'], $product_info['tax_class_id'], $this->config->get('config_tax'), $this->session->data['currency']);
+				$data['tax'] = $this->currency->format($tax_price, $this->session->data['currency']);
 			} else {
 				$data['tax'] = false;
 			}
