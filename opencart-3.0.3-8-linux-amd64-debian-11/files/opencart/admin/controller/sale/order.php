@@ -759,10 +759,6 @@ class ControllerSaleOrder extends Controller {
 				$url .= '&filter_order_id=' . $this->request->get['filter_order_id'];
 			}
 
-			if (isset($this->request->get['filter_invoice_no'])) {
-				$url .= '&filter_invoice_no=' . $this->request->get['filter_invoice_no'];
-			}
-
 			if (isset($this->request->get['filter_customer'])) {
 				$url .= '&filter_customer=' . urlencode(html_entity_decode($this->request->get['filter_customer'], ENT_QUOTES, 'UTF-8'));
 			}
@@ -1531,14 +1527,12 @@ class ControllerSaleOrder extends Controller {
 					$store_address = $store_info['config_address'];
 					$store_email = $store_info['config_email'];
 					$store_telephone = $store_info['config_telephone'];
-					$store_abn = $store_info['config_abn'];
-					$store_acn = $store_info['config_acn'];
+					$store_fax = $store_info['config_fax'];
 				} else {
 					$store_address = $this->config->get('config_address');
 					$store_email = $this->config->get('config_email');
 					$store_telephone = $this->config->get('config_telephone');
-					$store_abn = $this->config->get('config_abn');
-					$store_acn = $this->config->get('config_acn');
+					$store_fax = $this->config->get('config_fax');
 				}
 
 				if ($order_info['invoice_no']) {
@@ -1686,8 +1680,7 @@ class ControllerSaleOrder extends Controller {
 					'store_address'    => nl2br($store_address),
 					'store_email'      => $store_email,
 					'store_telephone'  => $store_telephone,
-					'store_abn'        => $store_abn,
-					'store_acn'        => $store_acn,
+					'store_fax'        => $store_fax,
 					'email'            => $order_info['email'],
 					'telephone'        => $order_info['telephone'],
 					'shipping_address' => $shipping_address,
