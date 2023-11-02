@@ -737,6 +737,22 @@ class ControllerCustomerCustomer extends Controller {
 			$data['telephone'] = '';
 		}
 
+		if (isset($this->request->post['credit_limit'])) {
+			$data['credit_limit'] = $this->request->post['credit_limit'];
+		} elseif (!empty($customer_info)) {
+			$data['credit_limit'] = $customer_info['credit_limit'];
+		} else {
+			$data['credit_limit'] = '';
+		}
+
+		if (isset($this->request->post['credit_hold'])) {
+			$data['credit_hold'] = $this->request->post['credit_hold'];
+		} elseif (!empty($customer_info)) {
+			$data['credit_hold'] = $customer_info['credit_hold'];
+		} else {
+			$data['credit_hold'] = '';
+		}
+
 		if (isset($this->request->post['custom_field'])) {
 			$data['account_custom_field'] = $this->request->post['custom_field'];
 		} elseif (!empty($customer_info)) {
