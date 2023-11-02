@@ -842,15 +842,15 @@ class ControllerSaleOrder extends Controller {
 				$data['customer'] = '';
 			}
 
-			$this->load->model('customer/customer_group');
+            $this->load->model('customer/customer_group');
 
-			$customer_group_info = $this->model_customer_customer_group->getCustomerGroup($order_info['customer_group_id']);
+            $customer_group_info = $this->model_customer_customer_group->getCustomerGroup($order_info['customer_group_id']);
 
-			if ($customer_group_info) {
-				$data['customer_group'] = $customer_group_info['name'];
-			} else {
-				$data['customer_group'] = '';
-			}
+            if ($customer_group_info) {
+                $data['customer_group'] = $customer_group_info['name'];
+            } else {
+                $data['customer_group'] = '';
+            }
 
 			$data['email'] = $order_info['email'];
 			$data['telephone'] = $order_info['telephone'];
