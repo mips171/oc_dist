@@ -565,6 +565,18 @@ class ControllerCustomerCustomer extends Controller {
 			$data['error_lastname'] = '';
 		}
 
+		if (isset($this->error['credit_limit'])) {
+			$data['error_credit_limit'] = $this->error['credit_limit'];
+		} else {
+			$data['error_credit_limit'] = '';
+		}
+
+		if (isset($this->error['credit_hold'])) {
+			$data['error_credit_hold'] = $this->error['credit_hold'];
+		} else {
+			$data['error_credit_hold'] = '';
+		}
+
 		if (isset($this->error['email'])) {
 			$data['error_email'] = $this->error['email'];
 		} else {
