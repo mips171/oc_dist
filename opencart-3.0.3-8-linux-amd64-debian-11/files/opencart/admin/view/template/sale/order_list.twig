@@ -33,16 +33,8 @@
         </div>
         <div class="panel-body">
           <div class="form-group">
-            <label class="control-label" for="input-invoice-no">{{ entry_invoice_no }}</label>
-            <input type="text" name="filter_invoice_no" value="{{ filter_invoice_no }}" placeholder="{{ entry_invoice_no }}" id="input-invoice-no" class="form-control" />
-          </div>
-          <div class="form-group">
             <label class="control-label" for="input-order-id">{{ entry_order_id }}</label>
             <input type="text" name="filter_order_id" value="{{ filter_order_id }}" placeholder="{{ entry_order_id }}" id="input-order-id" class="form-control" />
-          </div>
-          <div class="form-group">
-            <label class="control-label" for="input-order-invoice-number">{{ entry_invoice_no }}</label>
-            <input type="text" name="filter_invoice_no" value="{{ filter_invoice_no }}" placeholder="{{ entry_invoice_no }}" id="input-order-invoice-number" class="form-control" />
           </div>
           <div class="form-group">
             <label class="control-label" for="input-customer">{{ entry_customer }}</label>
@@ -105,7 +97,6 @@
                   <tr>
                     <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
                     <td class="text-right">{% if sort == 'o.order_id' %} <a href="{{ sort_order }}" class="{{ order|lower }}">{{ column_order_id }}</a> {% else %} <a href="{{ sort_order }}">{{ column_order_id }}</a> {% endif %}</td>
-                    <td class="text-right">{% if sort == 'o.invoice_no' %} <a href="{{ sort_order }}" class="{{ order|lower }}">{{ column_invoice_no }}</a> {% else %} <a href="{{ sort_order }}">{{ column_invoice_no }}</a> {% endif %}</td>
                     <td class="text-left">{% if sort == 'customer' %} <a href="{{ sort_customer }}" class="{{ order|lower }}">{{ column_customer }}</a> {% else %} <a href="{{ sort_customer }}">{{ column_customer }}</a> {% endif %}</td>
                     <td class="text-left">{% if sort == 'order_status' %} <a href="{{ sort_status }}" class="{{ order|lower }}">{{ column_status }}</a> {% else %} <a href="{{ sort_status }}">{{ column_status }}</a> {% endif %}</td>
                     <td class="text-right">{% if sort == 'o.total' %} <a href="{{ sort_total }}" class="{{ order|lower }}">{{ column_total }}</a> {% else %} <a href="{{ sort_total }}">{{ column_total }}</a> {% endif %}</td>
@@ -126,7 +117,6 @@
                     {% endif %}
                     <input type="hidden" name="shipping_code[]" value="{{ order.shipping_code }}" /></td>
                   <td class="text-right">{{ order.order_id }}</td>
-                  <td class="text-right">{{ order.invoice_no }}</td>
                   <td class="text-left">{{ order.customer }}</td>
                   <td class="text-left">{{ order.order_status }}</td>
                   <td class="text-right">{{ order.total }}</td>
@@ -169,12 +159,6 @@ $('#button-filter').on('click', function() {
 
 	if (filter_order_id) {
 		url += '&filter_order_id=' + encodeURIComponent(filter_order_id);
-	}
-
-  var filter_invoice_no = $('input[name=\'filter_invoice_no\']').val();
-
-	if (filter_invoice_no) {
-		url += '&filter_invoice_no=' + encodeURIComponent(filter_invoice_no);
 	}
 
 	var filter_customer = $('input[name=\'filter_customer\']').val();
