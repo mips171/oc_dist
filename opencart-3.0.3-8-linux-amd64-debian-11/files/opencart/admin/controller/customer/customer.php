@@ -565,18 +565,6 @@ class ControllerCustomerCustomer extends Controller {
 			$data['error_lastname'] = '';
 		}
 
-		if (isset($this->error['credit_limit'])) {
-			$data['error_credit_limit'] = $this->error['credit_limit'];
-		} else {
-			$data['error_credit_limit'] = '';
-		}
-
-		if (isset($this->error['credit_hold'])) {
-			$data['error_credit_hold'] = $this->error['credit_hold'];
-		} else {
-			$data['error_credit_hold'] = '';
-		}
-
 		if (isset($this->error['email'])) {
 			$data['error_email'] = $this->error['email'];
 		} else {
@@ -876,17 +864,6 @@ class ControllerCustomerCustomer extends Controller {
 			$data['confirm'] = '';
 		}
 
-		if (isset($this->request->post['credit_limit'])) {
-			$data['credit_limit'] = $this->request->post['credit_limit'];
-		} else {
-			$data['credit_limit'] = '';
-		}
-
-		if (isset($this->request->post['credit_hold'])) {
-			$data['credit_hold'] = $this->request->post['credit_hold'];
-		} else {
-			$data['credit_hold'] = '';
-		}
 
 		$this->load->model('localisation/country');
 
