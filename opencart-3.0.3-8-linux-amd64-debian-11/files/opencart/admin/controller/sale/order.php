@@ -45,10 +45,6 @@ class ControllerSaleOrder extends Controller {
 			$url .= '&filter_order_id=' . $this->request->get['filter_order_id'];
 		}
 
-		if (isset($this->request->get['filter_invoice_no'])) {
-			$url .= '&filter_invoice_no=' . $this->request->get['filter_invoice_no'];
-		}
-
 		if (isset($this->request->get['filter_customer'])) {
 			$url .= '&filter_customer=' . urlencode(html_entity_decode($this->request->get['filter_customer'], ENT_QUOTES, 'UTF-8'));
 		}
@@ -305,7 +301,6 @@ class ControllerSaleOrder extends Controller {
 		}
 
 		$data['sort_order'] = $this->url->link('sale/order', 'user_token=' . $this->session->data['user_token'] . '&sort=o.order_id' . $url, true);
-		$data['sort_order'] = $this->url->link('sale/order', 'user_token=' . $this->session->data['user_token'] . '&sort=o.invoice_no' . $url, true);
 		$data['sort_customer'] = $this->url->link('sale/order', 'user_token=' . $this->session->data['user_token'] . '&sort=customer' . $url, true);
 		$data['sort_status'] = $this->url->link('sale/order', 'user_token=' . $this->session->data['user_token'] . '&sort=order_status' . $url, true);
 		$data['sort_total'] = $this->url->link('sale/order', 'user_token=' . $this->session->data['user_token'] . '&sort=o.total' . $url, true);
@@ -415,10 +410,6 @@ class ControllerSaleOrder extends Controller {
 			$url .= '&filter_order_id=' . $this->request->get['filter_order_id'];
 		}
 
-		if (isset($this->request->get['filter_invoice_no'])) {
-			$url .= '&filter_invoice_no=' . $this->request->get['filter_invoice_no'];
-		}
-
 		if (isset($this->request->get['filter_customer'])) {
 			$url .= '&filter_customer=' . urlencode(html_entity_decode($this->request->get['filter_customer'], ENT_QUOTES, 'UTF-8'));
 		}
@@ -477,7 +468,6 @@ class ControllerSaleOrder extends Controller {
 
 		if (!empty($order_info)) {
 			$data['order_id'] = (int)$this->request->get['order_id'];
-			$data['invoice_no'] = (int)$this->request->get['invoice_no'];
 			$data['store_id'] = $order_info['store_id'];
 			$data['store_url'] = $this->request->server['HTTPS'] ? HTTPS_CATALOG : HTTP_CATALOG;
 
@@ -566,7 +556,6 @@ class ControllerSaleOrder extends Controller {
 			$data['currency_code'] = $order_info['currency_code'];
 		} else {
 			$data['order_id'] = 0;
-			$data['invoice_no'] = 0;
 			$data['store_id'] = 0;
 			$data['store_url'] = $this->request->server['HTTPS'] ? HTTPS_CATALOG : HTTP_CATALOG;
 
