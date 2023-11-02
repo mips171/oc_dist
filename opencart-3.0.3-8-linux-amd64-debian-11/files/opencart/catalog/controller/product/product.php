@@ -306,10 +306,8 @@ class ControllerProductProduct extends Controller {
 			}
 
 			if ($this->config->get('config_tax')) {
-				$exGst = (float)$data['price'] / 1.1;
-
-				// If you want to display the exGST amount formatted as a currency:
-				$data['tax'] = $this->currency->format($exGst, $this->session->data['currency']);
+				# show the price without tax added
+				$data['tax'] = $this->currency->format($product_info['price'], $product_info['tax_class_id'], $this->config->get('config_tax'), $this->session->data['currency']);
 			} else {
 				$data['tax'] = false;
 			}
