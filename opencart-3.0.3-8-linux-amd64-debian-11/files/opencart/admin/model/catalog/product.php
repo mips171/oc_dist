@@ -373,19 +373,23 @@ class ModelCatalogProduct extends Model
 
 	public function getProducts($data = array())
 	{
-		$sql = "SELECT * FROM " . DB_PREFIX . "product p LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id) WHERE pd.language_id = '" . (int) $this->config->get('config_language_id') . "'";
+        $sql = "SELECT * FROM " . DB_PREFIX . "product p LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id) WHERE pd.language_id = '" . (int) $this->config->get('config_language_id') . "'";
 
-		if (!empty($data['filter_name'])) {
-			$sql .= " AND pd.name LIKE '" . $this->db->escape($data['filter_name']) . "%'";
-		}
+        // Ensure that the search term is properly escaped for the SQL query.
+        if (!empty($data['filter_search'])) {
+            $search = $this->db->escape($data['filter_search']);
+            $sql .= " AND (pd.name LIKE '%" . $search . "%' OR p.sku LIKE '%" . $search . "%')";
+        }
 
-		if (!empty($data['filter_model'])) {
-			$sql .= " AND p.model LIKE '" . $this->db->escape($data['filter_model']) . "%'";
-		}
+        if (!empty($data['filter_model'])) {
+            $model = $this->db->escape($data['filter_model']);
+            $sql .= " AND p.model LIKE '" . $model . "%'";
+        }
 
-		if (!empty($data['filter_price'])) {
-			$sql .= " AND p.price LIKE '" . $this->db->escape($data['filter_price']) . "%'";
-		}
+        if (!empty($data['filter_price'])) {
+            $price = $this->db->escape($data['filter_price']);
+            $sql .= " AND p.price LIKE '" . $price . "%'";
+        }
 
 		if (isset($data['filter_quantity']) && $data['filter_quantity'] !== '') {
 			$sql .= " AND p.quantity = '" . (int) $data['filter_quantity'] . "'";
