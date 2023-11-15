@@ -59,9 +59,6 @@ class Session
      */
     public function start($session_id = '')
     {
-        $this->setCookieParams();
-        session_start();
-
         if (!$session_id) {
             if (function_exists('random_bytes')) {
                 $session_id = bin2hex(random_bytes(32)); // 32 bytes = 64 characters in hexadecimal
@@ -70,16 +67,29 @@ class Session
             }
         }
 
-        if (preg_match('/^[a-zA-Z0-9,\-]{64}$/', $session_id)) { // Updated regex for 64 hex characters
+        if (preg_match('/^[a-zA-Z0-9,\-]{64}$/', $session_id)) {
             $this->session_id = $session_id;
+            $this->data = $this->adaptor->read($session_id);
+
+            // Manually set the OCSESSID cookie
+            setcookie('OCSESSID', $session_id, [
+                'expires' => time() + 3600,
+                // 1 hour for example
+                'path' => '/',
+                'domain' => $_SERVER['HTTP_HOST'],
+                'secure' => true,
+                // true if using HTTPS
+                'httponly' => true,
+                // true to make the cookie inaccessible to JavaScript
+                'samesite' => 'Strict' // or 'Lax' depending on your needs
+            ]);
         } else {
             exit('Error: Invalid session ID!');
         }
 
-        $this->data = $this->adaptor->read($session_id);
-
         return $session_id;
     }
+
 
     /**
      *
@@ -103,20 +113,6 @@ class Session
         if (session_status() == PHP_SESSION_ACTIVE) {
             session_regenerate_id(true);
         }
-    }
-
-    // Function to check and set cookie parameters
-    private function setCookieParams()
-    {
-        $cookieParams = session_get_cookie_params();
-        session_set_cookie_params([
-            'lifetime' => $cookieParams["lifetime"],
-            'path' => $cookieParams["path"],
-            'domain' => $cookieParams["domain"],
-            'secure' => true,
-            // Set to true if using HTTPS
-            'httponly' => true // Prevents JavaScript access to session cookie
-        ]);
     }
 
     // Function to implement session expiration
