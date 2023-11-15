@@ -50,32 +50,61 @@ class Session
         return $this->session_id;
     }
 
-    /**
-     *
-     *
-     * @param	string	$session_id
-     *
-     * @return	string
-     */
     public function start($session_id = '')
     {
+        $this->setCookieParams(); // Ensure cookie parameters are set
+
         if (!$session_id) {
-            if (function_exists('random_bytes')) {
-                $session_id = bin2hex(random_bytes(32)); // 32 bytes = 64 characters in hexadecimal
-            } else {
-                $session_id = bin2hex(openssl_random_pseudo_bytes(32)); // Fallback using openssl
-            }
+            $session_id = $this->generateSessionId();
         }
 
-        if (preg_match('/^[a-zA-Z0-9,\-]{64}$/', $session_id)) { // Updated regex for 64 hex characters
+        if ($this->isValidSessionId($session_id)) {
             $this->session_id = $session_id;
+            $this->data = $this->adaptor->read($session_id);
         } else {
             exit('Error: Invalid session ID!');
         }
 
-        $this->data = $this->adaptor->read($session_id);
-
         return $session_id;
+    }
+
+    private function setCookieParams()
+    {
+        // Set cookie parameters to be secure and HttpOnly
+        $cookieParams = session_get_cookie_params();
+        session_set_cookie_params([
+            'lifetime' => $cookieParams["lifetime"],
+            'path' => $cookieParams["path"],
+            'domain' => $cookieParams["domain"],
+            'secure' => true,
+            'same_site' => 'Strict',
+            // Set to true to send the cookie over HTTPS only
+            'httponly' => true // Set to true to make the cookie inaccessible to JavaScript
+        ]);
+    }
+
+    private function generateSessionId()
+    {
+        // Generate a cryptographically secure session ID
+        if (function_exists('random_bytes')) {
+            return bin2hex(random_bytes(32)); // 32 bytes = 64 characters in hexadecimal
+        } else {
+            return bin2hex(openssl_random_pseudo_bytes(32)); // Fallback using openssl
+        }
+    }
+
+    private function isValidSessionId($session_id)
+    {
+        // Validate the session ID format
+        return preg_match('/^[a-zA-Z0-9,\-]{64}$/', $session_id);
+    }
+
+    public function regenerateId()
+    {
+        // Regenerate the session ID
+        $this->session_id = $this->generateSessionId();
+        // Update the session data with the new ID
+        $this->data = $this->adaptor->write($this->session_id, $this->data);
     }
 
     /**
