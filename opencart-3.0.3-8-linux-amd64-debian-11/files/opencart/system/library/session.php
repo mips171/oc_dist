@@ -77,7 +77,7 @@ class Session
             'path' => $cookieParams["path"],
             'domain' => $cookieParams["domain"],
             'secure' => true,
-            'same_site' => 'Strict',
+            'samesite' => 'Strict',
             // Set to true to send the cookie over HTTPS only
             'httponly' => true // Set to true to make the cookie inaccessible to JavaScript
         ]);
