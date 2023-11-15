@@ -1,115 +1,124 @@
 <?php
-class ControllerCommonLogin extends Controller {
-	private $error = array();
+class ControllerCommonLogin extends Controller
+{
+    private $error = array();
 
-	public function index() {
-		$this->load->language('common/login');
+    public function index()
+    {
+        $this->load->language('common/login');
 
-		$this->document->setTitle($this->language->get('heading_title'));
+        $this->document->setTitle($this->language->get('heading_title'));
 
-		if ($this->user->isLogged() && isset($this->request->get['user_token']) && ($this->request->get['user_token'] == $this->session->data['user_token'])) {
-			$this->response->redirect($this->url->link('common/dashboard', 'user_token=' . $this->session->data['user_token'], true));
-		}
+        if ($this->user->isLogged() && isset($this->request->get['user_token']) && ($this->request->get['user_token'] == $this->session->data['user_token'])) {
+            $this->response->redirect($this->url->link('common/dashboard', 'user_token=' . $this->session->data['user_token'], true));
+        }
 
-		if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
-			$this->session->data['user_token'] = token(32);
+        if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
+            // Regenerate session ID upon successful login
+            $this->session->regenerateId();
 
-			if (isset($this->request->post['redirect']) && (strpos($this->request->post['redirect'], HTTP_SERVER) === 0 || strpos($this->request->post['redirect'], HTTPS_SERVER) === 0)) {
-				$this->response->redirect($this->request->post['redirect'] . '&user_token=' . $this->session->data['user_token']);
-			} else {
-				$this->response->redirect($this->url->link('common/dashboard', 'user_token=' . $this->session->data['user_token'], true));
-			}
-		}
+            // Set user token after regenerating session ID
+            $this->session->data['user_token'] = token(32);
 
-		if ((isset($this->session->data['user_token']) && !isset($this->request->get['user_token'])) || ((isset($this->request->get['user_token']) && (isset($this->session->data['user_token']) && ($this->request->get['user_token'] != $this->session->data['user_token']))))) {
-			$this->error['warning'] = $this->language->get('error_token');
-		}
+            $redirect = (isset($this->request->post['redirect']) &&
+                (strpos($this->request->post['redirect'], HTTP_SERVER) === 0 ||
+                    strpos($this->request->post['redirect'], HTTPS_SERVER) === 0)) ?
+                $this->request->post['redirect'] :
+                $this->url->link('common/dashboard', 'user_token=' . $this->session->data['user_token'], true);
 
-		if (isset($this->error['error_attempts'])) {
-			$data['error_warning'] = $this->error['error_attempts'];
-		} elseif (isset($this->error['warning'])) {
-			$data['error_warning'] = $this->error['warning'];
-		} else {
-			$data['error_warning'] = '';
-		}
+            $this->response->redirect($redirect);
+        }
 
-		if (isset($this->session->data['success'])) {
-			$data['success'] = $this->session->data['success'];
+        if ((isset($this->session->data['user_token']) && !isset($this->request->get['user_token'])) || ((isset($this->request->get['user_token']) && (isset($this->session->data['user_token']) && ($this->request->get['user_token'] != $this->session->data['user_token']))))) {
+            $this->error['warning'] = $this->language->get('error_token');
+        }
 
-			unset($this->session->data['success']);
-		} else {
-			$data['success'] = '';
-		}
+        if (isset($this->error['error_attempts'])) {
+            $data['error_warning'] = $this->error['error_attempts'];
+        } elseif (isset($this->error['warning'])) {
+            $data['error_warning'] = $this->error['warning'];
+        } else {
+            $data['error_warning'] = '';
+        }
 
-		$data['action'] = $this->url->link('common/login', '', true);
+        if (isset($this->session->data['success'])) {
+            $data['success'] = $this->session->data['success'];
 
-		if (isset($this->request->post['username'])) {
-			$data['username'] = $this->request->post['username'];
-		} else {
-			$data['username'] = '';
-		}
+            unset($this->session->data['success']);
+        } else {
+            $data['success'] = '';
+        }
 
-		if (isset($this->request->post['password'])) {
-			$data['password'] = $this->request->post['password'];
-		} else {
-			$data['password'] = '';
-		}
+        $data['action'] = $this->url->link('common/login', '', true);
 
-		if (isset($this->request->get['route'])) {
-			$route = $this->request->get['route'];
+        if (isset($this->request->post['username'])) {
+            $data['username'] = $this->request->post['username'];
+        } else {
+            $data['username'] = '';
+        }
 
-			unset($this->request->get['route']);
-			unset($this->request->get['user_token']);
+        if (isset($this->request->post['password'])) {
+            $data['password'] = $this->request->post['password'];
+        } else {
+            $data['password'] = '';
+        }
 
-			$url = '';
+        if (isset($this->request->get['route'])) {
+            $route = $this->request->get['route'];
 
-			if ($this->request->get) {
-				$url .= http_build_query($this->request->get);
-			}
+            unset($this->request->get['route']);
+            unset($this->request->get['user_token']);
 
-			$data['redirect'] = $this->url->link($route, $url, true);
-		} else {
-			$data['redirect'] = '';
-		}
+            $url = '';
 
-		if ($this->config->get('config_password')) {
-			$data['forgotten'] = $this->url->link('common/forgotten', '', true);
-		} else {
-			$data['forgotten'] = '';
-		}
+            if ($this->request->get) {
+                $url .= http_build_query($this->request->get);
+            }
 
-		$data['header'] = $this->load->controller('common/header');
-		$data['footer'] = $this->load->controller('common/footer');
+            $data['redirect'] = $this->url->link($route, $url, true);
+        } else {
+            $data['redirect'] = '';
+        }
 
-		$this->response->setOutput($this->load->view('common/login', $data));
-	}
+        if ($this->config->get('config_password')) {
+            $data['forgotten'] = $this->url->link('common/forgotten', '', true);
+        } else {
+            $data['forgotten'] = '';
+        }
 
-	protected function validate() {
-		if(!isset($this->request->post['username']) || !isset($this->request->post['password']) || !$this->request->post['username'] || !$this->request->post['password']) {
-			$this->error['warning'] = $this->language->get('error_login');
-		} else {
-			$this->load->model('user/user');
+        $data['header'] = $this->load->controller('common/header');
+        $data['footer'] = $this->load->controller('common/footer');
 
-			// Check how many login attempts have been made.
-			$login_info = $this->model_user_user->getLoginAttempts($this->request->post['username']);
+        $this->response->setOutput($this->load->view('common/login', $data));
+    }
 
-			if ($login_info && ($login_info['total'] >= $this->config->get('config_login_attempts')) && strtotime('-1 hour') < strtotime($login_info['date_modified'])) {
-				$this->error['error_attempts'] = $this->language->get('error_attempts');
-			}
-		}
+    protected function validate()
+    {
+        if (!isset($this->request->post['username']) || !isset($this->request->post['password']) || !$this->request->post['username'] || !$this->request->post['password']) {
+            $this->error['warning'] = $this->language->get('error_login');
+        } else {
+            $this->load->model('user/user');
 
-		if(!$this->error) {
-			if (!$this->user->login($this->request->post['username'], html_entity_decode($this->request->post['password'], ENT_QUOTES, 'UTF-8'))) {
-				$this->error['warning'] = $this->language->get('error_login');
+            // Check how many login attempts have been made.
+            $login_info = $this->model_user_user->getLoginAttempts($this->request->post['username']);
 
-				$this->model_user_user->addLoginAttempt($this->request->post['username']);
+            if ($login_info && ($login_info['total'] >= $this->config->get('config_login_attempts')) && strtotime('-1 hour') < strtotime($login_info['date_modified'])) {
+                $this->error['error_attempts'] = $this->language->get('error_attempts');
+            }
+        }
 
-				unset($this->session->data['user_token']);
-			} else {
-				$this->model_user_user->deleteLoginAttempts($this->request->post['username']);
-			}
-		}
+        if (!$this->error) {
+            if (!$this->user->login($this->request->post['username'], html_entity_decode($this->request->post['password'], ENT_QUOTES, 'UTF-8'))) {
+                $this->error['warning'] = $this->language->get('error_login');
 
-		return !$this->error;
-	}
+                $this->model_user_user->addLoginAttempt($this->request->post['username']);
+
+                unset($this->session->data['user_token']);
+            } else {
+                $this->model_user_user->deleteLoginAttempts($this->request->post['username']);
+            }
+        }
+
+        return !$this->error;
+    }
 }
