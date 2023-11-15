@@ -69,7 +69,7 @@ class Session
 
             // Manually set the OCSESSID cookie
             setcookie('OCSESSID', $session_id, [
-                'expires' => time() + 3600,
+                'expires' => time() + 60 * 60 * 12,
                 // 1 hour for example
                 'path' => '/',
                 'domain' => $_SERVER['HTTP_HOST'],
