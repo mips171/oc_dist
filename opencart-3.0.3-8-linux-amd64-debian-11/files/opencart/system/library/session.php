@@ -60,7 +60,7 @@ class Session
     public function start($session_id = '')
     {
         if (!$session_id) {
-            $session_id = bin2hex(random_bytes(32)); // 32 bytes = 64 characters in hexadecimal
+            $session_id = $this->generateSessionId(); // 32 bytes = 64 characters in hexadecimal
         }
 
         if (preg_match('/^[a-zA-Z0-9,\-]{64}$/', $session_id)) {
@@ -103,12 +103,32 @@ class Session
         $this->adaptor->destroy($this->session_id);
     }
 
+    public function generateSessionId()
+    {
+        // Generate a new session ID
+        $new_session_id = bin2hex(random_bytes(32));
+
+        // Check if the new session ID already exists
+        if ($this->adaptor->read($new_session_id)) {
+            // If it exists, try to generate a new session ID again
+            $this->generateSessionId();
+        }
+
+        return $new_session_id;
+    }
+
     // Function to regenerate session ID
     public function regenerateId()
     {
-        if (session_status() == PHP_SESSION_ACTIVE) {
-            session_regenerate_id(true);
-        }
+        // Generate a new session ID
+        $new_session_id = $this->generateSessionId();
+
+        // Update session data with the new ID
+        $this->session_id = $new_session_id;
+        $this->data = $this->adaptor->write($new_session_id, $this->data);
+
+        // Set the new session ID in a cookie
+        $this->setSessionCookie($new_session_id);
     }
 
     // Function to implement session expiration
@@ -121,4 +141,21 @@ class Session
         }
         $_SESSION['LAST_ACTIVITY'] = time(); // update last activity time
     }
+
+
+    private function setSessionCookie($session_id)
+    {
+        // Set the session cookie with the new session ID
+        // Include the necessary flags like Secure, HttpOnly, etc.
+        setcookie('OCSESSID', $session_id, [
+            'expires' => time() + 60 * 60 * 12,
+            // Adjust the duration as needed
+            'path' => '/',
+            'domain' => $_SERVER['HTTP_HOST'],
+            'secure' => true,
+            'httponly' => true,
+            'samesite' => 'Strict'
+        ]);
+    }
+
 }
