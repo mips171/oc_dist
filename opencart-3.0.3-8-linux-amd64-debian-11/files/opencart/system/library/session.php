@@ -52,11 +52,6 @@ class Session
 
     public function start($session_id = '')
     {
-        $this->setCookieParams(); // Ensure cookie parameters are set
-
-        // Explicitly start the session
-        session_start();
-
         if (!$session_id) {
             $session_id = $this->generateSessionId();
         }
@@ -64,6 +59,9 @@ class Session
         if ($this->isValidSessionId($session_id)) {
             $this->session_id = $session_id;
             $this->data = $this->adaptor->read($session_id);
+
+            // Manually set the session cookie
+            $this->setSessionCookie($session_id);
         } else {
             exit('Error: Invalid session ID!');
         }
@@ -71,18 +69,22 @@ class Session
         return $session_id;
     }
 
-    private function setCookieParams()
+    private function setSessionCookie($session_id)
     {
-        // Set cookie parameters to be secure and HttpOnly
         $cookieParams = session_get_cookie_params();
-        session_set_cookie_params([
-            'lifetime' => $cookieParams["lifetime"],
-            'path' => $cookieParams["path"],
-            'domain' => $cookieParams["domain"],
-            'secure' => true,
-            'samesite' => 'Strict',
-            'httponly' => true // Set to true to make the cookie inaccessible to JavaScript
-        ]);
+        setcookie(
+            $this->session_name,
+            // or another name if you have a specific session cookie name
+            $session_id,
+            [
+                'expires' => time() + $cookieParams["lifetime"],
+                'path' => $cookieParams["path"],
+                'domain' => $cookieParams["domain"],
+                'secure' => true,
+                'httponly' => true,
+                'samesite' => 'Strict'
+            ]
+        );
     }
 
     private function generateSessionId()
