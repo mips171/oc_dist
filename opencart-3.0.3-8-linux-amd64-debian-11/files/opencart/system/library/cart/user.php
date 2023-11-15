@@ -47,8 +47,8 @@ class User
             // Generate and set user_token in session data
             $this->session->data['user_token'] = token(32); // Replace token(32) with your token generation logic
 
-            // Regenerate session ID
-            $this->session->regenerateId();
+            // // Regenerate session ID
+            // $this->session->regenerateId();
 
             $this->session->data['user_id'] = $user_query->row['user_id'];
 
