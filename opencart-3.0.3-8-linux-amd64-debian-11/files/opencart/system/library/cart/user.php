@@ -47,6 +47,11 @@ class User
             // Regenerate session ID upon successful login
             $this->session->regenerateId();
 
+            // Ensure that $this->session->data is an array
+            if (!is_array($this->session->data)) {
+                $this->session->data = array();
+            }
+
             $this->session->data['user_id'] = $user_query->row['user_id'];
 
             $this->user_id = $user_query->row['user_id'];
@@ -76,7 +81,6 @@ class User
         $this->user_id = '';
         $this->username = '';
 
-        // Regenerate session ID
         $this->session->regenerateId();
     }
 

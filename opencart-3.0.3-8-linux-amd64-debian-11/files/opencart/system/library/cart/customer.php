@@ -57,6 +57,11 @@ class Customer
             // Regenerate session ID upon successful login
             $this->session->regenerateId();
 
+            // Ensure that $this->session->data is an array
+            if (!is_array($this->session->data)) {
+                $this->session->data = array();
+            }
+
             $this->session->data['customer_id'] = $customer_query->row['customer_id'];
 
             $this->customer_id = $customer_query->row['customer_id'];
