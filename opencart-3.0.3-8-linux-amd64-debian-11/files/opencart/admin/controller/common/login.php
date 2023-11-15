@@ -17,14 +17,18 @@ class ControllerCommonLogin extends Controller
             // Regenerate session ID upon successful login
             $this->session->regenerateId();
 
-            // Set user token after regenerating session ID
+            // Generate and set user token in session data
             $this->session->data['user_token'] = token(32);
 
-            $redirect = (isset($this->request->post['redirect']) &&
+            // Determine the redirect destination
+            $redirect = $this->url->link('common/dashboard', 'user_token=' . $this->session->data['user_token'], true);
+            if (
+                isset($this->request->post['redirect']) &&
                 (strpos($this->request->post['redirect'], HTTP_SERVER) === 0 ||
-                    strpos($this->request->post['redirect'], HTTPS_SERVER) === 0)) ?
-                $this->request->post['redirect'] :
-                $this->url->link('common/dashboard', 'user_token=' . $this->session->data['user_token'], true);
+                    strpos($this->request->post['redirect'], HTTPS_SERVER) === 0)
+            ) {
+                $redirect = $this->request->post['redirect'] . '&user_token=' . $this->session->data['user_token'];
+            }
 
             $this->response->redirect($redirect);
         }
