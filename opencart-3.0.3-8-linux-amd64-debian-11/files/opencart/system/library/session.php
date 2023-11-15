@@ -54,6 +54,9 @@ class Session
     {
         $this->setCookieParams(); // Ensure cookie parameters are set
 
+        // Explicitly start the session
+        session_start();
+
         if (!$session_id) {
             $session_id = $this->generateSessionId();
         }
@@ -78,7 +81,6 @@ class Session
             'domain' => $cookieParams["domain"],
             'secure' => true,
             'samesite' => 'Strict',
-            // Set to true to send the cookie over HTTPS only
             'httponly' => true // Set to true to make the cookie inaccessible to JavaScript
         ]);
     }
