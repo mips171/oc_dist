@@ -120,18 +120,21 @@ class Session
     // Function to regenerate session ID
     public function regenerateId()
     {
-        // Save the current session data
-        $currentData = $this->data;
-
         // Generate a new session ID
         $new_session_id = $this->generateSessionId();
 
-        // Update session data with the new ID
-        $this->session_id = $new_session_id;
-        $this->data = $this->adaptor->write($new_session_id, $currentData);
+        // Preserve current session data
+        $currentData = $this->data;
 
-        // Restore the session data
-        $this->data = $currentData;
+        // Update the session with the new ID
+        $this->session_id = $new_session_id;
+        $this->data = $currentData; // Restore session data
+
+        // Write the new session ID and data to the storage
+        $this->adaptor->write($new_session_id, $this->data);
+
+        // Set the new session ID in a cookie
+        $this->setSessionCookie($new_session_id);
     }
 
     // Function to implement session expiration

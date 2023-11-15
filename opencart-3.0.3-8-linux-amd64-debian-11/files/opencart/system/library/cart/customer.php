@@ -54,13 +54,11 @@ class Customer
         }
 
         if ($customer_query->num_rows) {
-            // Regenerate session ID upon successful login
-            $this->session->regenerateId();
+            // Generate and set user_token in session data
+            $this->session->data['user_token'] = token(32); // Replace token(32) with your token generation logic
 
-            // Ensure that $this->session->data is an array
-            if (!is_array($this->session->data)) {
-                $this->session->data = array();
-            }
+            // Regenerate session ID
+            $this->session->regenerateId();
 
             $this->session->data['customer_id'] = $customer_query->row['customer_id'];
 

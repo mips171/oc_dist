@@ -44,13 +44,11 @@ class User
         $user_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "user WHERE username = '" . $this->db->escape($username) . "' AND (password = SHA1(CONCAT(salt, SHA1(CONCAT(salt, SHA1('" . $this->db->escape($password) . "'))))) OR password = '" . $this->db->escape(md5($password)) . "') AND status = '1'");
 
         if ($user_query->num_rows) {
-            // Regenerate session ID upon successful login
-            $this->session->regenerateId();
+            // Generate and set user_token in session data
+            $this->session->data['user_token'] = token(32); // Replace token(32) with your token generation logic
 
-            // Ensure that $this->session->data is an array
-            if (!is_array($this->session->data)) {
-                $this->session->data = array();
-            }
+            // Regenerate session ID
+            $this->session->regenerateId();
 
             $this->session->data['user_id'] = $user_query->row['user_id'];
 
