@@ -60,11 +60,7 @@ class Session
     public function start($session_id = '')
     {
         if (!$session_id) {
-            if (function_exists('random_bytes')) {
-                $session_id = bin2hex(random_bytes(32)); // 32 bytes = 64 characters in hexadecimal
-            } else {
-                $session_id = bin2hex(openssl_random_pseudo_bytes(32)); // Fallback using openssl
-            }
+            $session_id = bin2hex(random_bytes(32)); // 32 bytes = 64 characters in hexadecimal
         }
 
         if (preg_match('/^[a-zA-Z0-9,\-]{64}$/', $session_id)) {
