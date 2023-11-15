@@ -3314,7 +3314,7 @@ INSERT INTO `oc_statistics` (`statistics_id`, `code`, `value`) VALUES
 
 DROP TABLE IF EXISTS `oc_session`;
 CREATE TABLE `oc_session` (
-  `session_id` varchar(32) NOT NULL,
+  `session_id` varchar(64) NOT NULL,  -- Updated to varchar(64)
   `data` text NOT NULL,
   `expire` datetime NOT NULL,
   PRIMARY KEY (`session_id`)
