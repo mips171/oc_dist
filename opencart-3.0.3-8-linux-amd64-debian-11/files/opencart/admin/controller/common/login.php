@@ -14,8 +14,8 @@ class ControllerCommonLogin extends Controller
         }
 
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
-            // Regenerate session ID upon successful login
-            $this->session->regenerateId();
+            // // Regenerate session ID upon successful login
+            // $this->session->regenerateId();
 
             // Generate and set user token in session data
             $this->session->data['user_token'] = token(32);
