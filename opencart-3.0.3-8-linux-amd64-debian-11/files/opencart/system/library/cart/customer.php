@@ -54,12 +54,9 @@ class Customer
         }
 
         if ($customer_query->num_rows) {
-            // Correctly pass customer_id to handleLogin
-            $customer_id = $customer_query->row['customer_id'];
-            $this->session->handleLogin($customer_id);
+            $this->session->data['customer_id'] = $customer_query->row['customer_id'];
 
-            // Set customer-specific properties
-            $this->customer_id = $customer_id;
+            $this->customer_id = $customer_query->row['customer_id'];
             $this->firstname = $customer_query->row['firstname'];
             $this->lastname = $customer_query->row['lastname'];
             $this->customer_group_id = $customer_query->row['customer_group_id'];
@@ -68,7 +65,6 @@ class Customer
             $this->newsletter = $customer_query->row['newsletter'];
             $this->address_id = $customer_query->row['address_id'];
 
-            // Update customer's last login details
             $this->db->query("UPDATE " . DB_PREFIX . "customer SET language_id = '" . (int) $this->config->get('config_language_id') . "', ip = '" . $this->db->escape($this->request->server['REMOTE_ADDR']) . "' WHERE customer_id = '" . (int) $this->customer_id . "'");
 
             return true;
@@ -79,8 +75,7 @@ class Customer
 
     public function logout()
     {
-        // Clear session data specific to the user and regenerate session ID
-        $this->session->handleLogout();
+        unset($this->session->data['customer_id']);
 
         $this->customer_id = '';
         $this->firstname = '';
