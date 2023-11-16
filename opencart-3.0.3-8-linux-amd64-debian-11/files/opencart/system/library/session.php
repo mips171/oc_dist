@@ -155,6 +155,15 @@ class Session
         $this->data['user_id'] = $user_id;
     }
 
+    public function handleCustomerLogin($customer_id)
+    {
+        // Regenerate session ID for security reasons
+        $this->regenerateId();
+
+        // Set customer-specific session data
+        $this->data['customer_id'] = $customer_id;
+    }
+
     public function handleLogout()
     {
         $this->data = array();
