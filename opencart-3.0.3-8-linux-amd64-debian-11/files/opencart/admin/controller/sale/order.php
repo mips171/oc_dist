@@ -399,6 +399,7 @@ class ControllerSaleOrder extends Controller
         // } else {
         //     $data['api_token'] = '';
         // }
+        $data['api_token'] = '';
 
         $data['header'] = $this->load->controller('common/header');
         $data['column_left'] = $this->load->controller('common/column_left');
@@ -733,6 +734,7 @@ class ControllerSaleOrder extends Controller
         // } else {
         //     $data['api_token'] = '';
         // }
+        $data['api_token'] = '';
 
         $data['header'] = $this->load->controller('common/header');
         $data['column_left'] = $this->load->controller('common/column_left');
@@ -1275,6 +1277,7 @@ class ControllerSaleOrder extends Controller
             // } else {
             //     $data['api_token'] = '';
             // }
+            $data['api_token'] = '';
 
             $data['header'] = $this->load->controller('common/header');
             $data['column_left'] = $this->load->controller('common/column_left');
