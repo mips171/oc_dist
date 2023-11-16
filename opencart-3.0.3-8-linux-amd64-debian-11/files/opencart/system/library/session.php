@@ -95,35 +95,24 @@ class Session
 
     public function generateSessionId()
     {
-        // Generate a new session ID
-        $new_session_id = bin2hex(random_bytes(32));
-
-        // Check if the new session ID already exists
-        if ($this->adaptor->read($new_session_id)) {
-            // If it exists, try to generate a new session ID again
-            $this->generateSessionId();
-        }
+        do {
+            // Generate a new session ID
+            $new_session_id = bin2hex(random_bytes(32));
+        } while ($this->adaptor->read($new_session_id)); // Check if the new session ID already exists, and repeat if it does
 
         return $new_session_id;
     }
 
-    // Function to regenerate session ID
     public function regenerateId()
     {
         // Generate a new session ID
         $new_session_id = $this->generateSessionId();
 
-        // Preserve current session data
-        $currentData = $this->data;
-
-        // Update the session with the new ID
-        $this->session_id = $new_session_id;
-        $this->data = $currentData; // Restore session data
-
-        // Write the new session ID and data to the storage
+        // Update the session with the new ID and preserve current session data
         $this->adaptor->write($new_session_id, $this->data);
 
-        // Set the new session ID in a cookie
+        // Update the session_id property and set the new session ID in a cookie
+        $this->session_id = $new_session_id;
         $this->setSessionCookie($new_session_id);
     }
 
