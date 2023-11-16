@@ -160,11 +160,10 @@ class Session
         // Clear all session data
         $this->data = array();
 
+        $this->regenerateId();
+
         // Destroy the session
         $this->destroy();
-
-        // Invalidate the session cookie
-        setcookie('OCSESSID', '', time() - 3600, '/'); // Set the expiration to one hour ago
 
         // Optionally, return a confirmation of logout
         return true;
