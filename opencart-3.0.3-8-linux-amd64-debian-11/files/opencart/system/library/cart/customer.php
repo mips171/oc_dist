@@ -54,12 +54,6 @@ class Customer
         }
 
         if ($customer_query->num_rows) {
-            // Generate and set user_token in session data
-            $this->session->data['user_token'] = token(32); // Replace token(32) with your token generation logic
-
-            // // Regenerate session ID
-            // $this->session->regenerateId();
-
             $this->session->data['customer_id'] = $customer_query->row['customer_id'];
 
             $this->customer_id = $customer_query->row['customer_id'];
@@ -91,9 +85,6 @@ class Customer
         $this->telephone = '';
         $this->newsletter = '';
         $this->address_id = '';
-
-        // Regenerate session ID
-        $this->session->regenerateId();
     }
 
     public function isLogged()
