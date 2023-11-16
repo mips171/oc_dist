@@ -139,7 +139,7 @@ class Session
             'domain' => $_SERVER['HTTP_HOST'],
             'secure' => true,
             'httponly' => true,
-            'samesite' => 'Lax'
+            'samesite' => 'None'
         ]);
     }
 
