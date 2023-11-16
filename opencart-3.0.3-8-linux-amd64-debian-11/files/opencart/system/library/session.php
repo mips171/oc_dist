@@ -154,4 +154,16 @@ class Session
         ]);
     }
 
+    public function handleLogin($user_id)
+    {
+        // Regenerate session ID
+        $this->regenerateId();
+
+        // Generate and set user_token in session data
+        $this->data['user_token'] = token(32);
+
+        // Set user-specific session data
+        $this->data['user_id'] = $user_id;
+    }
+
 }

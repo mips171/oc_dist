@@ -101,11 +101,11 @@ if ($config->get('session_autostart')) {
        for all sessions!
        */
 
-    if (isset($_COOKIE[$config->get('session_name')])) {
-        $session_id = $_COOKIE[$config->get('session_name')];
-    } else {
-        $session_id = '';
-    }
+    // if (isset($_COOKIE[$config->get('session_name')])) {
+    //     $session_id = $_COOKIE[$config->get('session_name')];
+    // } else {
+    //     $session_id = '';
+    // }
 
     $session->start($session_id);
 

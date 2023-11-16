@@ -44,26 +44,21 @@ class User
         $user_query = $this->db->query("SELECT * FROM " . DB_PREFIX . "user WHERE username = '" . $this->db->escape($username) . "' AND (password = SHA1(CONCAT(salt, SHA1(CONCAT(salt, SHA1('" . $this->db->escape($password) . "'))))) OR password = '" . $this->db->escape(md5($password)) . "') AND status = '1'");
 
         if ($user_query->num_rows) {
-            // Generate and set user_token in session data
-            $this->session->data['user_token'] = token(32); // Replace token(32) with your token generation logic
+            // Correctly pass user_id to handleLogin
+            $user_id = $user_query->row['user_id'];
+            $this->session->handleLogin($user_id);
 
-            // // Regenerate session ID
-            // $this->session->regenerateId();
-
-            $this->session->data['user_id'] = $user_query->row['user_id'];
-
-            $this->user_id = $user_query->row['user_id'];
+            // Set user-specific properties
+            $this->user_id = $user_id;
             $this->username = $user_query->row['username'];
             $this->user_group_id = $user_query->row['user_group_id'];
 
-            $user_group_query = $this->db->query("SELECT permission FROM " . DB_PREFIX . "user_group WHERE user_group_id = '" . (int) $user_query->row['user_group_id'] . "'");
-
+            // Load user permissions
+            $user_group_query = $this->db->query("SELECT permission FROM " . DB_PREFIX . "user_group WHERE user_group_id = '" . (int) $user_group_query->row['user_group_id'] . "'");
             $permissions = json_decode($user_group_query->row['permission'], true);
 
-            if (is_array($permissions)) {
-                foreach ($permissions as $key => $value) {
-                    $this->permission[$key] = $value;
-                }
+            foreach ($permissions as $key => $value) {
+                $this->permission[$key] = $value;
             }
 
             return true;
@@ -78,8 +73,6 @@ class User
 
         $this->user_id = '';
         $this->username = '';
-
-        $this->session->regenerateId();
     }
 
     public function hasPermission($key, $value)

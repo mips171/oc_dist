@@ -6,21 +6,18 @@ class ControllerCommonLogin extends Controller
     public function index()
     {
         $this->load->language('common/login');
-
         $this->document->setTitle($this->language->get('heading_title'));
 
-        if ($this->user->isLogged() && isset($this->request->get['user_token']) && ($this->request->get['user_token'] == $this->session->data['user_token'])) {
+        // Redirect logged-in users to the dashboard
+        if (
+            $this->user->isLogged() && isset($this->request->get['user_token']) &&
+            ($this->request->get['user_token'] == $this->session->data['user_token'])
+        ) {
             $this->response->redirect($this->url->link('common/dashboard', 'user_token=' . $this->session->data['user_token'], true));
         }
 
+        // Handle login post request
         if (($this->request->server['REQUEST_METHOD'] == 'POST') && $this->validate()) {
-            // // Regenerate session ID upon successful login
-            // $this->session->regenerateId();
-
-            // Generate and set user token in session data
-            $this->session->data['user_token'] = token(32);
-
-            // Determine the redirect destination
             $redirect = $this->url->link('common/dashboard', 'user_token=' . $this->session->data['user_token'], true);
             if (
                 isset($this->request->post['redirect']) &&
@@ -29,7 +26,6 @@ class ControllerCommonLogin extends Controller
             ) {
                 $redirect = $this->request->post['redirect'] . '&user_token=' . $this->session->data['user_token'];
             }
-
             $this->response->redirect($redirect);
         }
 
