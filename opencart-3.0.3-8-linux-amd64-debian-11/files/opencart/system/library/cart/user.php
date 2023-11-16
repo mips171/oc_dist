@@ -69,8 +69,10 @@ class User
 
     public function logout()
     {
-        unset($this->session->data['user_id']);
+        // Clear session data specific to the user and regenerate session ID
+        $this->session->handleLogout();
 
+        // Reset user-specific properties
         $this->user_id = '';
         $this->username = '';
     }
