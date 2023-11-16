@@ -68,17 +68,7 @@ class Session
             $this->data = $this->adaptor->read($session_id);
 
             // Manually set the OCSESSID cookie
-            setcookie('OCSESSID', $session_id, [
-                'expires' => time() + 60 * 60 * 12,
-                // 1 hour for example
-                'path' => '/',
-                'domain' => $_SERVER['HTTP_HOST'],
-                'secure' => true,
-                // true if using HTTPS
-                'httponly' => true,
-                // true to make the cookie inaccessible to JavaScript
-                'samesite' => 'Strict' // or 'Lax' depending on your needs
-            ]);
+            $this->setSessionCookie($session_id);
         } else {
             exit('Error: Invalid session ID!');
         }
