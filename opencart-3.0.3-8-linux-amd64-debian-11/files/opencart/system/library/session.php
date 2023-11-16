@@ -157,15 +157,12 @@ class Session
 
     public function handleLogout()
     {
-        // Clear all session data
         $this->data = array();
 
         $this->regenerateId();
 
-        // Destroy the session
         $this->destroy();
 
-        // Optionally, return a confirmation of logout
         return true;
     }
 
