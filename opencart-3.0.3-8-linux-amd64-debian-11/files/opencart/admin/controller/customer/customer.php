@@ -1503,8 +1503,9 @@ class ControllerCustomerCustomer extends Controller
                 'filter_email' => $filter_email,
                 'filter_affiliate' => $filter_affiliate,
                 'start' => 0,
-                'limit' => 10,
-                'filter_or' => 'yes'
+                'limit' => 15,
+                'filter_omni' => 'yes',
+                'filter_or' => 'yes' // needed by filter_omni
             );
 
             $results = $this->model_customer_customer->getCustomers($filter_data);

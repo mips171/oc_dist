@@ -136,7 +136,25 @@ class ModelCustomerCustomer extends Model
             $SQL_OP = "OR";
         }
 
-        if ($implode) {
+        // Check if omni search is enabled
+        if (isset($data['filter_omni']) && $data['filter_omni'] == 'yes') {
+            $omni_implode = array();
+
+            if (!empty($data['filter_name'])) {
+                $omni_implode[] = "CONCAT(LOWER(c.firstname), ' ', LOWER(c.lastname)) LIKE '%" . $lowercasedName . "%'";
+            }
+
+            if (!empty($data['filter_email'])) {
+                $omni_implode[] = "LOWER(c.email) LIKE '%" . $this->db->escape(strtolower($data['filter_email'])) . "%'";
+            }
+
+            // Add other omni search conditions as needed
+            // Example: if (!empty($data['filter_company'])) { $omni_implode[] = "..."; }
+
+            if ($omni_implode) {
+                $sql .= " AND (" . implode(" " . $SQL_OP . " ", $omni_implode) . ")";
+            }
+        } elseif ($implode) {
             $sql .= " AND " . implode(" " . $SQL_OP . " ", $implode);
         }
 
@@ -176,9 +194,7 @@ class ModelCustomerCustomer extends Model
         // Debugging: output the SQL query
         error_log("SQL Query: " . $sql);
 
-
         $query = $this->db->query($sql);
-
 
         return $query->rows;
     }
