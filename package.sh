@@ -9,3 +9,4 @@ echo "$sum" > opencart-3.0.3-8-linux-amd64-debian-11.tar.gz.sha256
 git add .
 git commit -m "update opencart-3.0.3-8-linux-amd64-debian-11.tar.gz"
 git push
+date
