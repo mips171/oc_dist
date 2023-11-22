@@ -168,6 +168,10 @@ class ModelCustomerCustomer extends Model
 
         $query = $this->db->query($sql);
 
+
+        // Debugging: output the SQL query
+        error_log("SQL Query: " . $sql);
+
         return $query->rows;
     }
 
