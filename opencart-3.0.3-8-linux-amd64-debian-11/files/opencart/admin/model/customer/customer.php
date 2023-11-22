@@ -98,11 +98,11 @@ class ModelCustomerCustomer extends Model
         $implode = array();
 
         if (!empty($data['filter_name'])) {
-            $implode[] = "CONCAT(c.firstname, ' ', c.lastname) LIKE '%" . $this->db->escape($data['filter_name']) . "%'";
+            $implode[] = "CONCAT(LOWER(c.firstname), ' ', LOWER(c.lastname)) LIKE '%" . strtolower($this->db->escape($data['filter_name'])) . "%'";
         }
 
         if (!empty($data['filter_email'])) {
-            $implode[] = "c.email LIKE '%" . $this->db->escape($data['filter_email']) . "%'";
+            $implode[] = "LOWER(c.email) LIKE '%" . $this->db->escape(strtolower($data['filter_email'])) . "%'";
         }
 
         if (isset($data['filter_newsletter']) && !is_null($data['filter_newsletter'])) {
