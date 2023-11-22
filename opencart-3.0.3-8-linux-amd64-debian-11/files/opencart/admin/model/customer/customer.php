@@ -136,25 +136,7 @@ class ModelCustomerCustomer extends Model
             $SQL_OP = "OR";
         }
 
-        // Check if omni search is enabled
-        if (isset($data['filter_omni']) && $data['filter_omni'] == 'yes') {
-            $omni_implode = array();
-
-            if (!empty($data['filter_name'])) {
-                $omni_implode[] = "CONCAT(LOWER(c.firstname), ' ', LOWER(c.lastname)) LIKE '%" . $lowercasedName . "%'";
-            }
-
-            if (!empty($data['filter_email'])) {
-                $omni_implode[] = "LOWER(c.email) LIKE '%" . $this->db->escape(strtolower($data['filter_email'])) . "%'";
-            }
-
-            // Add other omni search conditions as needed
-            // Example: if (!empty($data['filter_company'])) { $omni_implode[] = "..."; }
-
-            if ($omni_implode) {
-                $sql .= " AND (" . implode(" " . $SQL_OP . " ", $omni_implode) . ")";
-            }
-        } elseif ($implode) {
+        if ($implode) {
             $sql .= " AND " . implode(" " . $SQL_OP . " ", $implode);
         }
 
@@ -275,11 +257,12 @@ class ModelCustomerCustomer extends Model
         $implode = array();
 
         if (!empty($data['filter_name'])) {
-            $implode[] = "CONCAT(firstname, ' ', lastname) LIKE '%" . $this->db->escape($data['filter_name']) . "%'";
+            $lowercasedName = strtolower($this->db->escape($data['filter_name']));
+            $implode[] = "CONCAT(LOWER(c.firstname), ' ', LOWER(c.lastname)) LIKE '%" . $lowercasedName . "%'";
         }
 
         if (!empty($data['filter_email'])) {
-            $implode[] = "email LIKE '" . $this->db->escape($data['filter_email']) . "%'";
+            $implode[] = "LOWER(c.email) LIKE '%" . $this->db->escape(strtolower($data['filter_email'])) . "%'";
         }
 
         if (isset($data['filter_newsletter']) && !is_null($data['filter_newsletter'])) {
