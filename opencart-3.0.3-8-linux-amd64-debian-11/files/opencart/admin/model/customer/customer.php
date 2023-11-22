@@ -131,7 +131,7 @@ class ModelCustomerCustomer extends Model
         }
 
         if ($implode) {
-            $sql .= " AND " . implode(" AND ", $implode);
+            $sql .= " AND " . implode(" OR ", $implode);
         }
 
         $sort_data = array(
