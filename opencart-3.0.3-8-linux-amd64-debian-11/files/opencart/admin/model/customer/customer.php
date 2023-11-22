@@ -249,38 +249,41 @@ class ModelCustomerCustomer extends Model
     {
         $sql = "SELECT COUNT(*) AS total FROM " . DB_PREFIX . "customer c";
 
-        $implode = array();
+        $conditions = array();
 
+        // Refactor conditions to make them clearer and case-insensitive
         if (!empty($data['filter_name'])) {
-            $implode[] = "CONCAT(firstname, ' ', lastname) LIKE '%" . $this->db->escape($data['filter_name']) . "%'";
+            $conditions[] = "CONCAT(LOWER(firstname), ' ', LOWER(lastname)) LIKE '%" . $this->db->escape(strtolower($data['filter_name'])) . "%'";
         }
 
         if (!empty($data['filter_email'])) {
-            $implode[] = "email LIKE '" . $this->db->escape($data['filter_email']) . "%'";
+            $conditions[] = "LOWER(email) LIKE '" . $this->db->escape(strtolower($data['filter_email'])) . "%'";
         }
 
+        // Other conditions remain the same
         if (isset($data['filter_newsletter']) && !is_null($data['filter_newsletter'])) {
-            $implode[] = "newsletter = '" . (int) $data['filter_newsletter'] . "'";
+            $conditions[] = "newsletter = '" . (int) $data['filter_newsletter'] . "'";
         }
 
         if (!empty($data['filter_customer_group_id'])) {
-            $implode[] = "customer_group_id = '" . (int) $data['filter_customer_group_id'] . "'";
+            $conditions[] = "customer_group_id = '" . (int) $data['filter_customer_group_id'] . "'";
         }
 
         if (!empty($data['filter_ip'])) {
-            $implode[] = "customer_id IN (SELECT customer_id FROM " . DB_PREFIX . "customer_ip WHERE ip = '" . $this->db->escape($data['filter_ip']) . "')";
+            $conditions[] = "customer_id IN (SELECT customer_id FROM " . DB_PREFIX . "customer_ip WHERE ip = '" . $this->db->escape($data['filter_ip']) . "')";
         }
 
         if (isset($data['filter_status']) && $data['filter_status'] !== '') {
-            $implode[] = "status = '" . (int) $data['filter_status'] . "'";
+            $conditions[] = "status = '" . (int) $data['filter_status'] . "'";
         }
 
         if (!empty($data['filter_date_added'])) {
-            $implode[] = "DATE(date_added) = DATE('" . $this->db->escape($data['filter_date_added']) . "')";
+            $conditions[] = "DATE(date_added) = DATE('" . $this->db->escape($data['filter_date_added']) . "')";
         }
 
-        if ($implode) {
-            $sql .= " WHERE " . implode(" AND ", $implode);
+        // Append conditions to the SQL query
+        if (!empty($conditions)) {
+            $sql .= " WHERE " . implode(" OR ", $conditions);
         }
 
         $query = $this->db->query($sql);
