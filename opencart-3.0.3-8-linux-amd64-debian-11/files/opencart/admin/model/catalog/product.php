@@ -364,53 +364,39 @@ class ModelCatalogProduct extends Model
         $this->cache->delete('product');
     }
 
+    public function getProduct($product_id)
+    {
+        $query = $this->db->query("SELECT DISTINCT * FROM " . DB_PREFIX . "product p LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id) WHERE p.product_id = '" . (int) $product_id . "' AND pd.language_id = '" . (int) $this->config->get('config_language_id') . "'");
+
+        return $query->row;
+    }
+
     public function getProducts($data = array())
     {
         $sql = "SELECT * FROM " . DB_PREFIX . "product p LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id) WHERE pd.language_id = '" . (int) $this->config->get('config_language_id') . "'";
 
-        $implode = array();
-
+        // Ensure that the search term is properly escaped for the SQL query.
         if (!empty($data['filter_search'])) {
-            // Use a different pattern in preg_split to keep hyphenated words as a single term
-            $searchTerms = preg_split('/\s+/', $this->db->escape($data['filter_search']), -1, PREG_SPLIT_NO_EMPTY);
-            $searchConditions = array();
-
-            foreach ($searchTerms as $term) {
-                // Keep the hyphenated terms together
-                $term = str_replace('-', ' ', $term);
-                $searchConditions[] = "(pd.name LIKE '%" . $term . "%' OR p.model LIKE '%" . $term . "%')";
-            }
-
-            $implode[] = "(" . implode(" OR ", $searchConditions) . ")";
+            $search = $this->db->escape($data['filter_search']);
+            $sql .= " AND (pd.name LIKE '%" . $search . "%' OR p.model LIKE '%" . $search . "%')";
         }
 
         if (!empty($data['filter_model'])) {
             $model = $this->db->escape($data['filter_model']);
-            $implode[] = "p.model LIKE '" . $model . "%'";
+            $sql .= " AND p.model LIKE '" . $model . "%'";
         }
 
         if (!empty($data['filter_price'])) {
             $price = $this->db->escape($data['filter_price']);
-            $implode[] = "p.price LIKE '" . $price . "%'";
+            $sql .= " AND p.price LIKE '" . $price . "%'";
         }
 
         if (isset($data['filter_quantity']) && $data['filter_quantity'] !== '') {
-            $implode[] = "p.quantity = '" . (int) $data['filter_quantity'] . "'";
+            $sql .= " AND p.quantity = '" . (int) $data['filter_quantity'] . "'";
         }
 
         if (isset($data['filter_status']) && $data['filter_status'] !== '') {
-            $implode[] = "p.status = '" . (int) $data['filter_status'] . "'";
-        }
-
-        // Define the SQL operator based on the filter_or condition
-        $SQL_OP = "AND";
-
-        if (isset($data['filter_or']) && $data['filter_or'] == 'yes') {
-            $SQL_OP = "OR";
-        }
-
-        if ($implode) {
-            $sql .= " AND " . implode(" " . $SQL_OP . " ", $implode);
+            $sql .= " AND p.status = '" . (int) $data['filter_status'] . "'";
         }
 
         $sql .= " GROUP BY p.product_id";
