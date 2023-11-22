@@ -1005,7 +1005,7 @@ $('input[name=\'customer\']').autocomplete({
 				response($.map(json, function(item) {
 					return {
 						category: item['customer_group'],
-						label: item['name'],
+                        label: item['name']  + ' - ' +  item['email'],
 						value: item['customer_id'],
 						customer_group_id: item['customer_group_id'],
 						firstname: item['firstname'],
