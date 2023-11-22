@@ -98,24 +98,12 @@ class ModelCustomerCustomer extends Model
         $implode = array();
 
         if (!empty($data['filter_name'])) {
-            // Handle filter_omni search
-            if (isset($data['filter_omni']) && $data['filter_omni'] == 'yes') {
-                $omniSearchConditions = array();
-                $lowercasedTerms = preg_split('/\s+/', strtolower($this->db->escape($data['filter_name'])), -1, PREG_SPLIT_NO_EMPTY);
-
-                foreach ($lowercasedTerms as $term) {
-                    $omniSearchConditions[] = "CONCAT(LOWER(c.firstname), ' ', LOWER(c.lastname)) LIKE '%" . $term . "%' OR LOWER(c.email) LIKE '%" . $term . "%'";
-                }
-
-                $implode[] = "(" . implode(" AND ", $omniSearchConditions) . ")";
-            } else {
-                $lowercasedName = strtolower($this->db->escape($data['filter_name']));
-                $implode[] = "CONCAT(LOWER(c.firstname), ' ', LOWER(c.lastname)) LIKE '%" . $lowercasedName . "%'";
-            }
+            $lowercasedName = strtolower($this->db->escape($data['filter_name']));
+            $implode[] = "CONCAT(LOWER(c.firstname), ' ', LOWER(c.lastname)) LIKE '%" . $lowercasedName . "%'";
         }
 
         if (!empty($data['filter_email'])) {
-            $implode[] = "c.email LIKE '" . $this->db->escape($data['filter_email']) . "%'";
+            $implode[] = "LOWER(c.email) LIKE '%" . $this->db->escape(strtolower($data['filter_email'])) . "%'";
         }
 
         if (isset($data['filter_newsletter']) && !is_null($data['filter_newsletter'])) {
@@ -142,8 +130,32 @@ class ModelCustomerCustomer extends Model
             $implode[] = "DATE(c.date_added) = DATE('" . $this->db->escape($data['filter_date_added']) . "')";
         }
 
-        if ($implode) {
-            $sql .= " AND " . implode(" AND ", $implode);
+        $SQL_OP = "AND";
+
+        if (isset($data['filter_or']) && $data['filter_or'] == 'yes') {
+            $SQL_OP = "OR";
+        }
+
+        // Check if omni search is enabled
+        if (isset($data['filter_omni']) && $data['filter_omni'] == 'yes') {
+            $omni_implode = array();
+
+            if (!empty($data['filter_name'])) {
+                $omni_implode[] = "CONCAT(LOWER(c.firstname), ' ', LOWER(c.lastname)) LIKE '%" . $lowercasedName . "%'";
+            }
+
+            if (!empty($data['filter_email'])) {
+                $omni_implode[] = "LOWER(c.email) LIKE '%" . $this->db->escape(strtolower($data['filter_email'])) . "%'";
+            }
+
+            // Add other omni search conditions as needed
+            // Example: if (!empty($data['filter_company'])) { $omni_implode[] = "..."; }
+
+            if ($omni_implode) {
+                $sql .= " AND (" . implode(" " . $SQL_OP . " ", $omni_implode) . ")";
+            }
+        } elseif ($implode) {
+            $sql .= " AND " . implode(" " . $SQL_OP . " ", $implode);
         }
 
         $sort_data = array(
