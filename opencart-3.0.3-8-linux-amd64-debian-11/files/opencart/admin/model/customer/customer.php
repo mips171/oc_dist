@@ -99,7 +99,7 @@ class ModelCustomerCustomer extends Model
 
         if (!empty($data['filter_name'])) {
             // Handle filter_omni search
-            if (isset($data['filter_omni']) && $data['filter_omni'] == 'true') {
+            if (isset($data['filter_omni']) && $data['filter_omni'] == 'yes') {
                 $omniSearchConditions = array();
                 $lowercasedTerms = preg_split('/\s+/', strtolower($this->db->escape($data['filter_name'])), -1, PREG_SPLIT_NO_EMPTY);
 
