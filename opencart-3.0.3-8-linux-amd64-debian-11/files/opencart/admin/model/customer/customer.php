@@ -132,7 +132,7 @@ class ModelCustomerCustomer extends Model
 
         $SQL_OP = "AND";
 
-        if (isset($data['filter_or']) && $data['filter_or'] == 'true') {
+        if (isset($data['filter_or']) && $data['filter_or'] == 'y') {
             $SQL_OP = "OR";
         }
 
