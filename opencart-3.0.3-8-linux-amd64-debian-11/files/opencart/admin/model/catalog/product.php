@@ -371,10 +371,13 @@ class ModelCatalogProduct extends Model
         $implode = array();
 
         if (!empty($data['filter_search'])) {
+            // Use a different pattern in preg_split to keep hyphenated words as a single term
             $searchTerms = preg_split('/\s+/', $this->db->escape($data['filter_search']), -1, PREG_SPLIT_NO_EMPTY);
             $searchConditions = array();
 
             foreach ($searchTerms as $term) {
+                // Keep the hyphenated terms together
+                $term = str_replace('-', ' ', $term);
                 $searchConditions[] = "(pd.name LIKE '%" . $term . "%' OR p.model LIKE '%" . $term . "%')";
             }
 
