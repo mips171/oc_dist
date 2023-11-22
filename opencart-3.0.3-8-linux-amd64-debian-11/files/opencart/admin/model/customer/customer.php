@@ -173,6 +173,10 @@ class ModelCustomerCustomer extends Model
             $sql .= " LIMIT " . (int) $data['start'] . "," . (int) $data['limit'];
         }
 
+        // Debugging: output the SQL query
+        error_log("SQL Query: " . $sql);
+
+
         $query = $this->db->query($sql);
 
 
