@@ -98,54 +98,24 @@ class ModelCustomerCustomer extends Model
         $implode = array();
 
         if (!empty($data['filter_name'])) {
-            $lowercasedName = strtolower($this->db->escape($data['filter_name']));
-            $nameConditions = array();
+            // Handle filter_omni search
+            if (isset($data['filter_omni']) && $data['filter_omni'] == 'true') {
+                $omniSearchConditions = array();
+                $lowercasedTerms = preg_split('/\s+/', strtolower($this->db->escape($data['filter_name'])), -1, PREG_SPLIT_NO_EMPTY);
 
-            if (isset($data['filter_omni']) && $data['filter_omni'] == 'yes') {
-                $nameWords = preg_split('/\s+/', $lowercasedName, -1, PREG_SPLIT_NO_EMPTY);
-
-                foreach ($nameWords as $word) {
-                    $nameConditions[] = "CONCAT(LOWER(c.firstname), ' ', LOWER(c.lastname)) LIKE '%" . $word . "%'";
+                foreach ($lowercasedTerms as $term) {
+                    $omniSearchConditions[] = "CONCAT(LOWER(c.firstname), ' ', LOWER(c.lastname)) LIKE '%" . $term . "%' OR LOWER(c.email) LIKE '%" . $term . "%'";
                 }
-            } else {
-                $nameConditions[] = "CONCAT(LOWER(c.firstname), ' ', LOWER(c.lastname)) LIKE '%" . $lowercasedName . "%'";
-            }
 
-            $implode[] = "(" . implode(" AND ", $nameConditions) . ")";
+                $implode[] = "(" . implode(" AND ", $omniSearchConditions) . ")";
+            } else {
+                $lowercasedName = strtolower($this->db->escape($data['filter_name']));
+                $implode[] = "CONCAT(LOWER(c.firstname), ' ', LOWER(c.lastname)) LIKE '%" . $lowercasedName . "%'";
+            }
         }
 
         if (!empty($data['filter_email'])) {
-            $lowercasedEmail = strtolower($this->db->escape($data['filter_email']));
-            $emailConditions = array();
-
-            if (isset($data['filter_omni']) && $data['filter_omni'] == 'yes') {
-                $emailWords = preg_split('/\s+/', $lowercasedEmail, -1, PREG_SPLIT_NO_EMPTY);
-
-                foreach ($emailWords as $word) {
-                    $emailConditions[] = "LOWER(c.email) LIKE '%" . $word . "%'";
-                }
-            } else {
-                $emailConditions[] = "LOWER(c.email) LIKE '%" . $lowercasedEmail . "%'";
-            }
-
-            $implode[] = "(" . implode(" AND ", $emailConditions) . ")";
-        }
-
-        if (!empty($data['filter_company'])) {
-            $lowercasedCompany = strtolower($this->db->escape($data['filter_company']));
-            $companyConditions = array();
-
-            if (isset($data['filter_omni']) && $data['filter_omni'] == 'yes') {
-                $companyWords = preg_split('/\s+/', $lowercasedCompany, -1, PREG_SPLIT_NO_EMPTY);
-
-                foreach ($companyWords as $word) {
-                    $companyConditions[] = "LOWER(c.company) LIKE '%" . $word . "%'";
-                }
-            } else {
-                $companyConditions[] = "LOWER(c.company) LIKE '%" . $lowercasedCompany . "%'";
-            }
-
-            $implode[] = "(" . implode(" AND ", $companyConditions) . ")";
+            $implode[] = "c.email LIKE '" . $this->db->escape($data['filter_email']) . "%'";
         }
 
         if (isset($data['filter_newsletter']) && !is_null($data['filter_newsletter'])) {
@@ -172,14 +142,8 @@ class ModelCustomerCustomer extends Model
             $implode[] = "DATE(c.date_added) = DATE('" . $this->db->escape($data['filter_date_added']) . "')";
         }
 
-        $SQL_OP = "AND";
-
-        if (isset($data['filter_or']) && $data['filter_or'] == 'yes') {
-            $SQL_OP = "OR";
-        }
-
         if ($implode) {
-            $sql .= " AND (" . implode(" " . $SQL_OP . " ", $implode) . ")";
+            $sql .= " AND " . implode(" AND ", $implode);
         }
 
         $sort_data = array(
@@ -214,9 +178,6 @@ class ModelCustomerCustomer extends Model
 
             $sql .= " LIMIT " . (int) $data['start'] . "," . (int) $data['limit'];
         }
-
-        // Debugging: output the SQL query
-        error_log("SQL Query: " . $sql);
 
         $query = $this->db->query($sql);
 
@@ -299,12 +260,11 @@ class ModelCustomerCustomer extends Model
         $implode = array();
 
         if (!empty($data['filter_name'])) {
-            $lowercasedName = strtolower($this->db->escape($data['filter_name']));
-            $implode[] = "CONCAT(LOWER(c.firstname), ' ', LOWER(c.lastname)) LIKE '%" . $lowercasedName . "%'";
+            $implode[] = "CONCAT(firstname, ' ', lastname) LIKE '%" . $this->db->escape($data['filter_name']) . "%'";
         }
 
         if (!empty($data['filter_email'])) {
-            $implode[] = "LOWER(c.email) LIKE '%" . $this->db->escape(strtolower($data['filter_email'])) . "%'";
+            $implode[] = "email LIKE '" . $this->db->escape($data['filter_email']) . "%'";
         }
 
         if (isset($data['filter_newsletter']) && !is_null($data['filter_newsletter'])) {
