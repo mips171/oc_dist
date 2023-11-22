@@ -986,7 +986,7 @@ $('select[name=\'currency\']').trigger('change');
 $('input[name=\'customer\']').autocomplete({
 	'source': function(request, response) {
 		$.ajax({
-            url: 'index.php?route=customer/customer/autocomplete&user_token={{ user_token }}&filter_name=' + encodeURIComponent(request) + '&filter_email=' + encodeURIComponent(request) + '&filter_company=' + encodeURIComponent(request),
+            url: 'index.php?route=customer/customer/autocomplete&user_token={{ user_token }}&filter_or=true&filter_name=' + encodeURIComponent(request) + '&filter_email=' + encodeURIComponent(request) + '&filter_company=' + encodeURIComponent(request),
 			dataType: 'json',
 			success: function(json) {
 				json.unshift({

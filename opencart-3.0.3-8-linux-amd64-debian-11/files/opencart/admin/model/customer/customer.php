@@ -130,8 +130,14 @@ class ModelCustomerCustomer extends Model
             $implode[] = "DATE(c.date_added) = DATE('" . $this->db->escape($data['filter_date_added']) . "')";
         }
 
+        $SQL_OP = "AND";
+
+        if (isset($data['filter_or']) && $data['filter_or'] == 'true') {
+            $SQL_OP = "OR";
+        }
+
         if ($implode) {
-            $sql .= " AND " . implode(" AND ", $implode);
+            $sql .= " AND " . implode(" " . $SQL_OP . " ", $implode);
         }
 
         $sort_data = array(
@@ -169,9 +175,6 @@ class ModelCustomerCustomer extends Model
 
         $query = $this->db->query($sql);
 
-
-        // Debugging: output the SQL query
-        error_log("SQL Query: " . $sql);
 
         return $query->rows;
     }
