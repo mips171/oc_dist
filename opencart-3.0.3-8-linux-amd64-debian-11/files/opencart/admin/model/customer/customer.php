@@ -101,7 +101,7 @@ class ModelCustomerCustomer extends Model
             $lowercasedName = strtolower($this->db->escape($data['filter_name']));
             $nameConditions = array();
 
-            if (isset($data['omni']) && $data['omni'] == 'yes') {
+            if (isset($data['filter_omni']) && $data['filter_omni'] == 'yes') {
                 $nameWords = preg_split('/\s+/', $lowercasedName, -1, PREG_SPLIT_NO_EMPTY);
 
                 foreach ($nameWords as $word) {
@@ -118,7 +118,7 @@ class ModelCustomerCustomer extends Model
             $lowercasedEmail = strtolower($this->db->escape($data['filter_email']));
             $emailConditions = array();
 
-            if (isset($data['omni']) && $data['omni'] == 'yes') {
+            if (isset($data['filter_omni']) && $data['filter_omni'] == 'yes') {
                 $emailWords = preg_split('/\s+/', $lowercasedEmail, -1, PREG_SPLIT_NO_EMPTY);
 
                 foreach ($emailWords as $word) {
@@ -135,7 +135,7 @@ class ModelCustomerCustomer extends Model
             $lowercasedCompany = strtolower($this->db->escape($data['filter_company']));
             $companyConditions = array();
 
-            if (isset($data['omni']) && $data['omni'] == 'yes') {
+            if (isset($data['filter_omni']) && $data['filter_omni'] == 'yes') {
                 $companyWords = preg_split('/\s+/', $lowercasedCompany, -1, PREG_SPLIT_NO_EMPTY);
 
                 foreach ($companyWords as $word) {
