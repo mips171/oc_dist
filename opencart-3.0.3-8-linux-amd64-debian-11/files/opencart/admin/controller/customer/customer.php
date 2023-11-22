@@ -1529,7 +1529,8 @@ class ControllerCustomerCustomer extends Controller
         $sort_order = array();
 
         foreach ($json as $key => $value) {
-            $sort_order[$key] = $value['name'];
+            // Use email if name is blank
+            $sort_order[$key] = empty($value['name']) ? $value['email'] : $value['name'];
         }
 
         array_multisort($sort_order, SORT_ASC, $json);
