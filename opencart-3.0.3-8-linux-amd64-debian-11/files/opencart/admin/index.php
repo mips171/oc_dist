@@ -1,16 +1,16 @@
 <?php
 // Version
-define('VERSION', '3.0.3.8-nbembedded-03');
+define('VERSION', '3.0.3.8-nbembedded-04');
 
 // Configuration
 if (is_file('config.php')) {
-	require_once('config.php');
+    require_once('config.php');
 }
 
 // Install
 if (!defined('DIR_APPLICATION')) {
-	header('Location: ../install/index.php');
-	exit;
+    header('Location: ../install/index.php');
+    exit;
 }
 
 // Startup
