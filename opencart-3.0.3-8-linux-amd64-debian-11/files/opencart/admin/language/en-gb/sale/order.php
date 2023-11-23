@@ -13,6 +13,7 @@ $_['text_customer_detail'] = 'Customer Details';
 $_['text_option'] = 'Options';
 $_['text_store'] = 'Store';
 $_['text_date_added'] = 'Date Added';
+$_['text_date_payment_due'] = 'Date Payment Due';
 $_['text_payment_method'] = 'Payment Method';
 $_['text_shipping_method'] = 'Shipping Method';
 $_['text_customer'] = 'Customer';

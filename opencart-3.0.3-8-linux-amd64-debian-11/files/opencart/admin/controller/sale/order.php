@@ -210,6 +210,7 @@ class ControllerSaleOrder extends Controller
                 'total' => $this->currency->format($result['total'], $result['currency_code'], $result['currency_value']),
                 'date_added' => date($this->language->get('date_format_short'), strtotime($result['date_added'])),
                 'date_modified' => date($this->language->get('date_format_short'), strtotime($result['date_modified'])),
+                'date_payment_due' => date($this->language->get('date_format_short'), strtotime($result['date_payment_due'])),
                 'shipping_code' => $result['shipping_code'],
                 'view' => $this->url->link('sale/order/info', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . $result['order_id'] . $url, true),
                 'edit' => $this->url->link('sale/order/edit', 'user_token=' . $this->session->data['user_token'] . '&order_id=' . $result['order_id'] . $url, true)
@@ -256,6 +257,7 @@ class ControllerSaleOrder extends Controller
         $data['sort_total'] = $this->url->link('sale/order', 'user_token=' . $this->session->data['user_token'] . '&sort=o.total' . $url, true);
         $data['sort_date_added'] = $this->url->link('sale/order', 'user_token=' . $this->session->data['user_token'] . '&sort=o.date_added' . $url, true);
         $data['sort_date_modified'] = $this->url->link('sale/order', 'user_token=' . $this->session->data['user_token'] . '&sort=o.date_modified' . $url, true);
+        $data['sort_date_payment_due'] = $this->url->link('sale/order', 'user_token=' . $this->session->data['user_token'] . '&sort=o.date_payment_due' . $url, true);
 
         $url = $this->buildURL($this->request->get);
 
@@ -703,6 +705,7 @@ class ControllerSaleOrder extends Controller
             }
 
             $data['date_added'] = date($this->language->get('date_format_short'), strtotime($order_info['date_added']));
+            $data['date_payment_due'] = date($this->language->get('date_format_short'), strtotime($order_info['date_payment_due']));
 
             $data['firstname'] = $order_info['firstname'];
             $data['lastname'] = $order_info['lastname'];
@@ -1554,6 +1557,7 @@ class ControllerSaleOrder extends Controller
                     'order_id' => $order_id,
                     'invoice_no' => $invoice_no,
                     'date_added' => date($this->language->get('date_format_short'), strtotime($order_info['date_added'])),
+                    'date_payment_due' => date($this->language->get('date_format_short'), strtotime($order_info['date_payment_due'])),
                     'store_name' => $order_info['store_name'],
                     'store_url' => rtrim($order_info['store_url'], '/'),
                     'store_address' => nl2br($store_address),
