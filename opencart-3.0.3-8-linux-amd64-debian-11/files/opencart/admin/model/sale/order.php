@@ -178,10 +178,8 @@ class ModelSaleOrder extends Model
         if (!empty($data['filter_customer'])) {
             $searchTerm = $this->db->escape($data['filter_customer']);
 
-            // Correctly append the customer filter condition to the existing query
-            $sql .= " AND (CONCAT(o.firstname, ' ', o.lastname) LIKE '%" . $searchTerm . "%'
-                         OR o.email LIKE '%" . $searchTerm . "%'
-                         OR o.payment_company LIKE '%" . $searchTerm . "%')";
+            // Add to the existing SQL query instead of overwriting it
+            $sql .= " AND (CONCAT(o.firstname, ' ', o.lastname) LIKE '%" . $searchTerm . "%' OR o.email LIKE '%" . $searchTerm . "%' OR o.payment_company LIKE '%" . $searchTerm . "%')";
         }
 
         if (!empty($data['filter_date_added'])) {
@@ -298,10 +296,9 @@ class ModelSaleOrder extends Model
         if (!empty($data['filter_customer'])) {
             $searchTerm = $this->db->escape($data['filter_customer']);
 
-            // Correctly append the customer filter condition to the existing query
-            $sql .= " AND (CONCAT(o.firstname, ' ', o.lastname) LIKE '%" . $searchTerm . "%'
-                         OR o.email LIKE '%" . $searchTerm . "%'
-                         OR o.payment_company LIKE '%" . $searchTerm . "%')";
+            $sql .= " AND (CONCAT(firstname, ' ', lastname) LIKE '%" . $searchTerm . "%'
+                         OR email LIKE '%" . $searchTerm . "%'
+                         OR company LIKE '%" . $searchTerm . "%')";
         }
 
         if (!empty($data['filter_date_added'])) {
@@ -416,10 +413,9 @@ class ModelSaleOrder extends Model
         if (!empty($data['filter_customer'])) {
             $searchTerm = $this->db->escape($data['filter_customer']);
 
-            // Correctly append the customer filter condition to the existing query
-            $sql .= " AND (CONCAT(o.firstname, ' ', o.lastname) LIKE '%" . $searchTerm . "%'
-                         OR o.email LIKE '%" . $searchTerm . "%'
-                         OR o.payment_company LIKE '%" . $searchTerm . "%')";
+            $sql .= " AND (CONCAT(firstname, ' ', lastname) LIKE '%" . $searchTerm . "%'
+                         OR email LIKE '%" . $searchTerm . "%'
+                         OR company LIKE '%" . $searchTerm . "%')";
         }
 
         if (!empty($data['filter_date_added'])) {
