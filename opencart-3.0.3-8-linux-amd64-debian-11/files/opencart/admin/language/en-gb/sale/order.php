@@ -69,6 +69,7 @@ $_['column_customer'] = 'Customer';
 $_['column_status'] = 'Status';
 $_['column_date_added'] = 'Date Added';
 $_['column_date_modified'] = 'Date Modified';
+$_['column_date_payment_due'] = 'Date Payment Due';
 $_['column_total'] = 'Total';
 $_['column_product'] = 'Product';
 $_['column_model'] = 'Model';
