@@ -427,7 +427,8 @@ function convertAndDownloadPDF(userToken, orderId) {
                 html2canvas: { scale: 2 },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             }).save().then(() => {
-                document.body.removeChild(iframe);
+                console.log(iframe)
+                //document.body.removeChild(iframe);
             });
         }, 5000); // Adjust timeout as needed
     };
