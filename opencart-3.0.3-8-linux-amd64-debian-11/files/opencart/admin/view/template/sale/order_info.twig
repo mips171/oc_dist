@@ -2,7 +2,7 @@
 <div id="content">
   <div class="page-header">
     <div class="container-fluid">
-      <div class="pull-right"><a href="{{ invoice }}" target="_blank" data-toggle="tooltip" title="{{ button_invoice_print }}" class="btn btn-info"><i class="fa fa-print"></i></a> <a href="{{ shipping }}" target="_blank" data-toggle="tooltip" title="{{ button_shipping_print }}" class="btn btn-info"><i class="fa fa-truck"></i></a> <a href="{{ edit }}" data-toggle="tooltip" title="{{ button_edit }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a> <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <div class="pull-right"><a href="{{ invoice }}" target="_blank" data-toggle="tooltip" title="{{ button_invoice_print }}" class="btn btn-info"><i class="fa fa-document"></i></a> <a href="{{ shipping }}" target="_blank" data-toggle="tooltip" title="{{ button_shipping_print }}" class="btn btn-info"><i class="fa fa-truck"></i></a> <a href="{{ edit }}" data-toggle="tooltip" title="{{ button_edit }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a> <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
       <h1>{{ heading_title }}</h1>
       <ul class="breadcrumb">
         {% for breadcrumb in breadcrumbs %}
@@ -367,35 +367,55 @@
       </div>
     </div>
   </div>
-  <script type="text/javascript"><!--
-  $(document).delegate('#button-invoice', 'click', function() {
-	  $.ajax({
-		  url: 'index.php?route=sale/order/createinvoiceno&user_token={{ user_token }}&order_id={{ order_id }}',
-		  dataType: 'json',
-		  beforeSend: function() {
-			  $('#button-invoice').button('loading');
-		  },
-		  complete: function() {
-			  $('#button-invoice').button('reset');
-		  },
-		  success: function(json) {
-			  $('.alert-dismissible').remove();
 
-			  if (json['error']) {
-				  $('#content > .container-fluid').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '</div>');
-			  }
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
+<script type="text/javascript">
+$(document).delegate('#button-invoice', 'click', function() {
+    $.ajax({
+        url: 'index.php?route=sale/order/createinvoiceno&user_token={{ user_token }}&order_id={{ order_id }}',
+        dataType: 'json',
+        beforeSend: function() {
+            $('#button-invoice').button('loading');
+        },
+        complete: function() {
+            $('#button-invoice').button('reset');
+        },
+        success: function(json) {
+            $('.alert-dismissible').remove();
 
-			  if (json['invoice_no']) {
-				  $('#invoice').html(json['invoice_no']);
+            if (json['error']) {
+                $('#content > .container-fluid').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '</div>');
+            }
 
-				  $('#button-invoice').replaceWith('<button disabled="disabled" class="btn btn-success btn-xs"><i class="fa fa-cog"></i></button>');
-			  }
-		  },
-		  error: function(xhr, ajaxOptions, thrownError) {
-			  alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
-		  }
-	  });
-  });
+            if (json['invoice_no']) {
+                $('#invoice').html(json['invoice_no']);
+
+                // Fetch the invoice HTML content and convert it to PDF
+                fetchInvoiceContentAndConvertToPDF('{{ user_token }}', '{{ order_id }}');
+            }
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+        }
+    });
+});
+
+    function fetchInvoiceContentAndConvertToPDF(userToken, orderId) {
+        // Construct the URL to fetch the invoice content
+        var invoiceContentUrl = `index.php?route=sale/order/invoice&user_token=${userToken}&order_id=${orderId}`;
+
+        // Fetch the invoice content
+        $.get(invoiceContentUrl, function(htmlContent) {
+            // Use html2pdf to convert the HTML content to a PDF
+            html2pdf(htmlContent, {
+                margin: 10,
+                filename: `invoice-${orderId}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            });
+        });
+    }
 
   $(document).delegate('#button-reward-add', 'click', function() {
 	  $.ajax({
