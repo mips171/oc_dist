@@ -261,6 +261,9 @@ class ModelSaleOrder extends Model
             $sql .= " LIMIT " . (int) $data['start'] . "," . (int) $data['limit'];
         }
 
+        // Log the SQL query
+        error_log("SQL Query: " . $sql);
+
         $query = $this->db->query($sql);
 
         return $query->rows;
@@ -378,6 +381,10 @@ class ModelSaleOrder extends Model
         if (!empty($data['filter_total'])) {
             $sql .= " AND total = '" . (float) $data['filter_total'] . "'";
         }
+
+        // Log the SQL query
+        error_log("SQL Query total orders: " . $sql);
+
 
         $query = $this->db->query($sql);
 
