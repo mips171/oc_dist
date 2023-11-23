@@ -171,6 +171,7 @@
                 <tbody>
 
                 {% if orders %}
+                {% set currentDate = "now"|date("Y-m-d") %} {# Get the current date #}
                 {% for order in orders %}
                 <tr>
                   <td class="text-center"> {% if order.order_id in selected %}
@@ -185,7 +186,9 @@
                   <td class="text-right">{{ order.total }}</td>
                   <td class="text-left">{{ order.date_added }}</td>
                   <td class="text-left">{{ order.date_modified }}</td>
-                  <td class="text-left">{{ order.date_payment_due}}</td>
+                  <td class="text-left" style="{{ order.date_payment_due < currentDate and order.status == 'Sent on Account' ? 'color: red;' : '' }}">
+                      {{ order.date_payment_due }}
+                  </td>
                   <td class="text-right"><div style="min-width: 120px;">
                       <div class="btn-group"> <a href="{{ order.view }}" data-toggle="tooltip" title="{{ button_view }}" class="btn btn-primary"><i class="fa fa-eye"></i></a>
                         <button type="button" data-toggle="dropdown" class="btn btn-primary dropdown-toggle"><span class="caret"></span></button>
