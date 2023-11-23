@@ -1195,8 +1195,14 @@ $('#tab-product input[name=\'product\']').autocomplete({
 			dataType: 'json',
 			success: function(json) {
 				response($.map(json, function(item) {
+                    let formattedPrice = new Intl.NumberFormat('en-US', {
+                        style: 'currency',
+                        currency: 'AUD',
+                        minimumFractionDigits: 2,
+                        maximumFractionDigits: 2
+                    }).format(item.price);
 					return {
-                        label: item['model'] + ' - ' + item['price'] + ' - ' + item['name'],
+                        label: '<b>' + item['model'] + '</b>' + ' (' + formattedPrice + ') ' + item['name'],
 						value: item['product_id'],
 						model: item['model'],
 						option: item['option'],

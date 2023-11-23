@@ -375,10 +375,22 @@ class ModelCatalogProduct extends Model
     {
         $sql = "SELECT * FROM " . DB_PREFIX . "product p LEFT JOIN " . DB_PREFIX . "product_description pd ON (p.product_id = pd.product_id) WHERE pd.language_id = '" . (int) $this->config->get('config_language_id') . "'";
 
-        // Ensure that the search term is properly escaped for the SQL query.
         if (!empty($data['filter_search'])) {
-            $search = $this->db->escape($data['filter_search']);
-            $sql .= " AND (pd.name LIKE '%" . $search . "%' OR p.model LIKE '%" . $search . "%')";
+            $searchTerms = explode(' ', $this->db->escape($data['filter_search']));
+            $searchConditions = array();
+
+            foreach ($searchTerms as $term) {
+                $term = trim($term);
+                if ($term !== '') {
+                    $searchConditions[] = "pd.name LIKE '%" . $term . "%'";
+                    $searchConditions[] = "p.model LIKE '%" . $term . "%'";
+                }
+            }
+
+            if (!empty($searchConditions)) {
+                // Combining the conditions with OR operator
+                $sql .= " AND (" . implode(' OR ', $searchConditions) . ")";
+            }
         }
 
         if (!empty($data['filter_model'])) {
