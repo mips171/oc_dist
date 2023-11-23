@@ -63,6 +63,23 @@
             <input type="text" name="filter_total" value="{{ filter_total }}" placeholder="{{ entry_total }}" id="input-total" class="form-control" />
           </div>
 
+          {# <div class="form-group">
+            <label class="control-label" for="input-date-added">{{ entry_date_added }}</label>
+            <div class="input-group date">
+              <input type="text" name="filter_date_added" value="{{ filter_date_added }}" placeholder="{{ entry_date_added }}" data-date-format="YYYY-MM-DD" id="input-date-added" class="form-control" />
+              <span class="input-group-btn">
+              <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+              </span> </div>
+          </div> #}
+          {# <div class="form-group">
+            <label class="control-label" for="input-date-modified">{{ entry_date_modified }}</label>
+            <div class="input-group date">
+              <input type="text" name="filter_date_modified" value="{{ filter_date_modified }}" placeholder="{{ entry_date_modified }}" data-date-format="YYYY-MM-DD" id="input-date-modified" class="form-control" />
+              <span class="input-group-btn">
+              <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+              </span> </div>
+          </div> #}
+
             <div class="form-group">
                 <label class="control-label" for="input-date-added-start">{{ entry_date_added_start }}</label>
                 <div class="input-group date">
@@ -82,24 +99,6 @@
                     </span>
                 </div>
             </div>
-
-
-          {# <div class="form-group">
-            <label class="control-label" for="input-date-added">{{ entry_date_added }}</label>
-            <div class="input-group date">
-              <input type="text" name="filter_date_added" value="{{ filter_date_added }}" placeholder="{{ entry_date_added }}" data-date-format="YYYY-MM-DD" id="input-date-added" class="form-control" />
-              <span class="input-group-btn">
-              <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
-              </span> </div>
-          </div> #}
-          {# <div class="form-group">
-            <label class="control-label" for="input-date-modified">{{ entry_date_modified }}</label>
-            <div class="input-group date">
-              <input type="text" name="filter_date_modified" value="{{ filter_date_modified }}" placeholder="{{ entry_date_modified }}" data-date-format="YYYY-MM-DD" id="input-date-modified" class="form-control" />
-              <span class="input-group-btn">
-              <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
-              </span> </div>
-          </div> #}
 
             <div class="form-group">
                 <label class="control-label" for="input-date-modified-start">{{ entry_date_modified_start }}</label>
@@ -285,16 +284,40 @@ $('#button-filter').on('click', function() {
 		url += '&filter_total=' + encodeURIComponent(filter_total);
 	}
 
-	var filter_date_added = $('input[name=\'filter_date_added\']').val();
+	var filter_date_added_start = $('input[name=\'filter_date_added_start\']').val();
 
-	if (filter_date_added) {
-		url += '&filter_date_added=' + encodeURIComponent(filter_date_added);
+	if (filter_date_added_start) {
+		url += '&filter_date_added_start=' + encodeURIComponent(filter_date_added_start);
 	}
 
-	var filter_date_modified = $('input[name=\'filter_date_modified\']').val();
+	var filter_date_added_end = $('input[name=\'filter_date_added_end\']').val();
 
-	if (filter_date_modified) {
-		url += '&filter_date_modified=' + encodeURIComponent(filter_date_modified);
+	if (filter_date_added_end) {
+		url += '&filter_date_added_end=' + encodeURIComponent(filter_date_added_end);
+	}
+
+	var filter_date_modified_start = $('input[name=\'filter_date_modified_start\']').val();
+
+	if (filter_date_modified_start) {
+		url += '&filter_date_modified_start=' + encodeURIComponent(filter_date_modified_start);
+	}
+
+	var filter_date_modified_end = $('input[name=\'filter_date_modified_end\']').val();
+
+	if (filter_date_modified_end) {
+		url += '&filter_date_modified_end=' + encodeURIComponent(filter_date_modified_end);
+	}
+
+    var filter_date_payment_due_start = $('input[name=\'filter_date_payment_due_start\']').val();
+
+	if (filter_date_payment_due_start) {
+		url += '&filter_date_payment_due_start=' + encodeURIComponent(filter_date_payment_due_start);
+	}
+
+	var filter_date_payment_due_end = $('input[name=\'filter_date_payment_due_end\']').val();
+
+	if (filter_date_payment_due_end) {
+		url += '&filter_date_payment_due_end=' + encodeURIComponent(filter_date_payment_due_end);
 	}
 
 	location = 'index.php?route=sale/order&user_token={{ user_token }}' + url;

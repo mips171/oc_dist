@@ -122,8 +122,12 @@ $_['entry_voucher'] = 'Voucher';
 $_['entry_reward'] = 'Reward';
 $_['entry_order_id'] = 'Order ID';
 $_['entry_total'] = 'Total';
-$_['entry_date_added'] = 'Date Added';
-$_['entry_date_modified'] = 'Date Modified';
+$_['entry_date_added_start'] = 'Date Added (Range Start)';
+$_['entry_date_added_end'] = 'Date Added (Range End)';
+$_['entry_date_modified_start'] = 'Date Modified (Range Start)';
+$_['entry_date_modified_end'] = 'Date Modified (Range End)';
+$_['entry_date_payment_due_start'] = 'Date Payment Due (Range Start)';
+$_['entry_date_payment_due_end'] = 'Date Payment Due (Range End)';
 
 // Help
 $_['help_override'] = 'If the customers order is being blocked from changing the order status due to an anti-fraud extension enable override.';
