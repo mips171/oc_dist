@@ -417,6 +417,8 @@ function convertAndDownloadPDF(userToken, orderId) {
     iframe.onload = function() {
         // Wait for the iframe to load completely
         console.log(iframe.contentWindow.document)
+        console.log(iframe.contentWindow.document.body)
+
         setTimeout(function() {
             html2pdf().from(iframe.contentWindow.document.body).set({
                 margin: 10,
@@ -427,7 +429,7 @@ function convertAndDownloadPDF(userToken, orderId) {
             }).save().then(() => {
                 document.body.removeChild(iframe);
             });
-        }, 1000); // Adjust timeout as needed
+        }, 5000); // Adjust timeout as needed
     };
 }
 </script>
