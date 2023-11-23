@@ -341,11 +341,11 @@ class ModelSaleOrder extends Model
             $endDate = !empty($data['filter_date_added_end']) ? $data['filter_date_added_end'] : null;
 
             if ($startDate && $endDate) {
-                $sql .= " AND DATE(o.date_added) BETWEEN DATE('" . $this->db->escape($startDate) . "') AND DATE('" . $this->db->escape($endDate) . "')";
+                $sql .= " AND DATE(date_added) BETWEEN DATE('" . $this->db->escape($startDate) . "') AND DATE('" . $this->db->escape($endDate) . "')";
             } elseif ($startDate) {
-                $sql .= " AND DATE(o.date_added) >= DATE('" . $this->db->escape($startDate) . "')";
+                $sql .= " AND DATE(date_added) >= DATE('" . $this->db->escape($startDate) . "')";
             } elseif ($endDate) {
-                $sql .= " AND DATE(o.date_added) <= DATE('" . $this->db->escape($endDate) . "')";
+                $sql .= " AND DATE(date_added) <= DATE('" . $this->db->escape($endDate) . "')";
             }
         }
 
@@ -354,11 +354,11 @@ class ModelSaleOrder extends Model
             $endDate = !empty($data['filter_date_modified_end']) ? $data['filter_date_modified_end'] : null;
 
             if ($startDate && $endDate) {
-                $sql .= " AND DATE(o.date_modified) BETWEEN DATE('" . $this->db->escape($startDate) . "') AND DATE('" . $this->db->escape($endDate) . "')";
+                $sql .= " AND DATE(date_modified) BETWEEN DATE('" . $this->db->escape($startDate) . "') AND DATE('" . $this->db->escape($endDate) . "')";
             } elseif ($startDate) {
-                $sql .= " AND DATE(o.date_modified) >= DATE('" . $this->db->escape($startDate) . "')";
+                $sql .= " AND DATE(date_modified) >= DATE('" . $this->db->escape($startDate) . "')";
             } elseif ($endDate) {
-                $sql .= " AND DATE(o.date_modified) <= DATE('" . $this->db->escape($endDate) . "')";
+                $sql .= " AND DATE(date_modified) <= DATE('" . $this->db->escape($endDate) . "')";
             }
         }
 
@@ -367,11 +367,11 @@ class ModelSaleOrder extends Model
             $endDate = !empty($data['filter_date_payment_due_end']) ? $data['filter_date_payment_due_end'] : null;
 
             if ($startDate && $endDate) {
-                $sql .= " AND DATE(o.date_payment_due) BETWEEN DATE('" . $this->db->escape($startDate) . "') AND DATE('" . $this->db->escape($endDate) . "')";
+                $sql .= " AND DATE(date_payment_due) BETWEEN DATE('" . $this->db->escape($startDate) . "') AND DATE('" . $this->db->escape($endDate) . "')";
             } elseif ($startDate) {
-                $sql .= " AND DATE(o.date_payment_due) >= DATE('" . $this->db->escape($startDate) . "')";
+                $sql .= " AND DATE(date_payment_due) >= DATE('" . $this->db->escape($startDate) . "')";
             } elseif ($endDate) {
-                $sql .= " AND DATE(o.date_payment_due) <= DATE('" . $this->db->escape($endDate) . "')";
+                $sql .= " AND DATE(date_payment_due) <= DATE('" . $this->db->escape($endDate) . "')";
             }
         }
 
