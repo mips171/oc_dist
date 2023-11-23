@@ -185,8 +185,8 @@ class ModelSaleOrder extends Model
 
         // Filters
         if (!empty($data['filter_date_added_start']) || !empty($data['filter_date_added_end'])) {
-            $startDate = !empty($data['filter_date_added_start']) ? $data['filter_date_added_start'] : null;
-            $endDate = !empty($data['filter_date_added_end']) ? $data['filter_date_added_end'] : null;
+            $startDate = !empty($data['filter_date_added_start']) ? $this->convertDateToMySQLFormat($data['filter_date_added_start']) : null;
+            $endDate = !empty($data['filter_date_added_end']) ? $this->convertDateToMySQLFormat($data['filter_date_added_end']) : null;
 
             if ($startDate && $endDate) {
                 $sql .= " AND DATE(o.date_added) BETWEEN DATE('" . $this->db->escape($startDate) . "') AND DATE('" . $this->db->escape($endDate) . "')";
@@ -198,8 +198,8 @@ class ModelSaleOrder extends Model
         }
 
         if (!empty($data['filter_date_modified_start']) || !empty($data['filter_date_modified_end'])) {
-            $startDate = !empty($data['filter_date_modified_start']) ? $data['filter_date_modified_start'] : null;
-            $endDate = !empty($data['filter_date_modified_end']) ? $data['filter_date_modified_end'] : null;
+            $startDate = !empty($data['filter_date_modified_start']) ? $this->convertDateToMySQLFormat($data['filter_date_modified_start']) : null;
+            $endDate = !empty($data['filter_date_modified_end']) ? $this->convertDateToMySQLFormat($data['filter_date_modified_end']) : null;
 
             if ($startDate && $endDate) {
                 $sql .= " AND DATE(o.date_modified) BETWEEN DATE('" . $this->db->escape($startDate) . "') AND DATE('" . $this->db->escape($endDate) . "')";
@@ -211,8 +211,8 @@ class ModelSaleOrder extends Model
         }
 
         if (!empty($data['filter_date_payment_due_start']) || !empty($data['filter_date_payment_due_end'])) {
-            $startDate = !empty($data['filter_date_payment_due_start']) ? $data['filter_date_payment_due_start'] : null;
-            $endDate = !empty($data['filter_date_payment_due_end']) ? $data['filter_date_payment_due_end'] : null;
+            $startDate = !empty($data['filter_date_payment_due_start']) ? $this->convertDateToMySQLFormat($data['filter_date_payment_due_start']) : null;
+            $endDate = !empty($data['filter_date_payment_due_end']) ? $this->convertDateToMySQLFormat($data['filter_date_payment_due_end']) : null;
 
             if ($startDate && $endDate) {
                 $sql .= " AND DATE(o.date_payment_due) BETWEEN DATE('" . $this->db->escape($startDate) . "') AND DATE('" . $this->db->escape($endDate) . "')";
@@ -340,8 +340,8 @@ class ModelSaleOrder extends Model
 
         // Filters
         if (!empty($data['filter_date_added_start']) || !empty($data['filter_date_added_end'])) {
-            $startDate = !empty($data['filter_date_added_start']) ? $data['filter_date_added_start'] : null;
-            $endDate = !empty($data['filter_date_added_end']) ? $data['filter_date_added_end'] : null;
+            $startDate = !empty($data['filter_date_added_start']) ? $this->convertDateToMySQLFormat($data['filter_date_added_start']) : null;
+            $endDate = !empty($data['filter_date_added_end']) ? $this->convertDateToMySQLFormat($data['filter_date_added_end']) : null;
 
             if ($startDate && $endDate) {
                 $sql .= " AND DATE(date_added) BETWEEN DATE('" . $this->db->escape($startDate) . "') AND DATE('" . $this->db->escape($endDate) . "')";
@@ -353,8 +353,8 @@ class ModelSaleOrder extends Model
         }
 
         if (!empty($data['filter_date_modified_start']) || !empty($data['filter_date_modified_end'])) {
-            $startDate = !empty($data['filter_date_modified_start']) ? $data['filter_date_modified_start'] : null;
-            $endDate = !empty($data['filter_date_modified_end']) ? $data['filter_date_modified_end'] : null;
+            $startDate = !empty($data['filter_date_modified_start']) ? $this->convertDateToMySQLFormat($data['filter_date_modified_start']) : null;
+            $endDate = !empty($data['filter_date_modified_end']) ? $this->convertDateToMySQLFormat($data['filter_date_modified_end']) : null;
 
             if ($startDate && $endDate) {
                 $sql .= " AND DATE(date_modified) BETWEEN DATE('" . $this->db->escape($startDate) . "') AND DATE('" . $this->db->escape($endDate) . "')";
@@ -366,8 +366,8 @@ class ModelSaleOrder extends Model
         }
 
         if (!empty($data['filter_date_payment_due_start']) || !empty($data['filter_date_payment_due_end'])) {
-            $startDate = !empty($data['filter_date_payment_due_start']) ? $data['filter_date_payment_due_start'] : null;
-            $endDate = !empty($data['filter_date_payment_due_end']) ? $data['filter_date_payment_due_end'] : null;
+            $startDate = !empty($data['filter_date_payment_due_start']) ? $this->convertDateToMySQLFormat($data['filter_date_payment_due_start']) : null;
+            $endDate = !empty($data['filter_date_payment_due_end']) ? $this->convertDateToMySQLFormat($data['filter_date_payment_due_end']) : null;
 
             if ($startDate && $endDate) {
                 $sql .= " AND DATE(date_payment_due) BETWEEN DATE('" . $this->db->escape($startDate) . "') AND DATE('" . $this->db->escape($endDate) . "')";
@@ -493,8 +493,8 @@ class ModelSaleOrder extends Model
 
         // Filters
         if (!empty($data['filter_date_added_start']) || !empty($data['filter_date_added_end'])) {
-            $startDate = !empty($data['filter_date_added_start']) ? $data['filter_date_added_start'] : null;
-            $endDate = !empty($data['filter_date_added_end']) ? $data['filter_date_added_end'] : null;
+            $startDate = !empty($data['filter_date_added_start']) ? $this->convertDateToMySQLFormat($data['filter_date_added_start']) : null;
+            $endDate = !empty($data['filter_date_added_end']) ? $this->convertDateToMySQLFormat($data['filter_date_added_end']) : null;
 
             if ($startDate && $endDate) {
                 $sql .= " AND DATE(date_added) BETWEEN DATE('" . $this->db->escape($startDate) . "') AND DATE('" . $this->db->escape($endDate) . "')";
@@ -506,8 +506,8 @@ class ModelSaleOrder extends Model
         }
 
         if (!empty($data['filter_date_modified_start']) || !empty($data['filter_date_modified_end'])) {
-            $startDate = !empty($data['filter_date_modified_start']) ? $data['filter_date_modified_start'] : null;
-            $endDate = !empty($data['filter_date_modified_end']) ? $data['filter_date_modified_end'] : null;
+            $startDate = !empty($data['filter_date_modified_start']) ? $this->convertDateToMySQLFormat($data['filter_date_modified_start']) : null;
+            $endDate = !empty($data['filter_date_modified_end']) ? $this->convertDateToMySQLFormat($data['filter_date_modified_end']) : null;
 
             if ($startDate && $endDate) {
                 $sql .= " AND DATE(date_modified) BETWEEN DATE('" . $this->db->escape($startDate) . "') AND DATE('" . $this->db->escape($endDate) . "')";
@@ -519,8 +519,8 @@ class ModelSaleOrder extends Model
         }
 
         if (!empty($data['filter_date_payment_due_start']) || !empty($data['filter_date_payment_due_end'])) {
-            $startDate = !empty($data['filter_date_payment_due_start']) ? $data['filter_date_payment_due_start'] : null;
-            $endDate = !empty($data['filter_date_payment_due_end']) ? $data['filter_date_payment_due_end'] : null;
+            $startDate = !empty($data['filter_date_payment_due_start']) ? $this->convertDateToMySQLFormat($data['filter_date_payment_due_start']) : null;
+            $endDate = !empty($data['filter_date_payment_due_end']) ? $this->convertDateToMySQLFormat($data['filter_date_payment_due_end']) : null;
 
             if ($startDate && $endDate) {
                 $sql .= " AND DATE(date_payment_due) BETWEEN DATE('" . $this->db->escape($startDate) . "') AND DATE('" . $this->db->escape($endDate) . "')";
@@ -612,5 +612,15 @@ class ModelSaleOrder extends Model
         $query = $this->db->query("SELECT COUNT(DISTINCT email) AS total FROM `" . DB_PREFIX . "order` o LEFT JOIN " . DB_PREFIX . "order_product op ON (o.order_id = op.order_id) WHERE (" . implode(" OR ", $implode) . ") AND o.order_status_id <> '0'");
 
         return $query->row['total'];
+    }
+
+    private function convertDateToMySQLFormat($date)
+    {
+        $dateParts = explode('/', $date);
+        if (count($dateParts) == 3) {
+            return $dateParts[2] . '-' . $dateParts[1] . '-' . $dateParts[0];
+        } else {
+            return null; // or handle invalid date format appropriately
+        }
     }
 }
