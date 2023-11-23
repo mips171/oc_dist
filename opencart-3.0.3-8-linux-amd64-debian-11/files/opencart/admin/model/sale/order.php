@@ -180,7 +180,7 @@ class ModelSaleOrder extends Model
 
             $sql .= " AND (CONCAT(o.firstname, ' ', o.lastname) LIKE '%" . $searchTerm . "%' " .
                 "OR o.email LIKE '%" . $searchTerm . "%' " .
-                "OR o.company LIKE '%" . $searchTerm . "%')";
+                "OR o.payment_company LIKE '%" . $searchTerm . "%')";
         }
 
         if (!empty($data['filter_date_added'])) {
@@ -299,7 +299,7 @@ class ModelSaleOrder extends Model
 
             $sql .= " AND (CONCAT(o.firstname, ' ', o.lastname) LIKE '%" . $searchTerm . "%' " .
                 "OR o.email LIKE '%" . $searchTerm . "%' " .
-                "OR o.company LIKE '%" . $searchTerm . "%')";
+                "OR o.payment_company LIKE '%" . $searchTerm . "%')";
         }
 
 
@@ -417,7 +417,7 @@ class ModelSaleOrder extends Model
 
             $sql .= " AND (CONCAT(o.firstname, ' ', o.lastname) LIKE '%" . $searchTerm . "%' " .
                 "OR o.email LIKE '%" . $searchTerm . "%' " .
-                "OR o.company LIKE '%" . $searchTerm . "%')";
+                "OR o.payment_company LIKE '%" . $searchTerm . "%')";
         }
 
         if (!empty($data['filter_date_added'])) {
