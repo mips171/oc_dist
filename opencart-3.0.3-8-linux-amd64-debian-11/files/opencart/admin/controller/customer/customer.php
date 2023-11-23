@@ -713,6 +713,22 @@ class ControllerCustomerCustomer extends Controller
             $data['customer_group_id'] = $this->config->get('config_customer_group_id');
         }
 
+        if (isset($this->request->post['company'])) {
+            $data['company'] = $this->request->post['company'];
+        } elseif (!empty($customer_info)) {
+            $data['company'] = $customer_info['company'];
+        } else {
+            $data['company'] = '';
+        }
+
+        if (isset($this->request->post['abn'])) {
+            $data['abn'] = $this->request->post['abn'];
+        } elseif (!empty($customer_info)) {
+            $data['abn'] = $customer_info['abn'];
+        } else {
+            $data['abn'] = '';
+        }
+
         if (isset($this->request->post['firstname'])) {
             $data['firstname'] = $this->request->post['firstname'];
         } elseif (!empty($customer_info)) {
