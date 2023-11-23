@@ -298,7 +298,7 @@ class ModelSaleOrder extends Model
 
             $sql .= " AND (CONCAT(firstname, ' ', lastname) LIKE '%" . $searchTerm . "%'
                          OR email LIKE '%" . $searchTerm . "%'
-                         OR company LIKE '%" . $searchTerm . "%')";
+                         OR payment_company LIKE '%" . $searchTerm . "%')";
         }
 
         if (!empty($data['filter_date_added'])) {
@@ -415,7 +415,7 @@ class ModelSaleOrder extends Model
 
             $sql .= " AND (CONCAT(firstname, ' ', lastname) LIKE '%" . $searchTerm . "%'
                          OR email LIKE '%" . $searchTerm . "%'
-                         OR company LIKE '%" . $searchTerm . "%')";
+                         OR payment_company LIKE '%" . $searchTerm . "%')";
         }
 
         if (!empty($data['filter_date_added'])) {
