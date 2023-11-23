@@ -178,7 +178,7 @@ class ModelSaleOrder extends Model
         if (!empty($data['filter_customer'])) {
             $searchTerm = $this->db->escape($data['filter_customer']);
 
-            $sql = "SELECT COUNT(*) AS total FROM `oc_order` AS o WHERE o.order_status_id > '0' AND (CONCAT(o.firstname, ' ', o.lastname) LIKE '%" . $searchTerm . "%' OR o.email LIKE '%" . $searchTerm . "%' OR o.payment_company LIKE '%" . $searchTerm . "%')";
+            $sql .= "SELECT COUNT(*) AS total FROM `oc_order` AS o WHERE o.order_status_id > '0' AND (CONCAT(o.firstname, ' ', o.lastname) LIKE '%" . $searchTerm . "%' OR o.email LIKE '%" . $searchTerm . "%' OR o.payment_company LIKE '%" . $searchTerm . "%')";
         }
 
         if (!empty($data['filter_date_added'])) {
@@ -295,7 +295,7 @@ class ModelSaleOrder extends Model
         if (!empty($data['filter_customer'])) {
             $searchTerm = $this->db->escape($data['filter_customer']);
 
-            $sql = "SELECT COUNT(*) AS total FROM `oc_order` AS o WHERE o.order_status_id > '0' AND (CONCAT(o.firstname, ' ', o.lastname) LIKE '%" . $searchTerm . "%' OR o.email LIKE '%" . $searchTerm . "%' OR o.payment_company LIKE '%" . $searchTerm . "%')";
+            $sql .= "SELECT COUNT(*) AS total FROM `oc_order` AS o WHERE o.order_status_id > '0' AND (CONCAT(o.firstname, ' ', o.lastname) LIKE '%" . $searchTerm . "%' OR o.email LIKE '%" . $searchTerm . "%' OR o.payment_company LIKE '%" . $searchTerm . "%')";
         }
 
         if (!empty($data['filter_date_added'])) {
@@ -410,7 +410,7 @@ class ModelSaleOrder extends Model
         if (!empty($data['filter_customer'])) {
             $searchTerm = $this->db->escape($data['filter_customer']);
 
-            $sql = "SELECT COUNT(*) AS total FROM `oc_order` AS o WHERE o.order_status_id > '0' AND (CONCAT(o.firstname, ' ', o.lastname) LIKE '%" . $searchTerm . "%' OR o.email LIKE '%" . $searchTerm . "%' OR o.payment_company LIKE '%" . $searchTerm . "%')";
+            $sql .= "SELECT COUNT(*) AS total FROM `oc_order` AS o WHERE o.order_status_id > '0' AND (CONCAT(o.firstname, ' ', o.lastname) LIKE '%" . $searchTerm . "%' OR o.email LIKE '%" . $searchTerm . "%' OR o.payment_company LIKE '%" . $searchTerm . "%')";
         }
 
         if (!empty($data['filter_date_added'])) {
