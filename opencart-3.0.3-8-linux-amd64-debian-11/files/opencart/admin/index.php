@@ -1,6 +1,6 @@
 <?php
 // Version
-define('VERSION', '3.0.3.8-nbembedded-04');
+define('VERSION', '3.0.3.8-nbembedded-05');
 
 // Configuration
 if (is_file('config.php')) {
