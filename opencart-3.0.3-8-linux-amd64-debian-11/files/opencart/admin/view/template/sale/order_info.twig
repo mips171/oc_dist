@@ -416,6 +416,7 @@ function convertAndDownloadPDF(userToken, orderId) {
 
     iframe.onload = function() {
         // Wait for the iframe to load completely
+        console.log(iframe.contentWindow.document)
         setTimeout(function() {
             html2pdf().from(iframe.contentWindow.document.body).set({
                 margin: 10,
