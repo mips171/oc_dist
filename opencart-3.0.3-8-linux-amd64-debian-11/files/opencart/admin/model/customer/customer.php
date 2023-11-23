@@ -106,6 +106,10 @@ class ModelCustomerCustomer extends Model
             $implode[] = "LOWER(c.email) LIKE '%" . $this->db->escape(strtolower($data['filter_email'])) . "%'";
         }
 
+        if (!empty($data['filter_company'])) {
+            $implode[] = "LOWER(c.company) LIKE '%" . $this->db->escape(strtolower($data['filter_company'])) . "%'";
+        }
+
         if (isset($data['filter_newsletter']) && !is_null($data['filter_newsletter'])) {
             $implode[] = "c.newsletter = '" . (int) $data['filter_newsletter'] . "'";
         }
