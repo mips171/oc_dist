@@ -66,12 +66,28 @@ class ControllerSaleOrder extends Controller
             $url .= '&filter_total=' . $this->request->get['filter_total'];
         }
 
-        if (isset($this->request->get['filter_date_added'])) {
-            $url .= '&filter_date_added=' . $this->request->get['filter_date_added'];
+        if (isset($this->request->get['filter_date_added_start'])) {
+            $url .= '&filter_date_added_start=' . $this->request->get['filter_date_added_start'];
         }
 
-        if (isset($this->request->get['filter_date_modified'])) {
-            $url .= '&filter_date_modified=' . $this->request->get['filter_date_modified'];
+        if (isset($this->request->get['filter_date_added_end'])) {
+            $url .= '&filter_date_added_end=' . $this->request->get['filter_date_added_end'];
+        }
+
+        if (isset($this->request->get['filter_date_modified_start'])) {
+            $url .= '&filter_date_modified_start=' . $this->request->get['filter_date_modified_start'];
+        }
+
+        if (isset($this->request->get['filter_date_modified_end'])) {
+            $url .= '&filter_date_modified_end=' . $this->request->get['filter_date_modified_end'];
+        }
+
+        if (isset($this->request->get['filter_date_payment_due_start'])) {
+            $url .= '&filter_date_payment_due_start=' . $this->request->get['filter_date_payment_due_start'];
+        }
+
+        if (isset($this->request->get['filter_date_payment_due_end'])) {
+            $url .= '&filter_date_payment_due_end=' . $this->request->get['filter_date_payment_due_end'];
         }
 
         if (isset($this->request->get['sort'])) {
@@ -121,16 +137,40 @@ class ControllerSaleOrder extends Controller
             $filter_total = '';
         }
 
-        if (isset($this->request->get['filter_date_added'])) {
-            $filter_date_added = $this->request->get['filter_date_added'];
+        if (isset($this->request->get['filter_date_added_start'])) {
+            $filter_date_added_start = $this->request->get['filter_date_added_start'];
         } else {
-            $filter_date_added = '';
+            $filter_date_added_start = '';
         }
 
-        if (isset($this->request->get['filter_date_modified'])) {
-            $filter_date_modified = $this->request->get['filter_date_modified'];
+        if (isset($this->request->get['filter_date_added_end'])) {
+            $filter_date_added_end = $this->request->get['filter_date_added_end'];
         } else {
-            $filter_date_modified = '';
+            $filter_date_added_end = '';
+        }
+
+        if (isset($this->request->get['filter_date_modified_start'])) {
+            $filter_date_modified_start = $this->request->get['filter_date_modified_start'];
+        } else {
+            $filter_date_modified_start = '';
+        }
+
+        if (isset($this->request->get['filter_date_modified_end'])) {
+            $filter_date_modified_end = $this->request->get['filter_date_modified_end'];
+        } else {
+            $filter_date_modified_end = '';
+        }
+
+        if (isset($this->request->get['filter_date_payment_due_start'])) {
+            $filter_date_payment_due_start = $this->request->get['filter_date_modified_start'];
+        } else {
+            $filter_date_payment_due_start = '';
+        }
+
+        if (isset($this->request->get['filter_date_payment_due_end'])) {
+            $filter_date_payment_due_end = $this->request->get['filter_date_payment_due_end'];
+        } else {
+            $filter_date_payment_due_end = '';
         }
 
         if (isset($this->request->get['sort'])) {
@@ -173,12 +213,28 @@ class ControllerSaleOrder extends Controller
             $url .= '&filter_total=' . $this->request->get['filter_total'];
         }
 
-        if (isset($this->request->get['filter_date_added'])) {
-            $url .= '&filter_date_added=' . $this->request->get['filter_date_added'];
+        if (isset($this->request->get['filter_date_added_start'])) {
+            $url .= '&filter_date_added_start=' . $this->request->get['filter_date_added_start'];
         }
 
-        if (isset($this->request->get['filter_date_modified'])) {
-            $url .= '&filter_date_modified=' . $this->request->get['filter_date_modified'];
+        if (isset($this->request->get['filter_date_added_end'])) {
+            $url .= '&filter_date_added_end=' . $this->request->get['filter_date_added_end'];
+        }
+
+        if (isset($this->request->get['filter_date_modified_start'])) {
+            $url .= '&filter_date_modified_start=' . $this->request->get['filter_date_modified_start'];
+        }
+
+        if (isset($this->request->get['filter_date_modified_end'])) {
+            $url .= '&filter_date_modified_end=' . $this->request->get['filter_date_modified_end'];
+        }
+
+        if (isset($this->request->get['filter_date_payment_due_start'])) {
+            $url .= '&filter_date_payment_due_start=' . $this->request->get['filter_date_payment_due_start'];
+        }
+
+        if (isset($this->request->get['filter_date_payment_due_end'])) {
+            $url .= '&filter_date_payment_due_end=' . $this->request->get['filter_date_payment_due_end'];
         }
 
         if (isset($this->request->get['sort'])) {
@@ -218,8 +274,12 @@ class ControllerSaleOrder extends Controller
             'filter_order_status' => $filter_order_status,
             'filter_order_status_id' => $filter_order_status_id,
             'filter_total' => $filter_total,
-            'filter_date_added' => $filter_date_added,
-            'filter_date_modified' => $filter_date_modified,
+            'filter_date_added_start' => $filter_date_added_start,
+            'filter_date_added_end' => $filter_date_added_end,
+            'filter_date_modified_start' => $filter_date_modified_start,
+            'filter_date_modified_end' => $filter_date_modified_end,
+            'filter_date_payment_due_start' => $filter_date_payment_due_start,
+            'filter_date_payment_due_end' => $filter_date_payment_due_end,
             'sort' => $sort,
             'order' => $order,
             'start' => ($page - 1) * $this->config->get('config_limit_admin'),
@@ -288,12 +348,28 @@ class ControllerSaleOrder extends Controller
             $url .= '&filter_total=' . $this->request->get['filter_total'];
         }
 
-        if (isset($this->request->get['filter_date_added'])) {
-            $url .= '&filter_date_added=' . $this->request->get['filter_date_added'];
+        if (isset($this->request->get['filter_date_added_start'])) {
+            $url .= '&filter_date_added_start=' . $this->request->get['filter_date_added_start'];
         }
 
-        if (isset($this->request->get['filter_date_modified'])) {
-            $url .= '&filter_date_modified=' . $this->request->get['filter_date_modified'];
+        if (isset($this->request->get['filter_date_added_end'])) {
+            $url .= '&filter_date_added_end=' . $this->request->get['filter_date_added_end'];
+        }
+
+        if (isset($this->request->get['filter_date_modified_start'])) {
+            $url .= '&filter_date_modified_start=' . $this->request->get['filter_date_modified_start'];
+        }
+
+        if (isset($this->request->get['filter_date_modified_end'])) {
+            $url .= '&filter_date_modified_end=' . $this->request->get['filter_date_modified_end'];
+        }
+
+        if (isset($this->request->get['filter_date_payment_due_start'])) {
+            $url .= '&filter_date_payment_due_start=' . $this->request->get['filter_date_payment_due_start'];
+        }
+
+        if (isset($this->request->get['filter_date_payment_due_end'])) {
+            $url .= '&filter_date_payment_due_end=' . $this->request->get['filter_date_payment_due_end'];
         }
 
         if ($order == 'ASC') {
@@ -335,12 +411,28 @@ class ControllerSaleOrder extends Controller
             $url .= '&filter_total=' . $this->request->get['filter_total'];
         }
 
-        if (isset($this->request->get['filter_date_added'])) {
-            $url .= '&filter_date_added=' . $this->request->get['filter_date_added'];
+        if (isset($this->request->get['filter_date_added_start'])) {
+            $url .= '&filter_date_added_start=' . $this->request->get['filter_date_added_start'];
         }
 
-        if (isset($this->request->get['filter_date_modified'])) {
-            $url .= '&filter_date_modified=' . $this->request->get['filter_date_modified'];
+        if (isset($this->request->get['filter_date_added_end'])) {
+            $url .= '&filter_date_added_end=' . $this->request->get['filter_date_added_end'];
+        }
+
+        if (isset($this->request->get['filter_date_modified_start'])) {
+            $url .= '&filter_date_modified_start=' . $this->request->get['filter_date_modified_start'];
+        }
+
+        if (isset($this->request->get['filter_date_modified_end'])) {
+            $url .= '&filter_date_modified_end=' . $this->request->get['filter_date_modified_end'];
+        }
+
+        if (isset($this->request->get['filter_date_payment_due_start'])) {
+            $url .= '&filter_date_payment_due_start=' . $this->request->get['filter_date_payment_due_start'];
+        }
+
+        if (isset($this->request->get['filter_date_payment_due_end'])) {
+            $url .= '&filter_date_payment_due_end=' . $this->request->get['filter_date_payment_due_end'];
         }
 
         if (isset($this->request->get['sort'])) {
@@ -366,8 +458,12 @@ class ControllerSaleOrder extends Controller
         $data['filter_order_status'] = $filter_order_status;
         $data['filter_order_status_id'] = $filter_order_status_id;
         $data['filter_total'] = $filter_total;
-        $data['filter_date_added'] = $filter_date_added;
-        $data['filter_date_modified'] = $filter_date_modified;
+        $data['filter_date_added_start'] = $filter_date_added_start;
+        $data['filter_date_added_end'] = $filter_date_added_end;
+        $data['filter_date_modified_start'] = $filter_date_modified_start;
+        $data['filter_date_modified_end'] = $filter_date_modified_end;
+        $data['filter_date_payment_due_start'] = $filter_date_payment_due_start;
+        $data['filter_date_payment_due_end'] = $filter_date_payment_due_end;
 
         $data['sort'] = $sort;
         $data['order'] = $order;
@@ -433,12 +529,28 @@ class ControllerSaleOrder extends Controller
             $url .= '&filter_total=' . $this->request->get['filter_total'];
         }
 
-        if (isset($this->request->get['filter_date_added'])) {
-            $url .= '&filter_date_added=' . $this->request->get['filter_date_added'];
+        if (isset($this->request->get['filter_date_added_start'])) {
+            $url .= '&filter_date_added_start=' . $this->request->get['filter_date_added_start'];
         }
 
-        if (isset($this->request->get['filter_date_modified'])) {
-            $url .= '&filter_date_modified=' . $this->request->get['filter_date_modified'];
+        if (isset($this->request->get['filter_date_added_end'])) {
+            $url .= '&filter_date_added_end=' . $this->request->get['filter_date_added_end'];
+        }
+
+        if (isset($this->request->get['filter_date_modified_start'])) {
+            $url .= '&filter_date_modified_start=' . $this->request->get['filter_date_modified_start'];
+        }
+
+        if (isset($this->request->get['filter_date_modified_end'])) {
+            $url .= '&filter_date_modified_end=' . $this->request->get['filter_date_modified_end'];
+        }
+
+        if (isset($this->request->get['filter_date_payment_due_start'])) {
+            $url .= '&filter_date_payment_due_start=' . $this->request->get['filter_date_payment_due_start'];
+        }
+
+        if (isset($this->request->get['filter_date_payment_due_end'])) {
+            $url .= '&filter_date_payment_due_end=' . $this->request->get['filter_date_payment_due_end'];
         }
 
         if (isset($this->request->get['sort'])) {
@@ -782,12 +894,28 @@ class ControllerSaleOrder extends Controller
                 $url .= '&filter_total=' . $this->request->get['filter_total'];
             }
 
-            if (isset($this->request->get['filter_date_added'])) {
-                $url .= '&filter_date_added=' . $this->request->get['filter_date_added'];
+            if (isset($this->request->get['filter_date_added_start'])) {
+                $url .= '&filter_date_added_start=' . $this->request->get['filter_date_added_start'];
             }
 
-            if (isset($this->request->get['filter_date_modified'])) {
-                $url .= '&filter_date_modified=' . $this->request->get['filter_date_modified'];
+            if (isset($this->request->get['filter_date_added_end'])) {
+                $url .= '&filter_date_added_end=' . $this->request->get['filter_date_added_end'];
+            }
+
+            if (isset($this->request->get['filter_date_modified_start'])) {
+                $url .= '&filter_date_modified_start=' . $this->request->get['filter_date_modified_start'];
+            }
+
+            if (isset($this->request->get['filter_date_modified_end'])) {
+                $url .= '&filter_date_modified_end=' . $this->request->get['filter_date_modified_end'];
+            }
+
+            if (isset($this->request->get['filter_date_payment_due_start'])) {
+                $url .= '&filter_date_payment_due_start=' . $this->request->get['filter_date_payment_due_start'];
+            }
+
+            if (isset($this->request->get['filter_date_payment_due_end'])) {
+                $url .= '&filter_date_payment_due_end=' . $this->request->get['filter_date_payment_due_end'];
             }
 
             if (isset($this->request->get['sort'])) {

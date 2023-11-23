@@ -62,22 +62,85 @@
             <label class="control-label" for="input-total">{{ entry_total }}</label>
             <input type="text" name="filter_total" value="{{ filter_total }}" placeholder="{{ entry_total }}" id="input-total" class="form-control" />
           </div>
-          <div class="form-group">
+
+            <div class="form-group">
+                <label class="control-label" for="input-date-added-start">{{ entry_date_added_start }}</label>
+                <div class="input-group date">
+                    <input type="text" name="filter_date_added_start" id="input-date-added-start" value="{{ filter_date_added_start }}" placeholder="{{ entry_date_added_start }}" class="form-control" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label" for="input-date-added-end">{{ entry_date_added_end }}</label>
+                <div class="input-group date">
+                    <input type="text" name="filter_date_added_end" id="input-date-added-end" value="{{ filter_date_added_end }}" placeholder="{{ entry_date_added_end }}" class="form-control" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                    </span>
+                </div>
+            </div>
+
+
+          {# <div class="form-group">
             <label class="control-label" for="input-date-added">{{ entry_date_added }}</label>
             <div class="input-group date">
               <input type="text" name="filter_date_added" value="{{ filter_date_added }}" placeholder="{{ entry_date_added }}" data-date-format="YYYY-MM-DD" id="input-date-added" class="form-control" />
               <span class="input-group-btn">
               <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
               </span> </div>
-          </div>
-          <div class="form-group">
+          </div> #}
+          {# <div class="form-group">
             <label class="control-label" for="input-date-modified">{{ entry_date_modified }}</label>
             <div class="input-group date">
               <input type="text" name="filter_date_modified" value="{{ filter_date_modified }}" placeholder="{{ entry_date_modified }}" data-date-format="YYYY-MM-DD" id="input-date-modified" class="form-control" />
               <span class="input-group-btn">
               <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
               </span> </div>
-          </div>
+          </div> #}
+
+            <div class="form-group">
+                <label class="control-label" for="input-date-modified-start">{{ entry_date_modified_start }}</label>
+                <div class="input-group date">
+                    <input type="text" name="filter_date_modified_start" id="input-date-modified-start" value="{{ filter_date_modified_start }}" placeholder="{{ entry_date_modified_start }}" class="form-control" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label" for="input-date-modified-end">{{ entry_date_modified_end }}</label>
+                <div class="input-group date">
+                    <input type="text" name="filter_date_modified_end" id="input-date-modified-end" value="{{ filter_date_modified_end }}" placeholder="{{ entry_date_modified_end }}" class="form-control" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label" for="input-date-payment-due-start">{{ entry_date_payment_due_start }}</label>
+                <div class="input-group date">
+                    <input type="text" name="filter_date_payment_due_start" id="input-date-payment-due-start" value="{{ filter_date_payment_due_start }}" placeholder="{{ entry_date_payment_due_start }}" class="form-control" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                    </span>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="control-label" for="input-date-payment-due-end">{{ entry_date_payment_due_end }}</label>
+                <div class="input-group date">
+                    <input type="text" name="filter_date_payment_due_end" id="input-date-payment-due-end" value="{{ filter_date_payment_due_end }}" placeholder="{{ entry_date_payment_due_end }}" class="form-control" />
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                    </span>
+                </div>
+            </div>
+
           <div class="form-group text-right">
             <button type="button" id="button-filter" class="btn btn-default"><i class="fa fa-filter"></i> {{ button_filter }}</button>
           </div>
@@ -151,6 +214,49 @@
       </div>
     </div>
   </div>
+  <script type="text/javascript">
+    $(function() {
+        var dateFormat = "yy-mm-dd"; // jquery is weird and uses "yy" to mean "yyyy" for year
+
+        function createDateRangePicker(startDateFieldId, endDateFieldId) {
+            var from = $(startDateFieldId)
+                .datepicker({
+                    defaultDate: "+1w",
+                    changeMonth: true,
+                    numberOfMonths: 1,
+                    dateFormat: dateFormat
+                })
+                .on("change", function() {
+                    $(endDateFieldId).datepicker("option", "minDate", getDate(this));
+                }),
+            to = $(endDateFieldId).datepicker({
+                defaultDate: "+1w",
+                changeMonth: true,
+                numberOfMonths: 1,
+                dateFormat: dateFormat
+            })
+            .on("change", function() {
+                $(startDateFieldId).datepicker("option", "maxDate", getDate(this));
+            });
+
+            function getDate(element) {
+                var date;
+                try {
+                    date = $.datepicker.parseDate(dateFormat, element.value);
+                } catch(error) {
+                    date = null;
+                }
+                return date;
+            }
+        }
+
+        // Initialize date range pickers for each date field set
+        createDateRangePicker("#input-date-added-start", "#input-date-added-end");
+        createDateRangePicker("#input-date-modified-start", "#input-date-modified-end");
+        createDateRangePicker("#input-date-payment-due-start", "#input-date-payment-due-end");
+    });
+
+   </script>
   <script type="text/javascript"><!--
 $('#button-filter').on('click', function() {
 	url = '';

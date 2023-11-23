@@ -142,7 +142,8 @@ class ModelSaleOrder extends Model
                 'user_agent' => $order_query->row['user_agent'],
                 'accept_language' => $order_query->row['accept_language'],
                 'date_added' => $order_query->row['date_added'],
-                'date_modified' => $order_query->row['date_modified']
+                'date_modified' => $order_query->row['date_modified'],
+                'date_payment_due' => $order_query->row['date_payment_due']
             );
         } else {
             return;
@@ -151,7 +152,7 @@ class ModelSaleOrder extends Model
 
     public function getOrders($data = array())
     {
-        $sql = "SELECT o.order_id, CONCAT(o.firstname, ' ', o.lastname) AS customer, (SELECT os.name FROM " . DB_PREFIX . "order_status os WHERE os.order_status_id = o.order_status_id AND os.language_id = '" . (int) $this->config->get('config_language_id') . "') AS order_status, o.shipping_code, o.total, o.currency_code, o.currency_value, o.date_added, o.date_modified FROM `" . DB_PREFIX . "order` o";
+        $sql = "SELECT o.order_id, CONCAT(o.firstname, ' ', o.lastname) AS customer, (SELECT os.name FROM " . DB_PREFIX . "order_status os WHERE os.order_status_id = o.order_status_id AND os.language_id = '" . (int) $this->config->get('config_language_id') . "') AS order_status, o.shipping_code, o.total, o.currency_code, o.currency_value, o.date_added, o.date_modified, o.date_payment_due FROM `" . DB_PREFIX . "order` o";
 
         if (!empty($data['filter_order_status'])) {
             $implode = array();
@@ -182,12 +183,44 @@ class ModelSaleOrder extends Model
             $sql .= " AND (CONCAT(o.firstname, ' ', o.lastname) LIKE '%" . $searchTerm . "%' OR o.email LIKE '%" . $searchTerm . "%' OR o.payment_company LIKE '%" . $searchTerm . "%')";
         }
 
-        if (!empty($data['filter_date_added'])) {
-            $sql .= " AND DATE(o.date_added) = DATE('" . $this->db->escape($data['filter_date_added']) . "')";
+        // Filters
+        if (!empty($data['filter_date_added_start']) || !empty($data['filter_date_added_end'])) {
+            $startDate = !empty($data['filter_date_added_start']) ? $data['filter_date_added_start'] : null;
+            $endDate = !empty($data['filter_date_added_end']) ? $data['filter_date_added_end'] : null;
+
+            if ($startDate && $endDate) {
+                $sql .= " AND DATE(o.date_added) BETWEEN DATE('" . $this->db->escape($startDate) . "') AND DATE('" . $this->db->escape($endDate) . "')";
+            } elseif ($startDate) {
+                $sql .= " AND DATE(o.date_added) >= DATE('" . $this->db->escape($startDate) . "')";
+            } elseif ($endDate) {
+                $sql .= " AND DATE(o.date_added) <= DATE('" . $this->db->escape($endDate) . "')";
+            }
         }
 
-        if (!empty($data['filter_date_modified'])) {
-            $sql .= " AND DATE(o.date_modified) = DATE('" . $this->db->escape($data['filter_date_modified']) . "')";
+        if (!empty($data['filter_date_modified_start']) || !empty($data['filter_date_modified_end'])) {
+            $startDate = !empty($data['filter_date_modified_start']) ? $data['filter_date_modified_start'] : null;
+            $endDate = !empty($data['filter_date_modified_end']) ? $data['filter_date_modified_end'] : null;
+
+            if ($startDate && $endDate) {
+                $sql .= " AND DATE(o.date_modified) BETWEEN DATE('" . $this->db->escape($startDate) . "') AND DATE('" . $this->db->escape($endDate) . "')";
+            } elseif ($startDate) {
+                $sql .= " AND DATE(o.date_modified) >= DATE('" . $this->db->escape($startDate) . "')";
+            } elseif ($endDate) {
+                $sql .= " AND DATE(o.date_modified) <= DATE('" . $this->db->escape($endDate) . "')";
+            }
+        }
+
+        if (!empty($data['filter_date_payment_due_start']) || !empty($data['filter_date_payment_due_end'])) {
+            $startDate = !empty($data['filter_date_payment_due_start']) ? $data['filter_date_payment_due_start'] : null;
+            $endDate = !empty($data['filter_date_payment_due_end']) ? $data['filter_date_payment_due_end'] : null;
+
+            if ($startDate && $endDate) {
+                $sql .= " AND DATE(o.date_payment_due) BETWEEN DATE('" . $this->db->escape($startDate) . "') AND DATE('" . $this->db->escape($endDate) . "')";
+            } elseif ($startDate) {
+                $sql .= " AND DATE(o.date_payment_due) >= DATE('" . $this->db->escape($startDate) . "')";
+            } elseif ($endDate) {
+                $sql .= " AND DATE(o.date_payment_due) <= DATE('" . $this->db->escape($endDate) . "')";
+            }
         }
 
         if (!empty($data['filter_total'])) {
@@ -200,6 +233,7 @@ class ModelSaleOrder extends Model
             'order_status',
             'o.date_added',
             'o.date_modified',
+            'o.date_payment_due',
             'o.total'
         );
 
@@ -301,12 +335,44 @@ class ModelSaleOrder extends Model
                          OR payment_company LIKE '%" . $searchTerm . "%')";
         }
 
-        if (!empty($data['filter_date_added'])) {
-            $sql .= " AND DATE(date_added) = DATE('" . $this->db->escape($data['filter_date_added']) . "')";
+        // Filters
+        if (!empty($data['filter_date_added_start']) || !empty($data['filter_date_added_end'])) {
+            $startDate = !empty($data['filter_date_added_start']) ? $data['filter_date_added_start'] : null;
+            $endDate = !empty($data['filter_date_added_end']) ? $data['filter_date_added_end'] : null;
+
+            if ($startDate && $endDate) {
+                $sql .= " AND DATE(o.date_added) BETWEEN DATE('" . $this->db->escape($startDate) . "') AND DATE('" . $this->db->escape($endDate) . "')";
+            } elseif ($startDate) {
+                $sql .= " AND DATE(o.date_added) >= DATE('" . $this->db->escape($startDate) . "')";
+            } elseif ($endDate) {
+                $sql .= " AND DATE(o.date_added) <= DATE('" . $this->db->escape($endDate) . "')";
+            }
         }
 
-        if (!empty($data['filter_date_modified'])) {
-            $sql .= " AND DATE(date_modified) = DATE('" . $this->db->escape($data['filter_date_modified']) . "')";
+        if (!empty($data['filter_date_modified_start']) || !empty($data['filter_date_modified_end'])) {
+            $startDate = !empty($data['filter_date_modified_start']) ? $data['filter_date_modified_start'] : null;
+            $endDate = !empty($data['filter_date_modified_end']) ? $data['filter_date_modified_end'] : null;
+
+            if ($startDate && $endDate) {
+                $sql .= " AND DATE(o.date_modified) BETWEEN DATE('" . $this->db->escape($startDate) . "') AND DATE('" . $this->db->escape($endDate) . "')";
+            } elseif ($startDate) {
+                $sql .= " AND DATE(o.date_modified) >= DATE('" . $this->db->escape($startDate) . "')";
+            } elseif ($endDate) {
+                $sql .= " AND DATE(o.date_modified) <= DATE('" . $this->db->escape($endDate) . "')";
+            }
+        }
+
+        if (!empty($data['filter_date_payment_due_start']) || !empty($data['filter_date_payment_due_end'])) {
+            $startDate = !empty($data['filter_date_payment_due_start']) ? $data['filter_date_payment_due_start'] : null;
+            $endDate = !empty($data['filter_date_payment_due_end']) ? $data['filter_date_payment_due_end'] : null;
+
+            if ($startDate && $endDate) {
+                $sql .= " AND DATE(o.date_payment_due) BETWEEN DATE('" . $this->db->escape($startDate) . "') AND DATE('" . $this->db->escape($endDate) . "')";
+            } elseif ($startDate) {
+                $sql .= " AND DATE(o.date_payment_due) >= DATE('" . $this->db->escape($startDate) . "')";
+            } elseif ($endDate) {
+                $sql .= " AND DATE(o.date_payment_due) <= DATE('" . $this->db->escape($endDate) . "')";
+            }
         }
 
         if (!empty($data['filter_total'])) {
@@ -418,12 +484,44 @@ class ModelSaleOrder extends Model
                          OR payment_company LIKE '%" . $searchTerm . "%')";
         }
 
-        if (!empty($data['filter_date_added'])) {
-            $sql .= " AND DATE(date_added) = DATE('" . $this->db->escape($data['filter_date_added']) . "')";
+        // Filters
+        if (!empty($data['filter_date_added_start']) || !empty($data['filter_date_added_end'])) {
+            $startDate = !empty($data['filter_date_added_start']) ? $data['filter_date_added_start'] : null;
+            $endDate = !empty($data['filter_date_added_end']) ? $data['filter_date_added_end'] : null;
+
+            if ($startDate && $endDate) {
+                $sql .= " AND DATE(o.date_added) BETWEEN DATE('" . $this->db->escape($startDate) . "') AND DATE('" . $this->db->escape($endDate) . "')";
+            } elseif ($startDate) {
+                $sql .= " AND DATE(o.date_added) >= DATE('" . $this->db->escape($startDate) . "')";
+            } elseif ($endDate) {
+                $sql .= " AND DATE(o.date_added) <= DATE('" . $this->db->escape($endDate) . "')";
+            }
         }
 
-        if (!empty($data['filter_date_modified'])) {
-            $sql .= " AND DATE(date_modified) = DATE('" . $this->db->escape($data['filter_date_modified']) . "')";
+        if (!empty($data['filter_date_modified_start']) || !empty($data['filter_date_modified_end'])) {
+            $startDate = !empty($data['filter_date_modified_start']) ? $data['filter_date_modified_start'] : null;
+            $endDate = !empty($data['filter_date_modified_end']) ? $data['filter_date_modified_end'] : null;
+
+            if ($startDate && $endDate) {
+                $sql .= " AND DATE(o.date_modified) BETWEEN DATE('" . $this->db->escape($startDate) . "') AND DATE('" . $this->db->escape($endDate) . "')";
+            } elseif ($startDate) {
+                $sql .= " AND DATE(o.date_modified) >= DATE('" . $this->db->escape($startDate) . "')";
+            } elseif ($endDate) {
+                $sql .= " AND DATE(o.date_modified) <= DATE('" . $this->db->escape($endDate) . "')";
+            }
+        }
+
+        if (!empty($data['filter_date_payment_due_start']) || !empty($data['filter_date_payment_due_end'])) {
+            $startDate = !empty($data['filter_date_payment_due_start']) ? $data['filter_date_payment_due_start'] : null;
+            $endDate = !empty($data['filter_date_payment_due_end']) ? $data['filter_date_payment_due_end'] : null;
+
+            if ($startDate && $endDate) {
+                $sql .= " AND DATE(o.date_payment_due) BETWEEN DATE('" . $this->db->escape($startDate) . "') AND DATE('" . $this->db->escape($endDate) . "')";
+            } elseif ($startDate) {
+                $sql .= " AND DATE(o.date_payment_due) >= DATE('" . $this->db->escape($startDate) . "')";
+            } elseif ($endDate) {
+                $sql .= " AND DATE(o.date_payment_due) <= DATE('" . $this->db->escape($endDate) . "')";
+            }
         }
 
         if (!empty($data['filter_total'])) {
