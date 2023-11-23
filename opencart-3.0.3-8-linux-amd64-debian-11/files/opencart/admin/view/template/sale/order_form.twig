@@ -1188,6 +1188,16 @@ $('#button-customer').on('click', function() {
 	});
 });
 
+function stripHtmlTags(str) {
+    if ((str === null) || (str === '')) {
+        return false;
+    } else {
+        // Regular expression to identify HTML tags in the input string. Replacing the identified HTML tag with a null string.
+        str = str.toString();
+        return str.replace(/<[^>]*>/g, '');
+    }
+}
+
 $('#tab-product input[name=\'product\']').autocomplete({
 	'source': function(request, response) {
 		$.ajax({
@@ -1213,7 +1223,7 @@ $('#tab-product input[name=\'product\']').autocomplete({
 		});
 	},
 	'select': function(item) {
-		$('#tab-product input[name=\'product\']').val(item['label']);
+		$('#tab-product input[name=\'product\']').val(stripHtmlTags(item['label']));
 		$('#tab-product input[name=\'product_id\']').val(item['value']);
 
 		if (item['option'] != '') {
