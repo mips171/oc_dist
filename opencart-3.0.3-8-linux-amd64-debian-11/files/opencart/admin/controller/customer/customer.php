@@ -1535,6 +1535,8 @@ class ControllerCustomerCustomer extends Controller
                     'firstname' => $result['firstname'],
                     'lastname' => $result['lastname'],
                     'email' => $result['email'],
+                    'company' => $result['company'],
+                    'abn' => $result['abn'],
                     'telephone' => $result['telephone'],
                     'custom_field' => json_decode($result['custom_field'], true),
                     'address' => $this->model_customer_customer->getAddresses($result['customer_id'])
