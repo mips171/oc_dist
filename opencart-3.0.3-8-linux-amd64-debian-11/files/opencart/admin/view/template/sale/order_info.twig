@@ -440,7 +440,7 @@ function convertAndDownloadPDF(userToken, orderId, documentType = 'invoice') {
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             }).save().then(() => {
                 // Remove the hidden div after download
-                document.body.removeChild(hiddenDiv);
+                // document.body.removeChild(hiddenDiv);
             });
         })
         .catch(error => {
