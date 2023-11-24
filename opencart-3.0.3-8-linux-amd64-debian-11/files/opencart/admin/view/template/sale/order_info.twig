@@ -409,13 +409,11 @@ function convertAndDownloadPDF(userToken, orderId) {
     var invoiceContentUrl = `index.php?route=sale/order/invoice&user_token=${userToken}&order_id=${orderId}`;
 
     var iframe = document.createElement('iframe');
-    iframe.style.visibility = 'hidden';
+    iframe.style.visibility = 'visible';
     iframe.src = invoiceContentUrl;
     document.body.appendChild(iframe);
 
     iframe.onload = function() {
-        console.log(iframe.contentWindow.document)
-        console.log(iframe.contentWindow.document.body)
         setTimeout(function() {
             html2canvas(iframe.contentWindow.document.body).then(canvas => {
                 var imgData = canvas.toDataURL('image/png');
@@ -427,8 +425,11 @@ function convertAndDownloadPDF(userToken, orderId) {
                 pdf.addImage(imgData, 'PNG', 10, 10);
                 pdf.save(`invoice-${orderId}.pdf`);
                 // document.body.removeChild(iframe);
+            }).catch(error => {
+                console.log(iframe);
+                console.error('Error in html2canvas:', error);
             });
-        }, 3000); // Adjust timeout as needed to ensure full rendering
+        }, 3000); // Adjust timeout as needed
     };
 }
 </script>
