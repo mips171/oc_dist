@@ -427,7 +427,7 @@ $(document).delegate('#button-shipping', 'click', function() {
                 $('#invoice').html(json['invoice_no']);
 
                 // Convert and download the invoice as a PDF
-                convertAndDownloadPDF('{{ user_token }}', '{{ order_id }}');
+                convertAndDownloadPDF('{{ user_token }}', '{{ order_id }}', 'shipping');
             }
         },
         error: function(xhr, ajaxOptions, thrownError) {
@@ -436,9 +436,9 @@ $(document).delegate('#button-shipping', 'click', function() {
     });
 });
 
-function convertAndDownloadPDF(userToken, orderId) {
+function convertAndDownloadPDF(userToken, orderId, documentType = 'invoice') {
     // Construct the URL to fetch the invoice content
-    var invoiceContentUrl = `index.php?route=sale/order/invoice&user_token=${userToken}&order_id=${orderId}`;
+    var invoiceContentUrl = `index.php?route=sale/order/${documentType}&user_token=${userToken}&order_id=${orderId}`;
 
     // Fetch the invoice content and convert it to PDF
     fetch(invoiceContentUrl)
