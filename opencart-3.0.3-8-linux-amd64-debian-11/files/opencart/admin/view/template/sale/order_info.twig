@@ -408,29 +408,27 @@ $(document).delegate('#button-invoice', 'click', function() {
 function convertAndDownloadPDF(userToken, orderId) {
     var invoiceContentUrl = `index.php?route=sale/order/invoice&user_token=${userToken}&order_id=${orderId}`;
 
-    // Create an iframe and load the invoice content
     var iframe = document.createElement('iframe');
     iframe.style.visibility = 'hidden';
     iframe.src = invoiceContentUrl;
     document.body.appendChild(iframe);
 
     iframe.onload = function() {
-        // Wait for the iframe to load completely
         console.log(iframe.contentWindow.document)
         console.log(iframe.contentWindow.document.body)
-
         setTimeout(function() {
-            html2pdf().from(iframe.contentWindow.document.body).set({
-                margin: 10,
-                filename: `invoice-${orderId}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2 },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            }).save().then(() => {
-                console.log(iframe)
-                //document.body.removeChild(iframe);
+            html2canvas(iframe.contentWindow.document.body).then(canvas => {
+                var imgData = canvas.toDataURL('image/png');
+                var pdf = new jsPDF({
+                    unit: 'mm',
+                    format: 'a4',
+                    orientation: 'portrait'
+                });
+                pdf.addImage(imgData, 'PNG', 10, 10);
+                pdf.save(`invoice-${orderId}.pdf`);
+                // document.body.removeChild(iframe);
             });
-        }, 5000); // Adjust timeout as needed
+        }, 3000); // Adjust timeout as needed to ensure full rendering
     };
 }
 </script>
