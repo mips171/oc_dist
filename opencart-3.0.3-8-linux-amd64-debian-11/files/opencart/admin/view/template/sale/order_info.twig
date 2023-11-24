@@ -438,7 +438,7 @@ function convertAndDownloadPDF(userToken, orderId, documentType = 'invoice') {
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { scale: 2, windowWidth: hiddenDiv.scrollWidth,  windowHeight: hiddenDiv.scrollHeight },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
-                pageBreak: {mode: ['avoid-all', 'css'], avoid: ['.pi-row']},
+                pagebreak: { avoid: ['img', 'last-page'] }
             }).save().then(() => {
                 // Remove the hidden div after download
                 // document.body.removeChild(hiddenDiv);
