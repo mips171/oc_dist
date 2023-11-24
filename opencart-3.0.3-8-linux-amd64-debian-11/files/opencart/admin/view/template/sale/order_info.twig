@@ -425,7 +425,7 @@ function convertAndDownloadPDF(userToken, orderId, documentType = 'invoice') {
             hiddenDiv.style.visibility = 'visible';
             // Adjust dimensions to fit A4 size
             hiddenDiv.style.width = '210mm';
-            hiddenDiv.style.height = '297mm';
+            hiddenDiv.style.height = '296mm';
             document.body.appendChild(hiddenDiv);
 
             let docPrefix = "Invoice";
