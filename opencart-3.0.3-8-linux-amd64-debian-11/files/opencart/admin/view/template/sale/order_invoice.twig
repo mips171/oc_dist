@@ -29,6 +29,7 @@
         <b>{{ text_telephone }}</b> {{ order.store_telephone }}<br />
         <b>{{ text_email }}</b> {{ order.store_email }}<br />
         <b>{{ text_website }}</b> {{ order.store_url }}<br />
+        <b>ABN</b> {{ order.store_abn }}<br />
         <br />
       </div>
       <div class="col-sm-6 col-md-4">
@@ -55,10 +56,12 @@
             <td style="width: 40%;"><b>{{ text_order_id }}</b></td>
             <td style="width: 60%;">{{ order.order_id }}</td>
           </tr>
-          <tr>
-            <td style="width: 40%;"><b>{{ text_payment_method }}</b></td>
-            <td style="width: 60%;">{{ order.payment_method }}</td>
-          </tr>
+          {% if order.order_status != "Quote" %}
+            <tr>
+                <td style="width: 40%;"><b>{{ text_payment_method }}</b></td>
+                <td style="width: 60%;">{{ order.payment_method }}</td>
+            </tr>
+          {% endif %}
           {% if order.shipping_method %}
           <tr>
             <td style="width: 40%;"><b>{{ text_shipping_method }}</b></td>
