@@ -6,6 +6,9 @@
       <button id="button-invoice" data-toggle="tooltip" title="{{ button_invoice_print }}" class="btn btn-info">
         <i class="fa fa-file"></i>
     </button>
+    <button id="button-shipping" data-toggle="tooltip" title="{{ button_shipping_print }}" class="btn btn-info">
+        <i class="fa fa-truck"></i>
+    </button>
     <a href="{{ shipping }}" target="_blank" data-toggle="tooltip" title="{{ button_shipping_print }}" class="btn btn-info"><i class="fa fa-truck"></i></a> <a href="{{ edit }}" data-toggle="tooltip" title="{{ button_edit }}" class="btn btn-primary"><i class="fa fa-pencil"></i></a> <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
       <h1>{{ heading_title }}</h1>
       <ul class="breadcrumb">
@@ -382,6 +385,36 @@ $(document).delegate('#button-invoice', 'click', function() {
         },
         complete: function() {
             $('#button-invoice').button('reset');
+        },
+        success: function(json) {
+            $('.alert-dismissible').remove();
+
+            if (json['error']) {
+                $('#content > .container-fluid').prepend('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '</div>');
+            }
+
+            if (json['invoice_no']) {
+                $('#invoice').html(json['invoice_no']);
+
+                // Convert and download the invoice as a PDF
+                convertAndDownloadPDF('{{ user_token }}', '{{ order_id }}');
+            }
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+        }
+    });
+});
+
+$(document).delegate('#button-shipping', 'click', function() {
+    $.ajax({
+        url: 'index.php?route=sale/order/shipping&user_token={{ user_token }}&order_id={{ order_id }}',
+        dataType: 'json',
+        beforeSend: function() {
+            $('#button-shipping').button('loading');
+        },
+        complete: function() {
+            $('#button-shipping').button('reset');
         },
         success: function(json) {
             $('.alert-dismissible').remove();
