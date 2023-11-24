@@ -371,7 +371,6 @@
       </div>
     </div>
   </div>
-
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.2/html2pdf.bundle.js"></script>
 <script type="text/javascript">
 $(document).delegate('#button-invoice', 'click', function() {
@@ -399,35 +398,41 @@ $(document).delegate('#button-invoice', 'click', function() {
             }
         },
         error: function(xhr, ajaxOptions, thrownError) {
-            alert("Could not generate the PDF");
-            console.log(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
         }
     });
 });
+
 function convertAndDownloadPDF(userToken, orderId) {
+    // Construct the URL to fetch the invoice content
     var invoiceContentUrl = `index.php?route=sale/order/invoice&user_token=${userToken}&order_id=${orderId}`;
 
-    // Create an iframe and load the invoice content
-    var iframe = document.createElement('iframe');
-    iframe.style.visibility = 'visible';
-    iframe.src = invoiceContentUrl;
-    document.body.appendChild(iframe);
+    // Fetch the invoice content and convert it to PDF
+    fetch(invoiceContentUrl)
+        .then(response => response.text())
+        .then(htmlContent => {
+            // Create a hidden div to hold the HTML content
+            var hiddenDiv = document.createElement('div');
+            hiddenDiv.innerHTML = htmlContent;
+            hiddenDiv.style.visibility = 'visible';
+            document.body.appendChild(hiddenDiv);
 
-    iframe.onload = function() {
-        // Wait for the iframe to load completely
-        setTimeout(function() {
-            html2pdf().from(iframe.contentDocument.body).set({
+            // Convert the content to PDF
+            html2pdf().from(hiddenDiv).set({
                 margin: 10,
                 filename: `invoice-${orderId}.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { scale: 2 },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             }).save().then(() => {
-                console.log(iframe);
-                // document.body.removeChild(iframe);
+                console.log(hiddenDiv);
+                // Remove the hidden div after download
+                // document.body.removeChild(hiddenDiv);
             });
-        }, 3000); // Adjust timeout as needed
-    };
+        })
+        .catch(error => {
+            console.error('Error fetching invoice:', error);
+        });
 }
 </script>
 <script type="text/javascript">
