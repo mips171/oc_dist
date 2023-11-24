@@ -100,6 +100,7 @@ class ControllerSaleOrder extends Controller
             ['sort', false],
             ['order', false],
             ['page', false],
+            // Add more parameters as needed
         ];
 
         $url = $this->buildURL($this->request->get, $url_params);
@@ -182,7 +183,7 @@ class ControllerSaleOrder extends Controller
             $data['selected'] = array();
         }
 
-        $url = $this->buildURL($this->request->get);
+        $url = $this->buildURL($this->request->get, $url_params);
 
         if ($order == 'ASC') {
             $url .= '&order=DESC';
@@ -276,19 +277,25 @@ class ControllerSaleOrder extends Controller
     {
         $data['text_form'] = !isset($this->request->get['order_id']) ? $this->language->get('text_add') : $this->language->get('text_edit');
 
-        $url = $this->buildURL($this->request->get);
+        $url_params = [
+            ['filter_order_id', false],
+            ['filter_customer', true],
+            ['filter_order_status', false],
+            ['filter_order_status_id', false],
+            ['filter_total', false],
+            ['filter_date_added_start', false],
+            ['filter_date_added_end', false],
+            ['filter_date_modified_start', false],
+            ['filter_date_modified_end', false],
+            ['filter_date_payment_due_start', false],
+            ['filter_date_payment_due_end', false],
+            ['sort', false],
+            ['order', false],
+            ['page', false],
+            // Add more parameters as needed
+        ];
 
-        if (isset($this->request->get['sort'])) {
-            $url .= '&sort=' . $this->request->get['sort'];
-        }
-
-        if (isset($this->request->get['order'])) {
-            $url .= '&order=' . $this->request->get['order'];
-        }
-
-        if (isset($this->request->get['page'])) {
-            $url .= '&page=' . $this->request->get['page'];
-        }
+        $url = $this->buildURL($this->request->get, $url_params);
 
         $data['breadcrumbs'] = array();
 
