@@ -19,7 +19,7 @@
     margin: 0 auto;
     padding: 15mm; /* Adjust as needed */
     box-sizing: border-box;
-    page-break-after: always;
+    /* page-break-after: always; */
 }
 .table td {
     word-wrap: break-word; /* Allows long words to be able to break and wrap onto the next line */
@@ -30,7 +30,7 @@
 <body>
 <div>
   {% for order in orders %}
-  <div class="page">
+    <div class="page" style="{{ not loop.last ? 'page-break-after: always;' : '' }}">
     <div class="row">
       <div class="col-sm-6 col-md-8">
         {% if logo %}
