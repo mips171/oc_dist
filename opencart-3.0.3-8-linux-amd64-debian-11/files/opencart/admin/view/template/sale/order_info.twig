@@ -408,39 +408,29 @@ function convertAndDownloadPDF(userToken, orderId) {
     // Construct the URL to fetch the invoice content
     var invoiceContentUrl = `index.php?route=sale/order/invoice&user_token=${userToken}&order_id=${orderId}`;
 
-    // Fetch the invoice content
+    // Fetch the invoice content and convert it to PDF
     fetch(invoiceContentUrl)
         .then(response => response.text())
         .then(htmlContent => {
-            // Create a container for the fetched HTML content
-            var container = document.createElement('div');
-            container.innerHTML = htmlContent;
-            container.style.visibility = 'hidden';
-            document.body.appendChild(container);
+            // Create a hidden div to hold the HTML content
+            var hiddenDiv = document.createElement('div');
+            hiddenDiv.innerHTML = htmlContent;
+            hiddenDiv.style.visibility = 'hidden';
+            // Adjust dimensions to fit A4 size
+            hiddenDiv.style.width = '210mm';
+            hiddenDiv.style.height = '297mm';
+            document.body.appendChild(hiddenDiv);
 
-            // Find all '.page' divs
-            var pages = container.querySelectorAll('.page');
-
-            // Create a new PDF document
-            var pdf = html2pdf().create();
-
-            // Iterate over each page and add it to the PDF
-            pages.forEach((page, index) => {
-                // Convert the current page to a PDF page
-                html2pdf().from(page).toPdf().get('pdf').then(function (pdfObject) {
-                    // Add the current page to the PDF
-                    if (index === 0) {
-                        pdf = pdfObject;
-                    } else {
-                        pdfObject.addPage();
-                    }
-                });
-            });
-
-            // Save the PDF after all pages have been added
-            pdf.save(`${orderId}.pdf`).then(() => {
-                // Clean up: remove the hidden container
-                document.body.removeChild(container);
+            // Convert the content to PDF
+            html2pdf().from(hiddenDiv).set({
+                filename: `${orderId}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, windowWidth: hiddenDiv.scrollWidth,  windowHeight: hiddenDiv.scrollHeight },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            }).save().then(() => {
+                console.log(hiddenDiv);
+                // Remove the hidden div after download
+                document.body.removeChild(hiddenDiv);
             });
         })
         .catch(error => {
