@@ -422,26 +422,36 @@ function convertAndDownloadPDF(userToken, orderId, documentType = 'invoice') {
             // Create a hidden div to hold the HTML content
             var hiddenDiv = document.createElement('div');
             hiddenDiv.innerHTML = htmlContent;
-            hiddenDiv.style.visibility = 'visible';
-            // Adjust dimensions to fit A4 size
-            hiddenDiv.style.width = '210mm';
-            hiddenDiv.style.height = '296mm';
+            hiddenDiv.style.visibility = 'hidden'; // Set the div to hidden
             document.body.appendChild(hiddenDiv);
 
+            // Filter the content to include only elements with class 'page'
+            var pages = hiddenDiv.querySelectorAll('.page');
+            var printableContent = document.createElement('div');
+            pages.forEach(page => {
+                printableContent.appendChild(page.cloneNode(true));
+            });
+
+            // Adjust dimensions to fit A4 size
+            printableContent.style.width = '210mm';
+            printableContent.style.height = '296mm';
+
             let docPrefix = "Invoice";
-            if (documentType[0] == 's') {
+            if (documentType[0] === 's') {
                 docPrefix = "Pick-List";
             }
-            // Convert the content to PDF
-            html2pdf().from(hiddenDiv).set({
+
+            // Convert the filtered content to PDF
+            html2pdf().from(printableContent).set({
                 filename: `${docPrefix}-${orderId}.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, windowWidth: hiddenDiv.scrollWidth,  windowHeight: hiddenDiv.scrollHeight },
+                html2canvas: { scale: 2, windowWidth: printableContent.scrollWidth, windowHeight: printableContent.scrollHeight },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' },
                 pagebreak: { avoid: ['img', 'last-page'] }
             }).save().then(() => {
-                // Remove the hidden div after download
+                // Clean up: remove the hidden div and printable content div after download
                 // document.body.removeChild(hiddenDiv);
+                // Optionally remove printableContent if added to the DOM
             });
         })
         .catch(error => {
