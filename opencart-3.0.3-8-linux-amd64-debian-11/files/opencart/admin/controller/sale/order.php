@@ -1555,6 +1555,7 @@ class ControllerSaleOrder extends Controller
 
                 $data['orders'][] = array(
                     'order_id' => $order_id,
+                    'order_status' => $order_info['order_status'],
                     'invoice_no' => $invoice_no,
                     'date_added' => date($this->language->get('date_format_short'), strtotime($order_info['date_added'])),
                     'date_payment_due' => date($this->language->get('date_format_short'), strtotime($order_info['date_payment_due'])),
