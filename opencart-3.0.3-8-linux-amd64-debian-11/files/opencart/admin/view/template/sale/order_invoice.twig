@@ -13,6 +13,14 @@
 .img-max-dimension {
     max-width: 300px;
 }
+.page {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    padding: 15mm; /* Adjust as needed */
+    box-sizing: border-box;
+    page-break-after: always;
+}
 .pdf-container {
     width: 210mm;
     /* height: 297mm; */
@@ -21,9 +29,9 @@
 </style>
 </head>
 <body>
-<div class="container pdf-container">
+<div class="container">
   {% for order in orders %}
-  <div style="page-break-after: always;">
+  <div class="page">
     <div class="row">
       <div class="col-sm-6 col-md-8">
         {% if logo %}
