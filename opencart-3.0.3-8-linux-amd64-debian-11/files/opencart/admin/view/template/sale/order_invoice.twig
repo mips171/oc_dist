@@ -25,50 +25,6 @@
     word-wrap: break-word; /* Allows long words to be able to break and wrap onto the next line */
     overflow-wrap: break-word; /* Breaks the word at the boundary of the container */
 }
-@media print {
-    body {
-        font-size: 12pt;
-    }
-
-    .page {
-        width: 100%;
-        min-height: auto;
-        margin: 0;
-        padding: 10mm;
-        box-sizing: border-box;
-    }
-
-    .img-max-dimension {
-        max-width: 20%; /* Adjust as necessary */
-    }
-
-    .table {
-        width: 100%;
-    }
-
-    .table td {
-        word-wrap: break-word;
-        overflow-wrap: break-word;
-    }
-
-    .row, .col-sm-6, .col-md-8, .col-md-4 {
-        width: 100%;
-        float: none;
-    }
-
-    /* Hide elements not needed in print */
-    .navbar, .footer, .some-other-class {
-        display: none;
-    }
-
-    /* Adjust font sizes, line heights, and other properties as needed */
-    h1, h2, h3, h4, h5, h6 {
-        font-size: 14pt;
-        line-height: 1.2;
-    }
-
-    /* Any other specific adjustments you need for print */
-}
 </style>
 </head>
 <body>
