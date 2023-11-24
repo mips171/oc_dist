@@ -404,30 +404,26 @@ $(document).delegate('#button-invoice', 'click', function() {
         }
     });
 });
-
 function convertAndDownloadPDF(userToken, orderId) {
     var invoiceContentUrl = `index.php?route=sale/order/invoice&user_token=${userToken}&order_id=${orderId}`;
 
+    // Create an iframe and load the invoice content
     var iframe = document.createElement('iframe');
     iframe.style.visibility = 'visible';
     iframe.src = invoiceContentUrl;
     document.body.appendChild(iframe);
 
     iframe.onload = function() {
+        // Wait for the iframe to load completely
         setTimeout(function() {
-            html2canvas(iframe.contentWindow.document.body).then(canvas => {
-                var imgData = canvas.toDataURL('image/png');
-                var pdf = new jsPDF({
-                    unit: 'mm',
-                    format: 'a4',
-                    orientation: 'portrait'
-                });
-                pdf.addImage(imgData, 'PNG', 10, 10);
-                pdf.save(`invoice-${orderId}.pdf`);
-                // document.body.removeChild(iframe);
-            }).catch(error => {
-                console.log(iframe);
-                console.error('Error in html2canvas:', error);
+            html2pdf().from(iframe.contentWindow.document.body).set({
+                margin: 10,
+                filename: `invoice-${orderId}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            }).save().then(() => {
+                document.body.removeChild(iframe);
             });
         }, 3000); // Adjust timeout as needed
     };
