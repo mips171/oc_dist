@@ -9,6 +9,12 @@
 <script type="text/javascript" src="view/javascript/bootstrap/js/bootstrap.min.js"></script>
 <link href="view/javascript/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
 <link type="text/css" href="view/stylesheet/stylesheet.css" rel="stylesheet" media="all" />
+<style>
+.img-max-dimension {
+    max-width: 100%;
+    max-height: 200px;
+}
+</style>
 </head>
 <body>
 <div class="container">
@@ -17,7 +23,7 @@
     <div class="row">
       <div class="col-sm-6 col-md-8">
         {% if logo %}
-          <img src="{{ logo }}" title="{{ name }}" alt="{{ name }}" class="img-responsive" />
+          <img src="{{ logo }}" title="{{ name }}" alt="{{ name }}" class="img-responsive img-max-dimension" />
         {% else %}
           <h1>{{ name }}</h1>
         {% endif %}
