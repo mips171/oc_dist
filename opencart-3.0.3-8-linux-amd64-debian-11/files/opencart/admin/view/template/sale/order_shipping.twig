@@ -30,7 +30,7 @@
 <body>
 <div>
   {% for order in orders %}
-  <div class="page" style="{{ not loop.last ? 'page-break-after: always;' : '' }}">
+  <div class="page" style="{{ not loop.last ? 'break-after: always;' : 'break-after: avoid' }}">
     <h1>{{ text_picklist }} #{{ order.order_id }}</h1>
     <table class="table table-bordered">
       <thead>

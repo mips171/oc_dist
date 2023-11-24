@@ -30,7 +30,7 @@
 <body>
 <div>
   {% for order in orders %}
-    <div class="page" style="{{ not loop.last ? 'page-break-after: always;' : '' }}">
+  <div class="page" style="{{ not loop.last ? 'break-after: always;' : 'break-after: avoid' }}">
     <div class="row">
       <div class="col-sm-6 col-md-8">
         {% if logo %}
