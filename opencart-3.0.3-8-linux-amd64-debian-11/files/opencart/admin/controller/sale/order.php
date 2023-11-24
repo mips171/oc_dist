@@ -1160,13 +1160,8 @@ class ControllerSaleOrder extends Controller
 
             $this->load->model('sale/order');
 
-            $invoice_no = $order_id;  //$this->model_sale_order->createInvoiceNo($order_id);
+            $json['invoice_no'] = $order_id;;
 
-            if ($invoice_no) {
-                $json['invoice_no'] = $invoice_no;
-            } else {
-                $json['error'] = $this->language->get('error_action');
-            }
         }
 
         $this->response->addHeader('Content-Type: application/json');
