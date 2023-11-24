@@ -401,7 +401,8 @@ $(document).delegate('#button-invoice', 'click', function() {
             }
         },
         error: function(xhr, ajaxOptions, thrownError) {
-            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            alert("Could not make invoice");
+            console.error('Error fetching invoice:', thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
         }
     });
 });
@@ -431,7 +432,8 @@ $(document).delegate('#button-shipping', 'click', function() {
             }
         },
         error: function(xhr, ajaxOptions, thrownError) {
-            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+            alert("Could not make pick slip");
+            console.error('Error fetching shipping label:', thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
         }
     });
 });
