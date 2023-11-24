@@ -61,6 +61,10 @@
                 <td style="width: 40%;"><b>{{ text_payment_method }}</b></td>
                 <td style="width: 60%;">{{ order.payment_method }}</td>
             </tr>
+            <tr>
+                <td style="width: 40%;"><b>{{ text_date_payment_due }}</b></td>
+                <td style="width: 60%;">{{ order.date_payment_due }}</td>
+            </tr>
           {% endif %}
           {% if order.shipping_method %}
           <tr>
