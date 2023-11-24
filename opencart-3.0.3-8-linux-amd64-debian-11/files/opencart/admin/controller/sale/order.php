@@ -63,103 +63,46 @@ class ControllerSaleOrder extends Controller
 
     protected function getList()
     {
-        if (isset($this->request->get['filter_order_id'])) {
-            $filter_order_id = $this->request->get['filter_order_id'];
-        } else {
-            $filter_order_id = '';
-        }
+        $filter_order_id = $this->getFilterValue($this->request, 'filter_order_id');
+        $filter_customer = $this->getFilterValue($this->request, 'filter_customer');
+        $filter_order_status = $this->getFilterValue($this->request, 'filter_order_status');
+        $filter_order_status_id = $this->getFilterValue($this->request, 'filter_order_status_id');
+        $filter_total = $this->getFilterValue($this->request, 'filter_total');
+        $filter_date_added_start = $this->getFilterValue($this->request, 'filter_date_added_start');
+        $filter_date_added_end = $this->getFilterValue($this->request, 'filter_date_added_end');
+        $filter_date_modified_start = $this->getFilterValue($this->request, 'filter_date_modified_start');
+        $filter_date_modified_end = $this->getFilterValue($this->request, 'filter_date_modified_end');
+        $filter_date_payment_due_start = $this->getFilterValue($this->request, 'filter_date_payment_due_start');
+        $filter_date_payment_due_end = $this->getFilterValue($this->request, 'filter_date_payment_due_end');
+        $filter_date_payment_due_start = $this->getFilterValue($this->request, 'filter_date_payment_due_start');
+        $filter_date_payment_due_end = $this->getFilterValue($this->request, 'filter_date_payment_due_end');
+        $filter_date_payment_due_start = $this->getFilterValue($this->request, 'filter_date_payment_due_start');
+        $filter_date_payment_due_end = $this->getFilterValue($this->request, 'filter_date_payment_due_end');
+        $filter_date_payment_due_start = $this->getFilterValue($this->request, 'filter_date_payment_due_start');
+        $filter_date_payment_due_end = $this->getFilterValue($this->request, 'filter_date_payment_due_end');
+        $sort = $this->getFilterValue($this->request, 'sort', 'o.order_id');
+        $order = $this->getFilterValue($this->request, 'order', 'DESC');
+        $page = $this->getFilterValue($this->request, 'page', 1);
 
-        if (isset($this->request->get['filter_customer'])) {
-            $filter_customer = $this->request->get['filter_customer'];
-        } else {
-            $filter_customer = '';
-        }
+        // each param says whether to encode the value or not
+        $url_params = [
+            ['filter_order_id', false],
+            ['filter_customer', true],
+            ['filter_order_status', false],
+            ['filter_order_status_id', false],
+            ['filter_total', false],
+            ['filter_date_added_start', false],
+            ['filter_date_added_end', false],
+            ['filter_date_modified_start', false],
+            ['filter_date_modified_end', false],
+            ['filter_date_payment_due_start', false],
+            ['filter_date_payment_due_end', false],
+            ['sort', false],
+            ['order', false],
+            ['page', false],
+        ];
 
-        if (isset($this->request->get['filter_order_status'])) {
-            $filter_order_status = $this->request->get['filter_order_status'];
-        } else {
-            $filter_order_status = '';
-        }
-
-        if (isset($this->request->get['filter_order_status_id'])) {
-            $filter_order_status_id = $this->request->get['filter_order_status_id'];
-        } else {
-            $filter_order_status_id = '';
-        }
-
-        if (isset($this->request->get['filter_total'])) {
-            $filter_total = $this->request->get['filter_total'];
-        } else {
-            $filter_total = '';
-        }
-
-        if (isset($this->request->get['filter_date_added_start'])) {
-            $filter_date_added_start = $this->request->get['filter_date_added_start'];
-        } else {
-            $filter_date_added_start = '';
-        }
-
-        if (isset($this->request->get['filter_date_added_end'])) {
-            $filter_date_added_end = $this->request->get['filter_date_added_end'];
-        } else {
-            $filter_date_added_end = '';
-        }
-
-        if (isset($this->request->get['filter_date_modified_start'])) {
-            $filter_date_modified_start = $this->request->get['filter_date_modified_start'];
-        } else {
-            $filter_date_modified_start = '';
-        }
-
-        if (isset($this->request->get['filter_date_modified_end'])) {
-            $filter_date_modified_end = $this->request->get['filter_date_modified_end'];
-        } else {
-            $filter_date_modified_end = '';
-        }
-
-        if (isset($this->request->get['filter_date_payment_due_start'])) {
-            $filter_date_payment_due_start = $this->request->get['filter_date_payment_due_start'];
-        } else {
-            $filter_date_payment_due_start = '';
-        }
-
-        if (isset($this->request->get['filter_date_payment_due_end'])) {
-            $filter_date_payment_due_end = $this->request->get['filter_date_payment_due_end'];
-        } else {
-            $filter_date_payment_due_end = '';
-        }
-
-        if (isset($this->request->get['sort'])) {
-            $sort = $this->request->get['sort'];
-        } else {
-            $sort = 'o.order_id';
-        }
-
-        if (isset($this->request->get['order'])) {
-            $order = $this->request->get['order'];
-        } else {
-            $order = 'DESC';
-        }
-
-        if (isset($this->request->get['page'])) {
-            $page = (int) $this->request->get['page'];
-        } else {
-            $page = 1;
-        }
-
-        $url = $this->buildURL($this->request->get);
-
-        if (isset($this->request->get['sort'])) {
-            $url .= '&sort=' . $this->request->get['sort'];
-        }
-
-        if (isset($this->request->get['order'])) {
-            $url .= '&order=' . $this->request->get['order'];
-        }
-
-        if (isset($this->request->get['page'])) {
-            $url .= '&page=' . $this->request->get['page'];
-        }
+        $url = $this->buildURL($this->request->get, $url_params);
 
         $data['breadcrumbs'] = array();
 
@@ -1764,35 +1707,35 @@ class ControllerSaleOrder extends Controller
         $this->response->setOutput($this->load->view('sale/order_shipping', $data));
     }
 
-    private function buildURL($request)
-    {
-        $url = '';
+    // private function buildURL($request)
+    // {
+    //     $url = '';
 
-        $params = [
-            'filter_order_id',
-            'filter_customer',
-            'filter_order_status',
-            'filter_order_status_id',
-            'filter_total',
-            'filter_date_added_start',
-            'filter_date_added_end',
-            'filter_date_modified_start',
-            'filter_date_modified_end',
-            'filter_date_payment_due_start',
-            'filter_date_payment_due_end'
-        ];
+    //     $params = [
+    //         'filter_order_id',
+    //         'filter_customer',
+    //         'filter_order_status',
+    //         'filter_order_status_id',
+    //         'filter_total',
+    //         'filter_date_added_start',
+    //         'filter_date_added_end',
+    //         'filter_date_modified_start',
+    //         'filter_date_modified_end',
+    //         'filter_date_payment_due_start',
+    //         'filter_date_payment_due_end'
+    //     ];
 
-        foreach ($params as $param) {
-            if (isset($request[$param])) {
-                if ($param == 'filter_customer') {
-                    // Special handling for 'filter_customer'
-                    $url .= '&' . $param . '=' . urlencode(html_entity_decode($request[$param], ENT_QUOTES, 'UTF-8'));
-                } else {
-                    $url .= '&' . $param . '=' . $request[$param];
-                }
-            }
-        }
+    //     foreach ($params as $param) {
+    //         if (isset($request[$param])) {
+    //             if ($param == 'filter_customer') {
+    //                 // Special handling for 'filter_customer'
+    //                 $url .= '&' . $param . '=' . urlencode(html_entity_decode($request[$param], ENT_QUOTES, 'UTF-8'));
+    //             } else {
+    //                 $url .= '&' . $param . '=' . $request[$param];
+    //             }
+    //         }
+    //     }
 
-        return $url;
-    }
+    //     return $url;
+    // }
 }
