@@ -424,7 +424,7 @@ function convertAndDownloadPDF(userToken, orderId) {
             html2pdf().from(hiddenDiv).set({
                 margin: 5,
                 filename: `invoice-${orderId}.pdf`,
-                image: { type: 'webp', quality: 1.0 },
+                image: { type: 'jpeg', quality: 1.0 },
                 html2canvas: { scale: 2 },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             }).save().then(() => {
