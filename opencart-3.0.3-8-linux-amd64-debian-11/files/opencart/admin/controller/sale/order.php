@@ -203,7 +203,21 @@ class ControllerSaleOrder extends Controller
         $data['sort_date_modified'] = $this->url->link('sale/order', 'user_token=' . $this->session->data['user_token'] . '&sort=o.date_modified' . $url, true);
         $data['sort_date_payment_due'] = $this->url->link('sale/order', 'user_token=' . $this->session->data['user_token'] . '&sort=o.date_payment_due' . $url, true);
 
-        $url = $this->buildURL($this->request->get);
+        $url_params = [
+            'filter_order_id',
+            'filter_customer',
+            'filter_order_status',
+            'filter_order_status_id',
+            'filter_total',
+            'filter_date_added_start',
+            'filter_date_added_end',
+            'filter_date_modified_start',
+            'filter_date_modified_end',
+            'filter_date_payment_due_start',
+            'filter_date_payment_due_end'
+        ];
+
+        $url = $this->buildURL($this->request->get, $url_params);
 
         if (isset($this->request->get['sort'])) {
             $url .= '&sort=' . $this->request->get['sort'];
