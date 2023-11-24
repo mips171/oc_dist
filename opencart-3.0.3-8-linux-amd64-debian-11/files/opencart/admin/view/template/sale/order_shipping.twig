@@ -9,11 +9,28 @@
 <script type="text/javascript" src="view/javascript/bootstrap/js/bootstrap.min.js"></script>
 <link href="view/javascript/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
 <link type="text/css" href="view/stylesheet/stylesheet.css" rel="stylesheet" media="all" />
+<style>
+.img-max-dimension {
+    max-width: 50mm;
+}
+.page {
+    width: 210mm;
+    min-height: 297mm;
+    margin: 0 auto;
+    padding: 15mm; /* Adjust as needed */
+    box-sizing: border-box;
+    /* page-break-after: always; */
+}
+.table td {
+    word-wrap: break-word; /* Allows long words to be able to break and wrap onto the next line */
+    overflow-wrap: break-word; /* Breaks the word at the boundary of the container */
+}
+</style>
 </head>
 <body>
-<div class="container">
+<div>
   {% for order in orders %}
-  <div style="page-break-after: always;">
+  <div class="page" style="{{ not loop.last ? 'page-break-after: always;' : '' }}">
     <h1>{{ text_picklist }} #{{ order.order_id }}</h1>
     <table class="table table-bordered">
       <thead>
