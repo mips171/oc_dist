@@ -418,6 +418,7 @@ function convertAndDownloadPDF(userToken, orderId) {
             hiddenDiv.style.visibility = 'visible';
             // Adjust dimensions to fit A4 size
             hiddenDiv.style.width = '210mm';
+            hiddenDiv.style.height = '297mm';
             document.body.appendChild(hiddenDiv);
 
             // Convert the content to PDF
