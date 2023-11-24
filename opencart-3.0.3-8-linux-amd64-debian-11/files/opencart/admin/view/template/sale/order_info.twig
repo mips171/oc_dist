@@ -415,13 +415,15 @@ function convertAndDownloadPDF(userToken, orderId) {
             var hiddenDiv = document.createElement('div');
             hiddenDiv.innerHTML = htmlContent;
             hiddenDiv.style.visibility = 'visible';
+            // Adjust dimensions to fit A4 size
+            hiddenDiv.style.width = '200mm';
             document.body.appendChild(hiddenDiv);
 
             // Convert the content to PDF
             html2pdf().from(hiddenDiv).set({
-                margin: 10,
+                margin: 5,
                 filename: `invoice-${orderId}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
+                image: { type: 'webp', quality: 1.0 },
                 html2canvas: { scale: 2 },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             }).save().then(() => {
