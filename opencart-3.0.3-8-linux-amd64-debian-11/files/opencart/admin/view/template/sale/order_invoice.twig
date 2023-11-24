@@ -59,7 +59,11 @@
           {% if order.order_status != "Quote" %}
             <tr>
                 <td style="width: 40%;"><b>{{ text_payment_method }}</b></td>
-                <td style="width: 60%;">{{ order.payment_method }}</td>
+                {% if order.payment_method != "" %}
+                    <td style="width: 60%;">{{ order.payment_method }}</td>
+                {% else %}
+                    <td style="width: 60%;">No payments made</td>
+                {% endif %}
             </tr>
             <tr>
                 <td style="width: 40%;"><b>{{ text_date_payment_due }}</b></td>

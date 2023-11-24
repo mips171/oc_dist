@@ -1413,6 +1413,7 @@ class ControllerSaleOrder extends Controller
                     $store_email = $store_info['config_email'];
                     $store_telephone = $store_info['config_telephone'];
                     $store_fax = $store_info['config_fax'];
+                    $store_abn = $store_info['config_abn'];
                 } else {
                     $store_address = $this->config->get('config_address');
                     $store_email = $this->config->get('config_email');
@@ -1569,6 +1570,7 @@ class ControllerSaleOrder extends Controller
                     'date_payment_due' => date($this->language->get('date_format_short'), strtotime($order_info['date_payment_due'])),
                     'store_name' => $order_info['store_name'],
                     'store_url' => rtrim($order_info['store_url'], '/'),
+                    'store_abn' => $store_abn,
                     'store_address' => nl2br($store_address),
                     'store_email' => $store_email,
                     'store_telephone' => $store_telephone,
