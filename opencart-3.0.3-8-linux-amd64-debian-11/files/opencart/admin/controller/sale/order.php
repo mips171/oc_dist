@@ -1745,36 +1745,4 @@ class ControllerSaleOrder extends Controller
 
         $this->response->setOutput($this->load->view('sale/order_shipping', $data));
     }
-
-    // private function buildURL($request)
-    // {
-    //     $url = '';
-
-    //     $params = [
-    //         'filter_order_id',
-    //         'filter_customer',
-    //         'filter_order_status',
-    //         'filter_order_status_id',
-    //         'filter_total',
-    //         'filter_date_added_start',
-    //         'filter_date_added_end',
-    //         'filter_date_modified_start',
-    //         'filter_date_modified_end',
-    //         'filter_date_payment_due_start',
-    //         'filter_date_payment_due_end'
-    //     ];
-
-    //     foreach ($params as $param) {
-    //         if (isset($request[$param])) {
-    //             if ($param == 'filter_customer') {
-    //                 // Special handling for 'filter_customer'
-    //                 $url .= '&' . $param . '=' . urlencode(html_entity_decode($request[$param], ENT_QUOTES, 'UTF-8'));
-    //             } else {
-    //                 $url .= '&' . $param . '=' . $request[$param];
-    //             }
-    //         }
-    //     }
-
-    //     return $url;
-    // }
 }
