@@ -403,34 +403,27 @@ $(document).delegate('#button-invoice', 'click', function() {
         }
     });
 });
-
 function convertAndDownloadPDF(userToken, orderId) {
-    // Construct the URL to fetch the invoice content
     var invoiceContentUrl = `index.php?route=sale/order/invoice&user_token=${userToken}&order_id=${orderId}`;
 
-    // Fetch the invoice content and convert it to PDF
     fetch(invoiceContentUrl)
         .then(response => response.text())
         .then(htmlContent => {
-            // Create a hidden div to hold the HTML content
             var hiddenDiv = document.createElement('div');
             hiddenDiv.innerHTML = htmlContent;
-            hiddenDiv.style.visibility = 'visible';
-            // Adjust dimensions to fit A4 size
-            hiddenDiv.style.width = '200mm';
+            hiddenDiv.style.visibility = 'hidden'; // Keep it hidden
+            hiddenDiv.style.width = '210mm'; // A4 width
+            hiddenDiv.style.height = '297mm'; // A4 height
             document.body.appendChild(hiddenDiv);
 
-            // Convert the content to PDF
             html2pdf().from(hiddenDiv).set({
-                margin: 5,
+                margin: [5, 5, 5, 5], // Adjust margins if needed
                 filename: `${orderId}.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, windowWidth: hiddenDiv.scrollWidth,  windowHeight: hiddenDiv.scrollHeight },
+                html2canvas: { scale: 2 },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
             }).save().then(() => {
-                console.log(hiddenDiv);
-                // Remove the hidden div after download
-                // document.body.removeChild(hiddenDiv);
+                document.body.removeChild(hiddenDiv);
             });
         })
         .catch(error => {
