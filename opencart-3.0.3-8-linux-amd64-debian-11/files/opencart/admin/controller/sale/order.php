@@ -1398,8 +1398,8 @@ class ControllerSaleOrder extends Controller
                     $store_fax = $this->config->get('config_fax');
                 }
 
-                if ($order_info['invoice_no']) {
-                    $invoice_no = $order_info['invoice_prefix'] . $order_info['invoice_no'];
+                if ($order_info['order_id']) {
+                    $invoice_no = $order_info['order_id'];
                     if (is_file(DIR_IMAGE . $this->config->get('config_logo'))) {
                         $data['logo'] = $server . 'image/' . $this->config->get('config_logo');
                     } else {
