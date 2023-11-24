@@ -26,13 +26,16 @@
     /* height: 297mm; */
     /* Add additional styling as needed */
 }
+.order-row {
+    page-break-inside: avoid;
+}
 </style>
 </head>
 <body>
 <div class="container">
   {% for order in orders %}
   <div class="page">
-    <div class="row">
+    <div class="row order-row">
       <div class="col-sm-6 col-md-8">
         {% if logo %}
           <img src="{{ logo }}" title="{{ name }}" alt="{{ name }}" class="img-responsive img-max-dimension" />
@@ -94,7 +97,7 @@
       </table>
       </div>
     </div>
-    <div class="row">
+    <div class="row order-row">
       <div class="col-sm-6">
         <table class="table table-bordered">
           <thead>
@@ -128,7 +131,7 @@
         </table>
       </div>
     </div>
-    <table class="table table-bordered">
+    <table class="table table-bordered order-row">
       <thead>
         <tr>
           <td class="text-right"><b>{{ column_quantity }}</b></td>
@@ -170,7 +173,7 @@
       </tbody>
     </table>
     {% if order.comment %}
-    <table class="table table-bordered">
+    <table class="table table-bordered order-row">
       <thead>
         <tr>
           <td><b>{{ text_comment }}</b></td>
