@@ -29,7 +29,7 @@
         <b>{{ text_telephone }}</b> {{ order.store_telephone }}<br />
         <b>{{ text_email }}</b> {{ order.store_email }}<br />
         <b>{{ text_website }}</b> {{ order.store_url }}<br />
-        <b>ABN:</b> {{ order.store_abn }}<br />
+        <b>ABN: </b> {{ order.store_abn }}<br />
         <br />
       </div>
       <div class="col-sm-6 col-md-4">
@@ -59,11 +59,7 @@
           {% if order.order_status != "Quote" %}
             <tr>
                 <td style="width: 40%;"><b>{{ text_payment_method }}</b></td>
-                {% if order.payment_method != "" %}
-                    <td style="width: 60%;">{{ order.payment_method }}</td>
-                {% else %}
-                    <td style="width: 60%;">No payments made</td>
-                {% endif %}
+                <td style="width: 60%;">{{ order.payment_method }}</td>
             </tr>
             <tr>
                 <td style="width: 40%;"><b>{{ text_date_payment_due }}</b></td>
