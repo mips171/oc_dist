@@ -428,9 +428,13 @@ function convertAndDownloadPDF(userToken, orderId, documentType = 'invoice') {
             hiddenDiv.style.height = '297mm';
             document.body.appendChild(hiddenDiv);
 
+            let docPrefix = "Invoice";
+            if (documentType[0] == 's') {
+                docPrefix = "Pick-List";
+            }
             // Convert the content to PDF
             html2pdf().from(hiddenDiv).set({
-                filename: `${orderId}.pdf`,
+                filename: `${docPrefix}-${orderId}.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
                 html2canvas: { scale: 2, windowWidth: hiddenDiv.scrollWidth,  windowHeight: hiddenDiv.scrollHeight },
                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
