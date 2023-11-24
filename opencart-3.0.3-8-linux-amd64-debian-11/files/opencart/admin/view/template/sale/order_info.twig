@@ -416,7 +416,7 @@ function convertAndDownloadPDF(userToken, orderId) {
     iframe.onload = function() {
         // Wait for the iframe to load completely
         setTimeout(function() {
-            html2pdf().from(iframe.contentWindow.document.body).set({
+            html2pdf().from(iframe.contentDocument.body).set({
                 margin: 10,
                 filename: `invoice-${orderId}.pdf`,
                 image: { type: 'jpeg', quality: 0.98 },
