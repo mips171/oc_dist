@@ -604,7 +604,25 @@ class ControllerSaleOrder extends Controller
             $data['text_ip_add'] = sprintf($this->language->get('text_ip_add'), $this->request->server['REMOTE_ADDR']);
             $data['text_order'] = sprintf($this->language->get('text_order'), $this->request->get['order_id']);
 
-            $url = $this->buildURL($this->request->get);
+            $url_params = [
+                ['filter_order_id', false],
+                ['filter_customer', true],
+                ['filter_order_status', false],
+                ['filter_order_status_id', false],
+                ['filter_total', false],
+                ['filter_date_added_start', false],
+                ['filter_date_added_end', false],
+                ['filter_date_modified_start', false],
+                ['filter_date_modified_end', false],
+                ['filter_date_payment_due_start', false],
+                ['filter_date_payment_due_end', false],
+                ['sort', false],
+                ['order', false],
+                ['page', false],
+                // Add more parameters as needed
+            ];
+
+            $url = $this->buildURL($this->request->get, $url_params);
 
             if (isset($this->request->get['sort'])) {
                 $url .= '&sort=' . $this->request->get['sort'];
