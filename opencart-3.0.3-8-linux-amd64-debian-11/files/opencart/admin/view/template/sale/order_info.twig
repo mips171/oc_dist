@@ -415,7 +415,7 @@ function convertAndDownloadPDF(userToken, orderId) {
             // Create a hidden div to hold the HTML content
             var hiddenDiv = document.createElement('div');
             hiddenDiv.innerHTML = htmlContent;
-            hiddenDiv.style.visibility = 'visible';
+            hiddenDiv.style.visibility = 'hidden';
             // Adjust dimensions to fit A4 size
             hiddenDiv.style.width = '210mm';
             hiddenDiv.style.height = '297mm';
@@ -430,7 +430,7 @@ function convertAndDownloadPDF(userToken, orderId) {
             }).save().then(() => {
                 console.log(hiddenDiv);
                 // Remove the hidden div after download
-                // document.body.removeChild(hiddenDiv);
+                document.body.removeChild(hiddenDiv);
             });
         })
         .catch(error => {
