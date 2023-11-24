@@ -19,7 +19,7 @@ $_['text_keyword']           = 'Do not use spaces, instead replace spaces with -
 
 // Column
 $_['column_name']            = 'Product Name';
-$_['column_model']           = 'Model';
+$_['column_model']           = 'SKU';
 $_['column_image']           = 'Image';
 $_['column_price']           = 'Price';
 $_['column_quantity']        = 'Quantity';

@@ -59,21 +59,26 @@
     <table class="table table-bordered">
       <thead>
         <tr>
+          <td><b>{{ column_quantity }}</b></td>
+          <td><b>{{ column_model }}</b></td>
+          <td><b>{{ column_product }}</b></td>
           <td><b>{{ column_location }}</b></td>
           <td><b>{{ column_reference }}</b></td>
-          <td><b>{{ column_product }}</b></td>
           <td><b>{{ column_weight }}</b></td>
-          <td><b>{{ column_model }}</b></td>
-          <td class="text-right"><b>{{ column_quantity }}</b></td>
         </tr>
       </thead>
       <tbody>
         {% for product in order.product %}
         <tr>
+          <td>{{ product.quantity }}</td>
+          <td>{{ product.model }}</td>
+          <td>{{ product.name }}
+            {% for option in product.option %}
+            <br/>
+            &nbsp;<small> - {{ option.name }}: {{ option.value }}</small>
+            {% endfor %}</td>
           <td>{{ product.location }}</td>
-          <td>{% if product.sku %}
-            {{ text_sku }} {{ product.sku }}<br/>
-            {% endif %}
+          <td>
             {% if product.upc %}
             {{ text_upc }} {{ product.upc }}<br/>
             {% endif %}
@@ -89,14 +94,8 @@
             {% if product.mpn %}
             {{ text_mpn }}{{ product.mpn }}<br/>
             {% endif %}</td>
-          <td>{{ product.name }}
-            {% for option in product.option %}
-            <br/>
-            &nbsp;<small> - {{ option.name }}: {{ option.value }}</small>
-            {% endfor %}</td>
           <td>{{ product.weight }}</td>
-          <td>{{ product.model }}</td>
-          <td class="text-right">{{ product.quantity }}</td>
+
         </tr>
         {% endfor %}
       </tbody>

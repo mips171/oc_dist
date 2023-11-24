@@ -52,7 +52,7 @@ $_['button_rebuild']                = 'Rebuild';
 $_['button_upload']                 = 'Upload';
 $_['button_submit']                 = 'Submit';
 $_['button_invoice_print']          = 'Print Invoice';
-$_['button_shipping_print']         = 'Print Shipping List';
+$_['button_shipping_print']         = 'Print Pick List';
 $_['button_address_add']            = 'Add Address';
 $_['button_attribute_add']          = 'Add Attribute';
 $_['button_banner_add']             = 'Add Banner';
@@ -99,7 +99,7 @@ $_['button_category_add']           = 'Add Category';
 $_['button_order']                  = 'View Order';
 $_['button_order_recurring']        = 'View Recurring Order';
 $_['button_buy']                    = 'Buy';
-$_['button_developer']              = 'Developer Setting'; 
+$_['button_developer']              = 'Developer Setting';
 
 // Tab
 $_['tab_affiliate']                 = 'Affiliate';

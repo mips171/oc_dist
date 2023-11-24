@@ -62,7 +62,7 @@ $_['text_commission_added'] = 'Success: Commission added!';
 $_['text_commission_removed'] = 'Success: Commission removed!';
 $_['text_restock'] = 'Success: Products have been restocked!';
 $_['text_upload'] = 'Your file was successfully uploaded!';
-$_['text_picklist'] = 'Dispatch Note';
+$_['text_picklist'] = 'Despatch Note';
 
 // Column
 $_['column_order_id'] = 'Order ID';
@@ -73,7 +73,7 @@ $_['column_date_modified'] = 'Date Modified';
 $_['column_date_payment_due'] = 'Date Payment Due';
 $_['column_total'] = 'Total';
 $_['column_product'] = 'Product';
-$_['column_model'] = 'Model';
+$_['column_model'] = 'SKU';
 $_['column_quantity'] = 'Quantity';
 $_['column_price'] = 'Unit Price';
 $_['column_comment'] = 'Comment';
