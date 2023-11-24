@@ -1376,8 +1376,10 @@ class ControllerSaleOrder extends Controller
 
         if ($this->request->server['HTTPS']) {
             $data['base'] = HTTPS_SERVER;
+            $server = HTTPS_CATALOG;
         } else {
             $data['base'] = HTTP_SERVER;
+            $server = HTTP_CATALOG;
         }
 
         $data['direction'] = $this->language->get('direction');
@@ -1596,10 +1598,8 @@ class ControllerSaleOrder extends Controller
 
         if ($this->request->server['HTTPS']) {
             $data['base'] = HTTPS_SERVER;
-            $server = HTTPS_CATALOG;
         } else {
             $data['base'] = HTTP_SERVER;
-            $server = HTTP_CATALOG;
         }
 
         $data['direction'] = $this->language->get('direction');
