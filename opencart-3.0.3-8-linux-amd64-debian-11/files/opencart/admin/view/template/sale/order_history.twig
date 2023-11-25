@@ -56,4 +56,9 @@
     window.addEventListener('load', function() {
         observeDOMChanges();
     });
+    window.addEventListener('load', function() {
+    // Delay the execution for a short period to ensure elements are rendered
+    setTimeout(linkifyComments, 1000); // Delay by 100 milliseconds
+});
+
 </script>
