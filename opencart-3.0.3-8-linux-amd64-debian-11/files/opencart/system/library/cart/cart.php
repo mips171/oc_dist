@@ -192,7 +192,7 @@ class Cart {
 				if ($this->config->get('config_tax')) {
 					$base_price = $this->tax->calculate($price, $product_query->row['tax_class_id']);
 					$base_option_price = $this->tax->calculate($option_price, $product_query->row['tax_class_id']);
-					$tax_rate = $price / $base_price;
+					$tax_rate = 0.1; // Australia GST
 				} else {
 					$base_price = $price;
 					$base_option_price = $option_price;
