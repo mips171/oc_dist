@@ -1,42 +1,5 @@
 <script type="text/javascript">
-    function linkifyComments() {
-        var comments = document.querySelectorAll('td.comment-cell');
-        console.log('Running linkifyComments, found', comments.length, 'comments'); // Debugging log
-
-        comments.forEach(function(comment) {
-            var html = comment.innerHTML;
-            var linkedHtml = html.replace(/(https?:\/\/\S+)/g, '<a href="$1" target="_blank">$1</a>');
-            comment.innerHTML = linkedHtml;
-        });
-    }
-
-    // document.addEventListener('DOMContentLoaded', function() {
-    //     setTimeout(linkifyComments, 500); // Delay of 500 ms; adjust as needed
-    // });
-    function observeDOMChanges() {
-        var targetNode = document.getElementById('history');
-
-        if (!targetNode) {
-            console.error('Target node for Mutation Observer not found');
-            return;
-        }
-
-        const observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                if (mutation.addedNodes.length) {
-                    // Optionally, add more specific checks here before calling debouncedLinkifyComments
-                    debouncedLinkifyComments();
-                }
-            });
-        });
-
-        observer.observe(targetNode, { childList: true, subtree: true });
-    }
-
-    document.addEventListener('DOMContentLoaded', function() {
-        observeDOMChanges();
-    });
-
+    // Debounce function
     function debounce(func, wait, immediate) {
         var timeout;
         return function() {
@@ -52,8 +15,45 @@
         };
     };
 
-    var debouncedLinkifyComments = debounce(linkifyComments, 250); // Adjust the time as needed
+    // Linkify comments, only if not already done
+    function linkifyComments() {
+        var comments = document.querySelectorAll('td.comment-cell:not(.linkified)');
 
+        comments.forEach(function(comment) {
+            var html = comment.innerHTML;
+            var linkedHtml = html.replace(/(https?:\/\/\S+)/g, '<a href="$1" target="_blank">$1</a>');
+            comment.innerHTML = linkedHtml;
+            comment.classList.add('linkified');
+        });
+    }
+
+    // Debounced version of linkifyComments
+    var debouncedLinkifyComments = debounce(linkifyComments, 250);
+
+    // Mutation Observer to observe changes in the DOM
+    function observeDOMChanges() {
+        var targetNode = document.getElementById('history');
+
+        if (!targetNode) {
+            console.error('Target node for Mutation Observer not found');
+            return;
+        }
+
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.addedNodes.length) {
+                    debouncedLinkifyComments();
+                }
+            });
+        });
+
+        observer.observe(targetNode, { childList: true, subtree: true });
+    }
+
+    // Start observing when DOM is fully loaded
+    document.addEventListener('DOMContentLoaded', function() {
+        observeDOMChanges();
+    });
 </script>
 <footer id="footer">{{ text_footer }}<br/>{{ text_version }}<br><a href="https://nbembedded.com">nbembedded.com</a></footer></div>
 </body></html>
