@@ -14,7 +14,7 @@
     //     setTimeout(linkifyComments, 500); // Delay of 500 ms; adjust as needed
     // });
     function observeDOMChanges() {
-        var targetNode = document.getElementById('history'); // Replace with the actual ID of the parent element
+        var targetNode = document.getElementById('history');
 
         if (!targetNode) {
             console.error('Target node for Mutation Observer not found');
@@ -24,7 +24,8 @@
         const observer = new MutationObserver(function(mutations) {
             mutations.forEach(function(mutation) {
                 if (mutation.addedNodes.length) {
-                    linkifyComments();
+                    // Optionally, add more specific checks here before calling debouncedLinkifyComments
+                    debouncedLinkifyComments();
                 }
             });
         });
@@ -35,6 +36,23 @@
     document.addEventListener('DOMContentLoaded', function() {
         observeDOMChanges();
     });
+
+    function debounce(func, wait, immediate) {
+        var timeout;
+        return function() {
+            var context = this, args = arguments;
+            var later = function() {
+                timeout = null;
+                if (!immediate) func.apply(context, args);
+            };
+            var callNow = immediate && !timeout;
+            clearTimeout(timeout);
+            timeout = setTimeout(later, wait);
+            if (callNow) func.apply(context, args);
+        };
+    };
+
+    var debouncedLinkifyComments = debounce(linkifyComments, 250); // Adjust the time as needed
 
 </script>
 <footer id="footer">{{ text_footer }}<br/>{{ text_version }}<br><a href="https://nbembedded.com">nbembedded.com</a></footer></div>
