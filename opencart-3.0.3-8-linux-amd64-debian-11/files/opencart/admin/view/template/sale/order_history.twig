@@ -41,24 +41,10 @@
         });
     }
 
-    function observeDOMChanges() {
-        const observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                if (mutation.addedNodes.length) {
-                    linkifyComments();
-                }
-            });
-        });
-
-        observer.observe(document.body, { childList: true, subtree: true });
-    }
-
-    window.addEventListener('load', function() {
-        observeDOMChanges();
-    });
-    window.addEventListener('load', function() {
-    // Delay the execution for a short period to ensure elements are rendered
-    setTimeout(linkifyComments, 1000); // Delay by 100 milliseconds
-});
+    window.onload = function () {
+    setTimeout(function () {
+        linkifyComments();
+        }, 2000);
+    };
 
 </script>
