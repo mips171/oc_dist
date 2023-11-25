@@ -44,7 +44,25 @@ class ControllerSaleOrder extends Controller
 
         $this->session->data['success'] = $this->language->get('text_success');
 
-        $url = $this->buildURL($this->request->get);
+        $url_params = [
+            ['filter_order_id', false],
+            ['filter_customer', true],
+            ['filter_order_status', false],
+            ['filter_order_status_id', false],
+            ['filter_total', false],
+            ['filter_date_added_start', false],
+            ['filter_date_added_end', false],
+            ['filter_date_modified_start', false],
+            ['filter_date_modified_end', false],
+            ['filter_date_payment_due_start', false],
+            ['filter_date_payment_due_end', false],
+            ['sort', false],
+            ['order', false],
+            ['page', false],
+            // Add more parameters as needed
+        ];
+
+        $url = $this->buildURL($this->request->get, $url_params);
 
         if (isset($this->request->get['sort'])) {
             $url .= '&sort=' . $this->request->get['sort'];
