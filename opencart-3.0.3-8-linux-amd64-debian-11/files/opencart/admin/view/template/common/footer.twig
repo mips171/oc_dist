@@ -10,8 +10,30 @@
         });
     }
 
+    // document.addEventListener('DOMContentLoaded', function() {
+    //     setTimeout(linkifyComments, 500); // Delay of 500 ms; adjust as needed
+    // });
+    function observeDOMChanges() {
+        var targetNode = document.getElementById('history'); // Replace with the actual ID of the parent element
+
+        if (!targetNode) {
+            console.error('Target node for Mutation Observer not found');
+            return;
+        }
+
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.addedNodes.length) {
+                    linkifyComments();
+                }
+            });
+        });
+
+        observer.observe(targetNode, { childList: true, subtree: true });
+    }
+
     document.addEventListener('DOMContentLoaded', function() {
-        setTimeout(linkifyComments, 500); // Delay of 500 ms; adjust as needed
+        observeDOMChanges();
     });
 
 </script>
