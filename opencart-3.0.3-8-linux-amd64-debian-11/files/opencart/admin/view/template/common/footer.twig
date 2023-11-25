@@ -1,6 +1,7 @@
-<script>
+<script type="text/javascript">
     function linkifyComments() {
-        var comments = document.querySelectorAll('td.comment-cell'); // Adjust the selector to target your comment cells
+        var comments = document.querySelectorAll('td.comment-cell');
+        console.log('Running linkifyComments, found', comments.length, 'comments'); // Debugging log
 
         comments.forEach(function(comment) {
             var html = comment.innerHTML;
@@ -11,6 +12,7 @@
 
     function observeDOMChanges() {
         const observer = new MutationObserver(function(mutations) {
+            console.log('Mutation observed'); // Debugging log
             mutations.forEach(function(mutation) {
                 if (mutation.addedNodes.length) {
                     linkifyComments();
@@ -21,10 +23,11 @@
         observer.observe(document.body, { childList: true, subtree: true });
     }
 
-    document.addEventListener('load', function() {
+    document.addEventListener('DOMContentLoaded', function() {
+        console.log('DOMContentLoaded'); // Debugging log
+        linkifyComments(); // Try running immediately on DOMContentLoaded
         observeDOMChanges();
     });
 </script>
-
 <footer id="footer">{{ text_footer }}<br/>{{ text_version }}<br><a href="https://nbembedded.com">nbembedded.com</a></footer></div>
 </body></html>
