@@ -41,7 +41,19 @@
         });
     }
 
+    function observeDOMChanges() {
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.addedNodes.length) {
+                    linkifyComments();
+                }
+            });
+        });
+
+        observer.observe(document.body, { childList: true, subtree: true });
+    }
+
     window.addEventListener('load', function() {
-        linkifyComments();
+        observeDOMChanges();
     });
 </script>
