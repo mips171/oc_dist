@@ -11,9 +11,9 @@
     }
 
     document.addEventListener('DOMContentLoaded', function() {
-        console.log('DOMContentLoaded'); // Debugging log
-        linkifyComments(); // Try running immediately on DOMContentLoaded
+        setTimeout(linkifyComments, 3000); // Delay of 500 ms; adjust as needed
     });
+
 </script>
 <footer id="footer">{{ text_footer }}<br/>{{ text_version }}<br><a href="https://nbembedded.com">nbembedded.com</a></footer></div>
 </body></html>
