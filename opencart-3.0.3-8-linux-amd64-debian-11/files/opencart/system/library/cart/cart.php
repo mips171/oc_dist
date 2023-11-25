@@ -187,6 +187,30 @@ class Cart {
 					$price = $product_special_query->row['price'];
 				}
 
+                $currency_info = $this->db->query("SELECT * FROM " . DB_PREFIX . "currency WHERE `code` = '" . $this->db->escape($this->session->data['currency']) . "'")->row;
+
+				if ($this->config->get('config_tax')) {
+					$base_price = $this->tax->calculate($price, $product_query->row['tax_class_id']);
+					$base_option_price = $this->tax->calculate($option_price, $product_query->row['tax_class_id']);
+					$tax_rate = $price / $base_price;
+				} else {
+					$base_price = $price;
+					$base_option_price = $option_price;
+					$tax_rate = 1;
+				}
+
+				$decimal_places = $currency_info['decimal_place'];
+				if (!isset($quantity)) $quantity = $cart['quantity'];
+
+				if ($quantity >= 1000) $decimal_places++;
+				if ($quantity >= 10000) $decimal_places++;
+
+				$converted_price = round($base_price * $currency_info['value'], $decimal_places);
+				$price = $converted_price / $currency_info['value'] * $tax_rate;
+
+				$converted_option_price = round($base_option_price * $currency_info['value'], $decimal_places);
+				$option_price = $converted_option_price / $currency_info['value'] * $tax_rate;
+
 				// Reward Points
 				$product_reward_query = $this->db->query("SELECT points FROM " . DB_PREFIX . "product_reward WHERE product_id = '" . (int)$cart['product_id'] . "' AND customer_group_id = '" . (int)$this->config->get('config_customer_group_id') . "'");
 
