@@ -90,28 +90,9 @@
         observer.observe(targetNode, { childList: true, subtree: true });
     }
 
-    function updateCommentColors() {
-        var targetNode = document.getElementById('form-order');
-
-        if (!targetNode) {
-            return;
-        }
-
-        const observer = new MutationObserver(function(mutations) {
-            mutations.forEach(function(mutation) {
-                if (mutation.addedNodes.length) {
-                    debouncedColorfyOrderStatuses();
-                }
-            });
-        });
-
-        observer.observe(targetNode, { childList: true, subtree: true });
-    }
-
     // Start observing when DOM is fully loaded
     document.addEventListener('DOMContentLoaded', function() {
         observeDOMChanges();
-        updateCommentColors();
         colorfyOrderStatuses();
     });
 </script>
