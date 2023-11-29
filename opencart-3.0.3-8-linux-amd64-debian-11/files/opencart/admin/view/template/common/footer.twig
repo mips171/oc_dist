@@ -29,7 +29,7 @@
 
     // Colorfy order statuses, only if not already done
     function colorfyOrderStatuses() {
-        var comments = document.querySelectorAll('order-status:not(.colorfied)');
+        var comments = document.querySelectorAll('td.order-status:not(.colorfied)');
 
         comments.forEach(function(comment) {
             var statusText = comment.textContent.trim();
