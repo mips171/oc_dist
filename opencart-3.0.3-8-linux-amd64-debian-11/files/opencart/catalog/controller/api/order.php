@@ -95,7 +95,7 @@ class ControllerApiOrder extends Controller {
 
 			if (!$json) {
 				$json['success'] = $this->language->get('text_success');
-				
+
 				$order_data = array();
 
 				// Store Details
@@ -250,7 +250,7 @@ class ControllerApiOrder extends Controller {
 					'taxes'  => &$taxes,
 					'total'  => &$total
 				);
-			
+
 				$sort_order = array();
 
 				$results = $this->model_setting_extension->getExtensions('total');
@@ -264,7 +264,7 @@ class ControllerApiOrder extends Controller {
 				foreach ($results as $result) {
 					if ($this->config->get('total_' . $result['code'] . '_status')) {
 						$this->load->model('extension/total/' . $result['code']);
-						
+
 						// We have to put the totals in an array so that they pass by reference.
 						$this->{'model_extension_total_' . $result['code']}->getTotal($total_data);
 					}
@@ -350,7 +350,7 @@ class ControllerApiOrder extends Controller {
 				}
 
 				$this->model_checkout_order->addOrderHistory($json['order_id'], $order_status_id);
-				
+
 				// clear cart since the order has already been successfully stored.
 				$this->cart->clear();
 			}
@@ -465,10 +465,13 @@ class ControllerApiOrder extends Controller {
 
 				if (!$json) {
 					$json['success'] = $this->language->get('text_success');
-					
+
+                    $username = $$this->user->getUserName();
 					$order_data = array();
 
 					// Store Details
+                    $order_data['username'] = $username;
+
 					$order_data['invoice_prefix'] = $this->config->get('config_invoice_prefix');
 					$order_data['store_id'] = $this->config->get('config_store_id');
 					$order_data['store_name'] = $this->config->get('config_name');
@@ -613,14 +616,14 @@ class ControllerApiOrder extends Controller {
 					$totals = array();
 					$taxes = $this->cart->getTaxes();
 					$total = 0;
-					
-					// Because __call can not keep var references so we put them into an array. 
+
+					// Because __call can not keep var references so we put them into an array.
 					$total_data = array(
 						'totals' => &$totals,
 						'taxes'  => &$taxes,
 						'total'  => &$total
 					);
-			
+
 					$sort_order = array();
 
 					$results = $this->model_setting_extension->getExtensions('total');
@@ -634,7 +637,7 @@ class ControllerApiOrder extends Controller {
 					foreach ($results as $result) {
 						if ($this->config->get('total_' . $result['code'] . '_status')) {
 							$this->load->model('extension/total/' . $result['code']);
-							
+
 							// We have to put the totals in an array so that they pass by reference.
 							$this->{'model_extension_total_' . $result['code']}->getTotal($total_data);
 						}
@@ -684,7 +687,7 @@ class ControllerApiOrder extends Controller {
 					} else {
 						$order_status_id = $this->config->get('config_order_status_id');
 					}
-					
+
 					$this->model_checkout_order->addOrderHistory($order_id, $order_status_id);
 
 					// When order editing is completed, delete added order status for Void the order first.
@@ -727,7 +730,7 @@ class ControllerApiOrder extends Controller {
 				$json['error'] = $this->language->get('error_not_found');
 			}
 		}
-		
+
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
 	}
@@ -794,6 +797,8 @@ class ControllerApiOrder extends Controller {
 			}
 
 			$order_info = $this->model_checkout_order->getOrder($order_id);
+
+            $this->load->model('checkout/order');
 
 			if ($order_info) {
 				$this->model_checkout_order->addOrderHistory($order_id, $this->request->post['order_status_id'], $this->request->post['comment'], $this->request->post['notify'], $this->request->post['override']);
