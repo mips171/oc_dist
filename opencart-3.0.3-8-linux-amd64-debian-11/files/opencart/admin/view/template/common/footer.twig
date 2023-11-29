@@ -78,7 +78,6 @@
         var targetNode = document.getElementById('history');
 
         if (!targetNode) {
-            console.error('Target node for Mutation Observer not found');
             return;
         }
 
@@ -93,9 +92,28 @@
         observer.observe(targetNode, { childList: true, subtree: true });
     }
 
+    function updateCommentColors() {
+        var targetNode = document.getElementById('form-order');
+
+        if (!targetNode) {
+            return;
+        }
+
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                if (mutation.addedNodes.length) {
+                    debouncedColorfyOrderStatuses();
+                }
+            });
+        });
+
+        observer.observe(targetNode, { childList: true, subtree: true });
+    }
+
     // Start observing when DOM is fully loaded
     document.addEventListener('DOMContentLoaded', function() {
         observeDOMChanges();
+        updateCommentColors();
     });
 </script>
 <footer id="footer">{{ text_footer }}<br/>{{ text_version }}<br><a href="https://nbembedded.com">nbembedded.com</a></footer></div>
