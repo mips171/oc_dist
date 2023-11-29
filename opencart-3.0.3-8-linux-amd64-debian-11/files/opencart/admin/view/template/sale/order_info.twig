@@ -605,7 +605,7 @@ function convertAndDownloadPDF(userToken, orderId, documentType = 'invoice') {
   $('#history').load('index.php?route=sale/order/history&user_token={{ user_token }}&order_id={{ order_id }}');
 
   $('#button-history').on('click', function() {
-    var username = document.getElementById('user-profile').textContent.trim();
+    var username = document.getElementById('user-profile').alt;
 	  $.ajax({
 		  url: '{{ catalog }}index.php?route=api/order/history&api_token={{ api_token }}&store_id={{ store_id }}&order_id={{ order_id }}',
 		  type: 'post',
