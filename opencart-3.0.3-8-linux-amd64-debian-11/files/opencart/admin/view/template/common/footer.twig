@@ -27,8 +27,51 @@
         });
     }
 
+    // Colorfy order statuses, only if not already done
+    function colorfyOrderStatuses() {
+        var comments = document.querySelectorAll('order-status:not(.colorfied)');
+
+        comments.forEach(function(comment) {
+            var statusText = comment.textContent.trim();
+
+            // Determine color based on order status
+            var color;
+            var fontWeight = 'normal'
+            switch (statusText.toLowerCase()) {
+                case 'New':
+                    color = 'black';
+                    fontWeight = 'bold';
+                    break;
+                case 'Pack':
+                    color = 'blue';
+                    break;
+                case 'Despatched':
+                    color = 'green';
+                    break;
+                case 'Pending Pickup':
+                    color = 'orange';
+                    fontWeight = 'bold';
+                    break;
+                case 'Sent on Account':
+                    color = 'red';
+                    break;
+                default:
+                    color = '';
+            }
+
+            // Apply the color and mark as colorfied
+            if (color != '') {
+            comment.style.color = color;
+            }
+            comment.style.fontWeight = fontWeight;
+            comment.classList.add('colorfied');
+        });
+    }
+
     // Debounced version of linkifyComments
     var debouncedLinkifyComments = debounce(linkifyComments, 250);
+
+    var debouncedColorfyOrderStatuses = debounce(colorfyOrderStatuses, 250);
 
     // Mutation Observer to observe changes in the DOM
     function observeDOMChanges() {
