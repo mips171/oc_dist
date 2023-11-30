@@ -914,13 +914,13 @@ class ControllerCustomerCustomer extends Controller
             $data['affiliate'] = '';
         }
 
-        if (isset($this->request->post['company'])) {
-            $data['company'] = $this->request->post['company'];
-        } elseif (!empty($affiliate_info)) {
-            $data['company'] = $affiliate_info['company'];
-        } else {
-            $data['company'] = '';
-        }
+        // if (isset($this->request->post['company'])) {
+        //     $data['company'] = $this->request->post['company'];
+        // } elseif (!empty($affiliate_info)) {
+        //     $data['company'] = $affiliate_info['company'];
+        // } else {
+        //     $data['company'] = '';
+        // }
 
         if (isset($this->request->post['website'])) {
             $data['website'] = $this->request->post['website'];
