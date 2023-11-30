@@ -54,7 +54,7 @@ class User
             $this->user_group_id = $user_query->row['user_group_id'];
 
             // Load user permissions
-            $user_group_query = $this->db->query("SELECT permission FROM " . DB_PREFIX . "user_group WHERE user_group_id = '" . (int) $user_group_query->row['user_group_id'] . "'");
+            $user_group_query = $this->db->query("SELECT permission FROM " . DB_PREFIX . "user_group WHERE user_group_id = '" . (int) $user_query->row['user_group_id'] . "'");
             $permissions = json_decode($user_group_query->row['permission'], true);
 
             foreach ($permissions as $key => $value) {
