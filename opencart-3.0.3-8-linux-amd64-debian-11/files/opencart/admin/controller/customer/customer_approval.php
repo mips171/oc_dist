@@ -72,7 +72,7 @@ class ControllerCustomerCustomerApproval extends Controller {
 			'text' => $this->language->get('heading_title'),
 			'href' => $this->url->link('customer/customer_approval', 'user_token=' . $this->session->data['user_token'], true)
 		);
-		
+
 		$data['filter_name'] = $filter_name;
 		$data['filter_email'] = $filter_email;
 		$data['filter_customer_group_id'] = $filter_customer_group_id;
@@ -208,11 +208,8 @@ class ControllerCustomerCustomerApproval extends Controller {
 		} else {
 			$this->load->model('customer/customer_approval');
 
-			if ($this->request->get['type'] == 'customer') {
-				$this->model_customer_customer_approval->approveCustomer($this->request->get['customer_id']);
-			} elseif ($this->request->get['type'] == 'affiliate') {
-				$this->model_customer_customer_approval->approveAffiliate($this->request->get['customer_id']);
-			}
+			$this->model_customer_customer_approval->approveCustomer($this->request->get['customer_id']);
+
 
 			$json['success'] = $this->language->get('text_success');
 		}
@@ -231,11 +228,7 @@ class ControllerCustomerCustomerApproval extends Controller {
 		} else {
 			$this->load->model('customer/customer_approval');
 
-			if ($this->request->get['type'] == 'customer') {
-				$this->model_customer_customer_approval->denyCustomer($this->request->get['customer_id']);
-			} elseif ($this->request->get['type'] == 'affiliate') {
-				$this->model_customer_customer_approval->denyAffiliate($this->request->get['customer_id']);
-			}
+			$this->model_customer_customer_approval->denyCustomer($this->request->get['customer_id']);
 
 			$json['success'] = $this->language->get('text_success');
 		}

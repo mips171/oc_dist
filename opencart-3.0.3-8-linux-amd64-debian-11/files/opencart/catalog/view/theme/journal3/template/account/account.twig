@@ -67,16 +67,6 @@
         {% endif %}
       </ul>
       </div>
-      {% if affiliate %}
-      <div class="my-affiliates">
-      <h2 class="title">{{ text_my_affiliate }}</h2>
-      <ul class="list-unstyled account-list">
-        {% if not tracking %}
-        <li class="affiliate-add"><a href="{{ affiliate }}">{{ text_affiliate_add }}</a></li>
-        {% else %}
-        <li class="affiliate-edit"><a href="{{ affiliate }}">{{ text_affiliate_edit }}</a></li>
-        <li class="affiliate-track"><a href="{{ tracking }}">{{ text_tracking }}</a></li>
-        {% endif %}
       </ul>
       </div>
       {% endif %}

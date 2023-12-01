@@ -95,7 +95,7 @@ class ControllerApiOrder extends Controller {
 
 			if (!$json) {
 				$json['success'] = $this->language->get('text_success');
-				
+
 				$order_data = array();
 
 				// Store Details
@@ -250,7 +250,7 @@ class ControllerApiOrder extends Controller {
 					'taxes'  => &$taxes,
 					'total'  => &$total
 				);
-			
+
 				$sort_order = array();
 
 				$results = $this->model_setting_extension->getExtensions('total');
@@ -264,7 +264,7 @@ class ControllerApiOrder extends Controller {
 				foreach ($results as $result) {
 					if ($this->config->get('total_' . $result['code'] . '_status')) {
 						$this->load->model('extension/total/' . $result['code']);
-						
+
 						// We have to put the totals in an array so that they pass by reference.
 						$this->{'model_extension_total_' . $result['code']}->getTotal($total_data);
 					}
@@ -286,31 +286,12 @@ class ControllerApiOrder extends Controller {
 					$order_data['comment'] = '';
 				}
 
-				if (isset($this->request->post['affiliate_id'])) {
-					$subtotal = $this->cart->getSubTotal();
 
-					// Affiliate
-					$this->load->model('account/customer');
+                $order_data['affiliate_id'] = 0;
+                $order_data['commission'] = 0;
+                $order_data['marketing_id'] = 0;
+                $order_data['tracking'] = '';
 
-					$affiliate_info = $this->model_account_customer->getAffiliate($this->request->post['affiliate_id']);
-
-					if ($affiliate_info) {
-						$order_data['affiliate_id'] = $affiliate_info['customer_id'];
-						$order_data['commission'] = ($subtotal / 100) * $affiliate_info['commission'];
-					} else {
-						$order_data['affiliate_id'] = 0;
-						$order_data['commission'] = 0;
-					}
-
-					// Marketing
-					$order_data['marketing_id'] = 0;
-					$order_data['tracking'] = '';
-				} else {
-					$order_data['affiliate_id'] = 0;
-					$order_data['commission'] = 0;
-					$order_data['marketing_id'] = 0;
-					$order_data['tracking'] = '';
-				}
 
 				$order_data['language_id'] = $this->config->get('config_language_id');
 				$order_data['currency_id'] = $this->currency->getId($this->session->data['currency']);
@@ -350,7 +331,7 @@ class ControllerApiOrder extends Controller {
 				}
 
 				$this->model_checkout_order->addOrderHistory($json['order_id'], $order_status_id);
-				
+
 				// clear cart since the order has already been successfully stored.
 				$this->cart->clear();
 			}
@@ -465,7 +446,7 @@ class ControllerApiOrder extends Controller {
 
 				if (!$json) {
 					$json['success'] = $this->language->get('text_success');
-					
+
 					$order_data = array();
 
 					// Store Details
@@ -613,14 +594,14 @@ class ControllerApiOrder extends Controller {
 					$totals = array();
 					$taxes = $this->cart->getTaxes();
 					$total = 0;
-					
-					// Because __call can not keep var references so we put them into an array. 
+
+					// Because __call can not keep var references so we put them into an array.
 					$total_data = array(
 						'totals' => &$totals,
 						'taxes'  => &$taxes,
 						'total'  => &$total
 					);
-			
+
 					$sort_order = array();
 
 					$results = $this->model_setting_extension->getExtensions('total');
@@ -634,7 +615,7 @@ class ControllerApiOrder extends Controller {
 					foreach ($results as $result) {
 						if ($this->config->get('total_' . $result['code'] . '_status')) {
 							$this->load->model('extension/total/' . $result['code']);
-							
+
 							// We have to put the totals in an array so that they pass by reference.
 							$this->{'model_extension_total_' . $result['code']}->getTotal($total_data);
 						}
@@ -656,25 +637,10 @@ class ControllerApiOrder extends Controller {
 						$order_data['comment'] = '';
 					}
 
-					if (isset($this->request->post['affiliate_id'])) {
-						$subtotal = $this->cart->getSubTotal();
 
-						// Affiliate
-						$this->load->model('account/customer');
+                    $order_data['affiliate_id'] = 0;
+                    $order_data['commission'] = 0;
 
-						$affiliate_info = $this->model_account_customer->getAffiliate($this->request->post['affiliate_id']);
-
-						if ($affiliate_info) {
-							$order_data['affiliate_id'] = $affiliate_info['customer_id'];
-							$order_data['commission'] = ($subtotal / 100) * $affiliate_info['commission'];
-						} else {
-							$order_data['affiliate_id'] = 0;
-							$order_data['commission'] = 0;
-						}
-					} else {
-						$order_data['affiliate_id'] = 0;
-						$order_data['commission'] = 0;
-					}
 
 					$this->model_checkout_order->editOrder($order_id, $order_data);
 
@@ -684,7 +650,7 @@ class ControllerApiOrder extends Controller {
 					} else {
 						$order_status_id = $this->config->get('config_order_status_id');
 					}
-					
+
 					$this->model_checkout_order->addOrderHistory($order_id, $order_status_id);
 
 					// When order editing is completed, delete added order status for Void the order first.
@@ -727,7 +693,7 @@ class ControllerApiOrder extends Controller {
 				$json['error'] = $this->language->get('error_not_found');
 			}
 		}
-		
+
 		$this->response->addHeader('Content-Type: application/json');
 		$this->response->setOutput(json_encode($json));
 	}

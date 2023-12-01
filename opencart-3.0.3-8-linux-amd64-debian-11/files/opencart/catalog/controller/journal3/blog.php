@@ -11,7 +11,6 @@ class ControllerJournal3Blog extends Controller {
 		$this->load->model('journal3/blog');
 
 		$this->language->load('information/contact');
-		$this->language->load('affiliate/register');
 		$this->language->load('product/product');
 		$this->language->load('product/category');
 	}

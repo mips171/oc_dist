@@ -11,7 +11,6 @@ $_['text_default']              = 'Default';
 $_['text_account']              = 'Customer Details';
 $_['text_password']             = 'Password';
 $_['text_other']                = 'Other';
-$_['text_affiliate']            = 'Affiliate Details';
 $_['text_payment']              = 'Payment Details';
 $_['text_balance']              = 'Balance';
 $_['text_cheque']               = 'Cheque';
@@ -63,7 +62,6 @@ $_['entry_postcode']            = 'Postcode';
 $_['entry_country']             = 'Country';
 $_['entry_zone']                = 'Region / State';
 $_['entry_default']             = 'Default Address';
-$_['entry_affiliate']           = 'Affiliate';
 $_['entry_tracking']            = 'Tracking Code';
 $_['entry_website']             = 'Web Site';
 $_['entry_commission']          = 'Commission (%)';
@@ -86,9 +84,7 @@ $_['entry_date_added']          = 'Date Added';
 
 // Help
 $_['help_safe']                 = 'Set to true to avoid this customer from being caught by the anti-fraud system';
-$_['help_affiliate']            = 'Enable / Disable the customers ability to use the affiliate system.';
 $_['help_tracking']             = 'The tracking code that will be used to track referrals.';
-$_['help_commission']           = 'Percentage the affiliate receives on each order.';
 $_['help_points']               = 'Use minus to remove points';
 
 // Error
@@ -108,7 +104,6 @@ $_['error_country']             = 'Please select a country!';
 $_['error_zone']                = 'Please select a region / state!';
 $_['error_custom_field']        = '%s required!';
 $_['error_tracking']            = 'Tracking Code required!';
-$_['error_tracking_exists']     = 'Tracking code is being used by another affiliate!';
 $_['error_cheque']              = 'Cheque Payee Name required!';
 $_['error_paypal']              = 'PayPal Email Address does not appear to be valid!';
 $_['error_bank_account_name']   = 'Account Name required!';

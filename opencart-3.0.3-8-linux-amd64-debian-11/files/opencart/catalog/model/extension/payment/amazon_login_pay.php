@@ -295,33 +295,11 @@ class ModelExtensionPaymentAmazonLoginPay extends Model {
 
             $subtotal = $this->cart->getSubTotal();
 
-            // Affiliate
-            $affiliate_info = $this->model_account_customer->getAffiliateByTracking($this->request->cookie['tracking']);
-
-            if ($affiliate_info) {
-                $order_data['affiliate_id'] = $affiliate_info['customer_id'];
-                $order_data['commission'] = ($subtotal / 100) * $affiliate_info['commission'];
-            } else {
-                $order_data['affiliate_id'] = 0;
-                $order_data['commission'] = 0;
-            }
-
-            // Marketing
-            $this->load->model('checkout/marketing');
-
-            $marketing_info = $this->model_checkout_marketing->getMarketingByCode($this->request->cookie['tracking']);
-
-            if ($marketing_info) {
-                $order_data['marketing_id'] = $marketing_info['marketing_id'];
-            } else {
-                $order_data['marketing_id'] = 0;
-            }
-        } else {
             $order_data['affiliate_id'] = 0;
             $order_data['commission'] = 0;
             $order_data['marketing_id'] = 0;
             $order_data['tracking'] = '';
-        }
+
 
         $order_data['language_id'] = $this->config->get('config_language_id');
         $order_data['currency_id'] = $this->currency->getId($this->session->data['currency']);
@@ -553,7 +531,7 @@ class ModelExtensionPaymentAmazonLoginPay extends Model {
 
     public function findCapture($amazon_capture_id) {
         $sql = "SELECT * FROM `" . DB_PREFIX . "amazon_login_pay_order_transaction` WHERE amazon_capture_id='" . $this->db->escape($amazon_capture_id) . "'";
-        
+
         return $this->db->query($sql)->num_rows > 0;
     }
 

@@ -102,7 +102,6 @@ $_['button_buy']                    = 'Buy';
 $_['button_developer']              = 'Developer Setting';
 
 // Tab
-$_['tab_affiliate']                 = 'Affiliate';
 $_['tab_address']                   = 'Address';
 $_['tab_additional']                = 'Additional';
 $_['tab_admin']                     = 'Admin';
