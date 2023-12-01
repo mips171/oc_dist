@@ -584,6 +584,7 @@ class ControllerSaleOrder extends Controller
 
         $data['voucher_themes'] = $this->model_sale_voucher_theme->getVoucherThemes();
 
+        // API login
         $data['catalog'] = $this->request->server['HTTPS'] ? HTTPS_CATALOG : HTTP_CATALOG;
 
         // API login
