@@ -192,7 +192,11 @@ class Cart {
 				if ($this->config->get('config_tax')) {
 					$base_price = $this->tax->calculate($price, $product_query->row['tax_class_id']);
 					$base_option_price = $this->tax->calculate($option_price, $product_query->row['tax_class_id']);
-					$tax_rate = $price / $base_price;
+                    if ($base_price != 0) {
+                        $tax_rate = $price / $base_price;
+                    } else {
+                        $tax_rate = 1;
+                    }
 				} else {
 					$base_price = $price;
 					$base_option_price = $option_price;
