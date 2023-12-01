@@ -1399,40 +1399,6 @@ class ControllerExtensionPaymentPPBraintree extends Controller {
 			$data['total'] = $total;
 			$data['comment'] = '';
 
-			if (isset($this->request->cookie['tracking'])) {
-				$data['tracking'] = $this->request->cookie['tracking'];
-
-				$subtotal = $this->cart->getSubTotal();
-
-				// Affiliate
-				$this->load->model('affiliate/affiliate');
-
-				$affiliate_info = $this->model_affiliate_affiliate->getAffiliateByCode($this->request->cookie['tracking']);
-
-				if ($affiliate_info) {
-					$data['affiliate_id'] = $affiliate_info['affiliate_id'];
-					$data['commission'] = ($subtotal / 100) * $affiliate_info['commission'];
-				} else {
-					$data['affiliate_id'] = 0;
-					$data['commission'] = 0;
-				}
-
-				// Marketing
-				$this->load->model('checkout/marketing');
-
-				$marketing_info = $this->model_checkout_marketing->getMarketingByCode($this->request->cookie['tracking']);
-
-				if ($marketing_info) {
-					$data['marketing_id'] = $marketing_info['marketing_id'];
-				} else {
-					$data['marketing_id'] = 0;
-				}
-			} else {
-				$data['affiliate_id'] = 0;
-				$data['commission'] = 0;
-				$data['marketing_id'] = 0;
-				$data['tracking'] = '';
-			}
 
 			$data['language_id'] = $this->config->get('config_language_id');
 			$data['currency_id'] = $this->currency->getId($this->session->data['currency']);

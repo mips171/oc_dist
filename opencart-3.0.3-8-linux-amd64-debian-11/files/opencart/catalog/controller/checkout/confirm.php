@@ -260,30 +260,6 @@ class ControllerCheckoutConfirm extends Controller {
 			$order_data['comment'] = $this->session->data['comment'];
 			$order_data['total'] = $total_data['total'];
 
-			if (isset($this->request->cookie['tracking'])) {
-				$order_data['tracking'] = $this->request->cookie['tracking'];
-
-				$subtotal = $this->cart->getSubTotal();
-
-                $order_data['affiliate_id'] = 0;
-                $order_data['commission'] = 0;
-
-				// Marketing
-				$this->load->model('checkout/marketing');
-
-				$marketing_info = $this->model_checkout_marketing->getMarketingByCode($this->request->cookie['tracking']);
-
-				if ($marketing_info) {
-					$order_data['marketing_id'] = $marketing_info['marketing_id'];
-				} else {
-					$order_data['marketing_id'] = 0;
-				}
-			} else {
-				$order_data['affiliate_id'] = 0;
-				$order_data['commission'] = 0;
-				$order_data['marketing_id'] = 0;
-				$order_data['tracking'] = '';
-			}
 
 			$order_data['language_id'] = $this->config->get('config_language_id');
 			$order_data['currency_id'] = $this->currency->getId($this->session->data['currency']);

@@ -8,10 +8,10 @@ class ControllerApiOrder extends Controller {
 		if (!isset($this->session->data['api_id'])) {
 			$json['error'] = $this->language->get('error_permission');
 		} else {
-			// Customer
-			if (!isset($this->session->data['customer'])) {
-				$json['error'] = $this->language->get('error_customer');
-			}
+			// // Customer
+			// if (!isset($this->session->data['customer'])) {
+			// 	$json['error'] = $this->language->get('error_customer');
+			// }
 
 			// Payment Address
 			if (!isset($this->session->data['payment_address'])) {
@@ -285,13 +285,6 @@ class ControllerApiOrder extends Controller {
 				} else {
 					$order_data['comment'] = '';
 				}
-
-
-                $order_data['affiliate_id'] = 0;
-                $order_data['commission'] = 0;
-                $order_data['marketing_id'] = 0;
-                $order_data['tracking'] = '';
-
 
 				$order_data['language_id'] = $this->config->get('config_language_id');
 				$order_data['currency_id'] = $this->currency->getId($this->session->data['currency']);
@@ -636,11 +629,6 @@ class ControllerApiOrder extends Controller {
 					} else {
 						$order_data['comment'] = '';
 					}
-
-
-                    $order_data['affiliate_id'] = 0;
-                    $order_data['commission'] = 0;
-
 
 					$this->model_checkout_order->editOrder($order_id, $order_data);
 
