@@ -93,6 +93,7 @@ class ModelAccountOrder extends Model {
 				'currency_value'          => $order_query->row['currency_value'],
 				'date_modified'           => $order_query->row['date_modified'],
 				'date_added'              => $order_query->row['date_added'],
+                'date_payment_due'        => $order_query->row['date_payment_due'],
 				'ip'                      => $order_query->row['ip']
 			);
 		} else {
