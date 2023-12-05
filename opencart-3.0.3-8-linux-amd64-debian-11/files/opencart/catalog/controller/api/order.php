@@ -8,10 +8,10 @@ class ControllerApiOrder extends Controller {
 		if (!isset($this->session->data['api_id'])) {
 			$json['error'] = $this->language->get('error_permission');
 		} else {
-			// // Customer
-			// if (!isset($this->session->data['customer'])) {
-			// 	$json['error'] = $this->language->get('error_customer');
-			// }
+			// Customer
+			if (!isset($this->session->data['customer'])) {
+				$json['error'] = $this->language->get('error_customer');
+			}
 
 			// Payment Address
 			if (!isset($this->session->data['payment_address'])) {
@@ -114,6 +114,7 @@ class ControllerApiOrder extends Controller {
 				$order_data['custom_field'] = $this->session->data['customer']['custom_field'];
 
 				// Payment Details
+                $order_data['date_payment_due'] = $this->session->data['date_payment_due'];
 				$order_data['payment_firstname'] = $this->session->data['payment_address']['firstname'];
 				$order_data['payment_lastname'] = $this->session->data['payment_address']['lastname'];
 				$order_data['payment_company'] = $this->session->data['payment_address']['company'];
@@ -458,6 +459,7 @@ class ControllerApiOrder extends Controller {
 					$order_data['custom_field'] = $this->session->data['customer']['custom_field'];
 
 					// Payment Details
+                    $order_data['date_payment_due'] = $this->session->data['date_payment_due'];
 					$order_data['payment_firstname'] = $this->session->data['payment_address']['firstname'];
 					$order_data['payment_lastname'] = $this->session->data['payment_address']['lastname'];
 					$order_data['payment_company'] = $this->session->data['payment_address']['company'];
