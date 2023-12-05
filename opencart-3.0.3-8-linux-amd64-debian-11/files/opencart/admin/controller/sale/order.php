@@ -369,6 +369,7 @@ class ControllerSaleOrder extends Controller
 
             $data['addresses'] = $this->model_customer_customer->getAddresses($order_info['customer_id']);
 
+            $data['date_payment_due'] = $order_info['date_payment_due'];
             $data['payment_firstname'] = $order_info['payment_firstname'];
             $data['payment_lastname'] = $order_info['payment_lastname'];
             $data['payment_company'] = $order_info['payment_company'];
@@ -453,6 +454,7 @@ class ControllerSaleOrder extends Controller
 
             $data['addresses'] = array();
 
+            $data['date_payment_due'] = '';
             $data['payment_firstname'] = '';
             $data['payment_lastname'] = '';
             $data['payment_company'] = '';
