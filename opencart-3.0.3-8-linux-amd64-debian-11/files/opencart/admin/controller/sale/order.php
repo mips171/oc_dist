@@ -360,12 +360,15 @@ class ControllerSaleOrder extends Controller
             $data['firstname'] = $order_info['firstname'];
             $data['lastname'] = $order_info['lastname'];
             $data['email'] = $order_info['email'];
-            $data['company'] = $order_info['customer']['company'];
-            $data['abn'] = $order_info['customer']['abn'];
             $data['telephone'] = $order_info['telephone'];
             $data['account_custom_field'] = $order_info['custom_field'];
 
             $this->load->model('customer/customer');
+
+            // get customer company and abn
+            $customer_info = $this->model_customer_customer->getCustomer($order_info['customer_id']);
+            $data['company'] = $customer_info['company'];
+            $data['abn'] = $customer_info['abn'];
 
             $data['addresses'] = $this->model_customer_customer->getAddresses($order_info['customer_id']);
 
