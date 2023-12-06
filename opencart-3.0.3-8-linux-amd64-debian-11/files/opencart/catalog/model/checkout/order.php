@@ -185,8 +185,6 @@ class ModelCheckoutOrder extends Model
 				'customer_id' => $order_query->row['customer_id'],
 				'firstname' => $order_query->row['firstname'],
 				'lastname' => $order_query->row['lastname'],
-                // 'company' => $order_query->row['company'],
-				// 'abn' => $order_query->row['abn'],
 				'email' => $order_query->row['email'],
 				'telephone' => $order_query->row['telephone'],
 				'custom_field' => json_decode($order_query->row['custom_field'], true),
