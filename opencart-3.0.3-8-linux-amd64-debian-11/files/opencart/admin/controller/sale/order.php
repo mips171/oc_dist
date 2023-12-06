@@ -360,8 +360,8 @@ class ControllerSaleOrder extends Controller
             $data['firstname'] = $order_info['firstname'];
             $data['lastname'] = $order_info['lastname'];
             $data['email'] = $order_info['email'];
-            $data['company'] = $order_info['customer']['company'];
-            $data['abn'] = $order_info['customer']['abn'];
+            $data['company'] = $order_info['company'];
+            $data['abn'] = $order_info['abn'];
             $data['telephone'] = $order_info['telephone'];
             $data['account_custom_field'] = $order_info['custom_field'];
 
