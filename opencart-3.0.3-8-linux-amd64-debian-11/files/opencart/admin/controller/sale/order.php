@@ -222,28 +222,32 @@ class ControllerSaleOrder extends Controller
         $data['sort_date_payment_due'] = $this->url->link('sale/order', 'user_token=' . $this->session->data['user_token'] . '&sort=o.date_payment_due' . $url, true);
 
         $url_params = [
-            'filter_order_id',
-            'filter_customer',
-            'filter_order_status',
-            'filter_order_status_id',
-            'filter_total',
-            'filter_date_added_start',
-            'filter_date_added_end',
-            'filter_date_modified_start',
-            'filter_date_modified_end',
-            'filter_date_payment_due_start',
-            'filter_date_payment_due_end'
+            ['filter_order_id', false],
+            ['filter_customer', true],
+            ['filter_order_status', false],
+            ['filter_order_status_id', false],
+            ['filter_total', false],
+            ['filter_date_added_start', false],
+            ['filter_date_added_end', false],
+            ['filter_date_modified_start', false],
+            ['filter_date_modified_end', false],
+            ['filter_date_payment_due_start', false],
+            ['filter_date_payment_due_end', false],
+            ['sort', false],
+            ['order', false],
+            ['page', false],
+            // Add more parameters as needed
         ];
 
         $url = $this->buildURL($this->request->get, $url_params);
 
-        if (isset($this->request->get['sort'])) {
-            $url .= '&sort=' . $this->request->get['sort'];
-        }
+        // if (isset($this->request->get['sort'])) {
+        //     $url .= '&sort=' . $this->request->get['sort'];
+        // }
 
-        if (isset($this->request->get['order'])) {
-            $url .= '&order=' . $this->request->get['order'];
-        }
+        // if (isset($this->request->get['order'])) {
+        //     $url .= '&order=' . $this->request->get['order'];
+        // }
 
         $pagination = new Pagination();
         $pagination->total = $order_total;
